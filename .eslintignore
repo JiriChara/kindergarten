@@ -1,0 +1,5 @@
+# Minified js files
+*.min.js
+
+# Node modules
+node_modules
