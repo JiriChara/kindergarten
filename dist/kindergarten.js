@@ -753,7 +753,6 @@ var Perimeter = exports.Perimeter = (function (_PubSub) {
       var _this3 = this;
 
       // if governess is null perimeter will use the governess of it's sandbox
-      debugger;
       this._governess = (0, _utils.isObject)(value) && value instanceof _headGoverness.HeadGoverness ? value : (function () {
         return (0, _utils.isObject)(_this3.sandbox) && _this3.sandbox instanceof _sandbox.Sandbox ? _this3.sandbox.governess : null;
       })();
@@ -1484,7 +1483,7 @@ var PubSub = exports.PubSub = (function (_Hookies$Hooks) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.extend = exports.keys = exports.bind = exports.has = exports.contains = exports.isEmpty = exports.filter = exports.some = exports.find = exports.each = exports.isSandbox = exports.isGoverness = exports.isBoolean = exports.isObject = exports.isArray = exports.isUndefined = exports.isFunction = exports.isString = undefined;
+exports.extend = exports.keys = exports.bind = exports.has = exports.contains = exports.filter = exports.some = exports.find = exports.each = exports.isEmpty = exports.isSandbox = exports.isGoverness = exports.isBoolean = exports.isObject = exports.isArray = exports.isUndefined = exports.isFunction = exports.isString = undefined;
 
 var _sandbox = require('../sandbox');
 
@@ -1525,6 +1524,14 @@ var isSandbox = exports.isSandbox = function isSandbox(obj) {
   return isObject(obj) && obj instanceof _sandbox.Sandbox;
 };
 
+var isEmpty = exports.isEmpty = function isEmpty(obj) {
+  if (isArray(obj)) {
+    return obj.length > 0 ? false : true;
+  }
+
+  return true;
+};
+
 var each = exports.each = function each(arr, cb) {
   for (var i = 0, len = arr.length; i < len; i++) {
     cb(arr[i]);
@@ -1532,16 +1539,11 @@ var each = exports.each = function each(arr, cb) {
 };
 
 var find = exports.find = function find(arr, cb) {
-  var returnVal = undefined;
-
-  each(arr, function (item) {
-    if (cb(item)) {
-      returnVal = item;
-      return;
+  for (var i = 0, len = arr.length; i < len; i++) {
+    if (cb(i)) {
+      return i;
     }
-  });
-
-  return returnVal;
+  }
 };
 
 var some = exports.some = function some(arr, predicate) {
@@ -1566,14 +1568,6 @@ var filter = exports.filter = function filter(arr, predicate) {
   }
 
   return results;
-};
-
-var isEmpty = exports.isEmpty = function isEmpty(obj) {
-  if (isArray(obj)) {
-    return obj.length > 0 ? false : true;
-  }
-
-  return true;
 };
 
 var contains = exports.contains = function contains(arr, item) {
@@ -1603,7 +1597,6 @@ var keys = exports.keys = function keys(obj) {
   if (!isObject(obj)) return [];
   if (nativeKeys) return nativeKeys(obj);
   var keyArr = [];
-  // FIXME: this will not work in IE < 8
   for (var key in obj) {
     if (has(obj, key)) keyArr.push(key);
   }return keys;
