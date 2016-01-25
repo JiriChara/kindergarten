@@ -1540,8 +1540,10 @@ var each = exports.each = function each(arr, cb) {
 
 var find = exports.find = function find(arr, cb) {
   for (var i = 0, len = arr.length; i < len; i++) {
-    if (cb(i)) {
-      return i;
+    var item = arr[i];
+
+    if (cb(item)) {
+      return item;
     }
   }
 };
