@@ -16,7 +16,7 @@ describe('ChildModule integration spec', function () {
     this.Kindergarten = Kindergarten;
   });
 
-  it('The brainfuck perimeter #1 must work', function () {
+  it('The brainfuck #1 should work', function () {
     const brainFuckPerimeter = new Kindergarten.Perimeter({
       purpose: 'playing',
 
@@ -55,7 +55,7 @@ describe('ChildModule integration spec', function () {
     });
   });
 
-  it('The brainfuck perimeter #2 must work', function () {
+  it('The brainfuck #2 should work', function () {
     const brainFuckPerimeter = new Kindergarten.Perimeter({
       purpose: 'playing',
 
@@ -93,7 +93,7 @@ describe('ChildModule integration spec', function () {
     });
   });
 
-  it('The brainfuck perimeter #3 must work', function () {
+  it('The brainfuck #3 should work', function () {
     const brainFuckPerimeter = new Kindergarten.Perimeter({
       purpose: 'playing',
 
@@ -127,5 +127,69 @@ describe('ChildModule integration spec', function () {
         sandbox.playing.watch(new Thing());
       }).toThrowError('Child is not allowed to watch the target.');
     });
+  });
+
+  it('The brainfuck #4 should work', function () {
+    const TV = function () {};
+    const user = {};
+
+    const perimeter1 = new Kindergarten.Perimeter({
+      purpose: 'perimeter1',
+      govern: {
+        'can watch': {
+          items: [TV]
+        }
+      },
+      governess: new Kindergarten.HeadGoverness(user)
+    });
+
+    const perimeter2 = new Kindergarten.Perimeter({
+      purpose: 'perimeter2',
+      govern: {
+        'cannot watch': {
+          items: [TV]
+        }
+      },
+      governess: new Kindergarten.HeadGoverness(user)
+    });
+
+    const sandbox = Kindergarten.sandbox(user);
+
+    expect(sandbox.loadModule(perimeter1, perimeter2)).toBe(2);
+
+    expect(sandbox.perimeter1.isAllowed('watch', new TV())).toBe(true);
+    expect(sandbox.perimeter2.isAllowed('watch', new TV())).toBe(false);
+    expect(sandbox.isAllowed('watch', new TV())).toBe(false);
+  });
+
+  it('The brainfuck #5 should work', function () {
+    const TV = function () {};
+    const user = {};
+
+    const perimeter1 = new Kindergarten.Perimeter({
+      purpose: 'perimeter1',
+      govern: {
+        'can watch': {
+          items: [TV]
+        }
+      }
+    });
+
+    const perimeter2 = new Kindergarten.Perimeter({
+      purpose: 'perimeter2',
+      govern: {
+        'cannot watch': {
+          items: [TV]
+        }
+      }
+    });
+
+    const sandbox = Kindergarten.sandbox(user);
+
+    expect(sandbox.loadModule(perimeter1, perimeter2)).toBe(2);
+
+    expect(sandbox.perimeter1.isAllowed('watch', new TV())).toBe(false);
+    expect(sandbox.perimeter2.isAllowed('watch', new TV())).toBe(false);
+    expect(sandbox.isAllowed('watch', new TV())).toBe(false);
   });
 });
