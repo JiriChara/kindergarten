@@ -2,9 +2,9 @@
   "name": "kindergarten",
   "author": "Jiri Chara <me@jirichara.com>",
   "license": "MIT",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Kindergarten is a JavaScript library which helps programmers to achieve modular security using sandbox pattern",
-  "main": "lib/kindergarten.js",
+  "main": "dist/kindergarten.js",
   "scripts": {
     "test": "npm run lint && npm run karma",
     "testAsync": "./node_modules/.bin/parallelshell 'npm run lint' 'npm run karma'",
@@ -13,8 +13,9 @@
     "karma": "./node_modules/.bin/karma start",
     "uglify": "./node_modules/.bin/uglifyjs dist/kindergarten.js -o dist/kindergarten.min.js",
     "watch:js:build": "./node_modules/.bin/watch 'npm run build' lib",
+    "watch:js:uglify": "./node_modules/.bin/watch 'npm run uglify' lib",
     "watch:js:test": "./node_modules/.bin/watch 'npm run testAsync' lib spec",
-    "watch": "./node_modules/.bin/parallelshell 'npm run watch:js:build' 'npm run watch:js:test'"
+    "watch": "./node_modules/.bin/parallelshell 'npm run watch:js:build' 'npm run watch:js:uglify' 'npm run watch:js:test'"
   },
   "keywords": [
     "kindergarten",
