@@ -127,9 +127,9 @@ describe('Sandbox', function () {
       expect(this.sandbox.governess).toBe(this.governess);
     });
 
-    it('returns null by default', function () {
+    it('returns HeadGoverness by default', function () {
       this.sandbox._governess = {};
-      expect(this.sandbox.governess).toBeNull();
+      expect(this.sandbox.governess instanceof this.HeadGoverness).toBe(true);
     });
   });
 
@@ -145,12 +145,12 @@ describe('Sandbox', function () {
       );
     });
 
-    it('set governess to null by default', function () {
+    it('set governess to HeadGoverness by default', function () {
       this.sandbox.governess = 'foo';
-      expect(this.sandbox._governess).toBeNull();
+      expect(this.sandbox._governess instanceof this.HeadGoverness).toBe(true);
 
       this.sandbox.governess = {};
-      expect(this.sandbox._governess).toBeNull();
+      expect(this.sandbox._governess instanceof this.HeadGoverness).toBe(true);
     });
   });
 
