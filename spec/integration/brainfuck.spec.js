@@ -192,4 +192,24 @@ describe('ChildModule integration spec', function () {
     expect(sandbox.perimeter2.isAllowed('watch', new TV())).toBe(false);
     expect(sandbox.isAllowed('watch', new TV())).toBe(false);
   });
+
+  it('The brainfuck #6 should work', function () {
+    const user = {};
+
+    const perimeter = new Kindergarten.Perimeter({
+      purpose: 'perimeter1',
+      govern: {
+        'can proceed': {
+          rule: /^\S+@\S+\.\w+$/
+        }
+      }
+    });
+
+    const sandbox = Kindergarten.sandbox(user);
+
+    expect(sandbox.loadModule(perimeter)).toBe(1);
+
+    expect(sandbox.isAllowed('proceed', 'foo@bar.com')).toBe(true);
+    expect(sandbox.isAllowed('proceed', 'not-email@')).toBe(false);
+  });
 });
