@@ -811,13 +811,18 @@ var Purpose = exports.Purpose = (function (_PubSub) {
   function Purpose(name, sandbox) {
     _classCallCheck(this, Purpose);
 
-    // TODO: verify name
-    // TODO: verify sandbox
-
     var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Purpose).call(this));
 
     _this._name = name;
     _this._sandbox = sandbox;
+
+    if (!(0, _utils.isString)(_this._name)) {
+      throw new _errors.ArgumentError('Name of the purpose must be a string');
+    }
+
+    if (!(0, _utils.isSandbox)(_this._sandbox)) {
+      throw new _errors.ArgumentError('Purpose requires sandbox to be given.');
+    }
     return _this;
   }
 
@@ -945,11 +950,11 @@ var Rule = exports.Rule = (function (_PubSub) {
       // Custom rule definition
       var rule = def.rule;
 
-      if ((0, _utils.isEmpty)(items) && !(0, _utils.isFunction)(rule)) {
+      if ((0, _utils.isEmpty)(items) && !this._isValidRuleDef(rule)) {
         throw new _errors.WrongRuleDefinition('Cannot create a new rule "' + str + '". No items or rule given.');
       }
 
-      if (!(0, _utils.isEmpty)(items) && (0, _utils.isFunction)(rule)) {
+      if (!(0, _utils.isEmpty)(items) && this._isValidRuleDef(rule)) {
         throw new _errors.WrongRuleDefinition('Cannot create a new rule "' + str + '". Both the items and rule given.');
       }
 
@@ -962,7 +967,7 @@ var Rule = exports.Rule = (function (_PubSub) {
       var ruleContext = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
 
       // The custom rules are always strict
-      if ((0, _utils.isFunction)(_rule)) {
+      if (this._isValidRuleDef(_rule)) {
         return {
           isPositive: isPositive,
           isStrict: true,
@@ -972,8 +977,15 @@ var Rule = exports.Rule = (function (_PubSub) {
               args[_key] = arguments[_key];
             }
 
-            var res = _rule.apply(ruleContext, args);
-            return isPositive ? res : !res;
+            if ((0, _utils.isFunction)(_rule)) {
+              var res = _rule.apply(ruleContext, args);
+              return isPositive ? res : !res;
+            }
+
+            // TODO: add spec
+            if ((0, _utils.isRegExp)(_rule)) {
+              return _rule.test(args[0]);
+            }
           }
         };
       }
@@ -987,6 +999,11 @@ var Rule = exports.Rule = (function (_PubSub) {
           return true;
         }
       };
+    }
+  }, {
+    key: '_isValidRuleDef',
+    value: function _isValidRuleDef(rule) {
+      return (0, _utils.isFunction)(rule) || (0, _utils.isRegExp)(rule);
     }
   }]);
 
@@ -1407,6 +1424,8 @@ var AllowedMethodsService = exports.AllowedMethodsService = (function () {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -1432,15 +1451,12 @@ var PubSub = exports.PubSub = (function (_Hookies$Hooks) {
   _inherits(PubSub, _Hookies$Hooks);
 
   function PubSub() {
-    var _Object$getPrototypeO;
-
     _classCallCheck(this, PubSub);
 
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(PubSub).call(this));
 
-    return _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(PubSub)).call.apply(_Object$getPrototypeO, [this].concat(args)));
+    _this.hookiesBase = _this;
+    return _this;
   }
 
   /**
@@ -1450,13 +1466,13 @@ var PubSub = exports.PubSub = (function (_Hookies$Hooks) {
   _createClass(PubSub, [{
     key: 'trigger',
     value: function trigger(name) {
-      var _Hookies$Hooks$protot;
+      var _get2;
 
-      for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-        args[_key2 - 1] = arguments[_key2];
+      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        args[_key - 1] = arguments[_key];
       }
 
-      (_Hookies$Hooks$protot = _hookies2.default.Hooks.prototype.trigger).call.apply(_Hookies$Hooks$protot, [this, {
+      return (_get2 = _get(Object.getPrototypeOf(PubSub.prototype), 'trigger', this)).call.apply(_get2, [this, {
         name: name,
         sync: true,
         context: this
@@ -1468,9 +1484,15 @@ var PubSub = exports.PubSub = (function (_Hookies$Hooks) {
      */
 
   }, {
-    key: 'triggerAsyc',
-    value: function triggerAsyc() {
-      _hookies2.default.Hooks.prototype.trigger.apply(this, arguments);
+    key: 'triggerAsync',
+    value: function triggerAsync() {
+      var _get3;
+
+      for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        args[_key2] = arguments[_key2];
+      }
+
+      return (_get3 = _get(Object.getPrototypeOf(PubSub.prototype), 'trigger', this)).call.apply(_get3, [this].concat(args));
     }
   }]);
 
@@ -1483,7 +1505,7 @@ var PubSub = exports.PubSub = (function (_Hookies$Hooks) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.extend = exports.keys = exports.bind = exports.has = exports.contains = exports.filter = exports.some = exports.find = exports.each = exports.isEmpty = exports.isSandbox = exports.isGoverness = exports.isBoolean = exports.isObject = exports.isArray = exports.isUndefined = exports.isFunction = exports.isString = undefined;
+exports.extend = exports.keys = exports.bind = exports.has = exports.contains = exports.filter = exports.some = exports.find = exports.each = exports.isEmpty = exports.isSandbox = exports.isGoverness = exports.isBoolean = exports.isObject = exports.isUndefined = exports.isArray = exports.isRegExp = exports.isFunction = exports.isString = undefined;
 
 var _sandbox = require('../sandbox');
 
@@ -1499,12 +1521,16 @@ var isFunction = exports.isFunction = function isFunction(obj) {
   return Object.prototype.toString.call(obj) === '[object Function]';
 };
 
-var isUndefined = exports.isUndefined = function isUndefined(obj) {
-  return obj === undefined;
+var isRegExp = exports.isRegExp = function isRegExp(obj) {
+  return Object.prototype.toString.call(obj) === '[object RegExp]';
 };
 
 var isArray = exports.isArray = Array.isArray || function (obj) {
   return Object.prototype.toString.call(obj) === '[object Array]';
+};
+
+var isUndefined = exports.isUndefined = function isUndefined(obj) {
+  return obj === undefined;
 };
 
 var isObject = exports.isObject = function isObject(obj) {
