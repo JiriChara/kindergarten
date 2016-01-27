@@ -4,6 +4,7 @@ import {
   isString,
   isFunction,
   isUndefined,
+  isRegExp,
   isArray,
   isObject,
   isBoolean,
@@ -70,6 +71,24 @@ describe('utils', function () {
         null, [], {}, 1, 'foo', isUndefined
       ], (s) => {
         expect(isUndefined(s)).toBe(false);
+      });
+    });
+  });
+
+  describe('isRegExp', function () {
+    it('should return true if given arg is a RegExp', function () {
+      _.each([
+        /foo/, new RegExp('foo')
+      ], (s) => {
+        expect(isRegExp(s)).toBe(true);
+      });
+    });
+
+    it('should return false if given arg is not a RegExp', function () {
+      _.each([
+        null, [], {}, 1, 'foo', function () {}, RegExp
+      ], (s) => {
+        expect(isRegExp(s)).toBe(false);
       });
     });
   });
