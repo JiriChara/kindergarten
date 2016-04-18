@@ -3,34 +3,21 @@ import { _ } from 'lodash';
 import { Rule } from '../../lib/kindergarten/rule';
 import { WrongRuleDefinition } from '../../lib/kindergarten/errors';
 
-describe('Rule', function () {
+xdescribe('Rule', () => {
   beforeEach(function () {
     this.Rule = Rule;
     this.Television = function () {};
     this.CableTV = function () {};
   });
 
-  describe('create() static method', function () {
-    describe('correct definition', function () {
+  describe('create() static method', () => {
+    describe('correct definition', () => {
       beforeEach(function () {
-        this.rule1 = this.Rule.create('can watch', {
-          items: [
-            this.Television
-          ]
-        });
+        this.rule1 = new this.Rule('can watch', [this.Television]);
 
-        this.rule2 = this.Rule.create('cannot watch', {
-          items: [
-            this.Television
-          ]
-        });
+        this.rule2 = new this.Rule('cannot watch', [this.Television]);
 
-        this.rule3 = this.Rule.create('cannot watch', {
-          items: [
-            this.Television,
-            this.CableTV
-          ]
-        });
+        this.rule3 = new this.Rule('cannot watch', [this.Television, this.CableTV]);
 
         this.customTruthyMethod = function () {
           return true;
@@ -40,21 +27,13 @@ describe('Rule', function () {
           return false;
         };
 
-        this.rule4 = this.Rule.create('can watch', {
-          rule: this.customTruthyMethod
-        });
+        this.rule4 = new this.Rule('can watch', this.customTruthyMethod);
 
-        this.rule5 = this.Rule.create('cannot watch', {
-          rule: this.customTruthyMethod
-        });
+        this.rule5 = new this.Rule('cannot watch', this.customTruthyMethod);
 
-        this.rule6 = this.Rule.create('can watch', {
-          rule: this.customFalsyMethod
-        });
+        this.rule6 = new this.Rule('can watch', this.customFalsyMethod);
 
-        this.rule7 = this.Rule.create('cannot watch', {
-          rule: this.customFalsyMethod
-        });
+        this.rule7 = new this.Rule('cannot watch', this.customFalsyMethod);
       });
 
       it('creates new rule with type', function () {
@@ -112,17 +91,17 @@ describe('Rule', function () {
       });
     });
 
-    describe('wrong definition', function () {
+    describe('wrong definition', () => {
       it('throws an WrongRuleDefinition error when no items or rule given', function () {
         _.each([
           {}, [], 'string', undefined, null
         ], (item) => {
           expect(() => {
-            this.rule1 = this.Rule.create('can watch', item);
+            this.rule1 = new this.Rule('can watch', item);
           }).toThrowError('Cannot create a new rule "can watch". No items or rule given.');
 
           try {
-            this.rule1 = this.Rule.create('can watch', item);
+            this.rule1 = new this.Rule('can watch', item);
           } catch (e) {
             expect(e instanceof WrongRuleDefinition).toEqual(true);
           }
@@ -132,14 +111,14 @@ describe('Rule', function () {
       it('throws an WrongRuleDefinition error rule string is wrong', function () {
         _.each(['canot watch', 'can', 'foo bar', 'can $', 'cannot //\\'], (item) => {
           expect(() => {
-            this.rule1 = this.Rule.create(item, {
-              rule: () => {}
+            this.rule1 = new this.Rule(item, {
+              rule: () => ({})
             });
           }).toThrowError(`Cannot parse following rule definition "${item}".`);
 
           try {
-            this.rule1 = this.Rule.create(item, {
-              rule: () => {}
+            this.rule1 = new this.Rule(item, {
+              rule: () => ({})
             });
           } catch (e) {
             expect(e instanceof WrongRuleDefinition).toEqual(true);
@@ -149,15 +128,15 @@ describe('Rule', function () {
 
       it('throws WrongRuleDefinition error when both rule and items given', function () {
         expect(() => {
-          this.rule1 = this.Rule.create('can view', {
-            rule: () => {},
+          this.rule1 = new this.Rule('can view', {
+            rule: () => ({}),
             items: [this.Television]
           });
         }).toThrowError(`Cannot create a new rule "can view". Both the items and rule given.`);
 
         try {
-          this.rule1 = this.Rule.create('can view', {
-            rule: () => {},
+          this.rule1 = new this.Rule('can view', {
+            rule: () => ({}),
             items: [this.Television]
           });
         } catch (e) {
@@ -168,7 +147,7 @@ describe('Rule', function () {
   });
 
 
-  describe('constructor', function () {
+  describe('constructor', () => {
     beforeEach(function () {
       this.type = 'foo';
       this.items = [];
@@ -182,7 +161,7 @@ describe('Rule', function () {
       };
     });
 
-    describe('success', function () {
+    describe('success', () => {
       beforeEach(function () {
         this.rule = new this.Rule(
           this.type,
@@ -216,7 +195,7 @@ describe('Rule', function () {
       });
     });
 
-    describe('failure', function () {
+    describe('failure', () => {
       it('validates type of the rule', function () {
         const errorSufix = 'Use create() to create new rule.';
 
@@ -430,10 +409,10 @@ describe('Rule', function () {
     });
   });
 
-  describe('verify() method', function () {
-    describe('normal', function () {
+  describe('verify() method', () => {
+    describe('normal', () => {
       beforeEach(function () {
-        this.rule1 = this.Rule.create(
+        this.rule1 = new this.Rule(
           'can watch', {
             items: [
               this.CableTV,
@@ -442,7 +421,7 @@ describe('Rule', function () {
           }
         );
 
-        this.rule2 = this.Rule.create(
+        this.rule2 = new this.Rule(
           'cannot watch', {
             items: [
               this.CableTV,
@@ -481,9 +460,9 @@ describe('Rule', function () {
       });
     });
 
-    describe('custom', function () {
+    describe('custom', () => {
       beforeEach(function () {
-        this.rule1 = this.Rule.create(
+        this.rule1 = new this.Rule(
           'can destroy', {
             rule(item1, item2) {
               return item1 !== item2;
@@ -491,7 +470,7 @@ describe('Rule', function () {
           }
         );
 
-        this.rule2 = this.Rule.create(
+        this.rule2 = new this.Rule(
           'cannot destroy', {
             rule(item1, item2) {
               return item1 !== item2;
@@ -503,7 +482,7 @@ describe('Rule', function () {
           name: 'foo'
         };
 
-        this.rule3 = this.Rule.create(
+        this.rule3 = new this.Rule(
           'can destroy', {
             rule(item) {
               return item === this.name;

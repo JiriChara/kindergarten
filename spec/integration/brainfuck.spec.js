@@ -2,10 +2,10 @@ const Kindergarten = require('../../lib/kindergarten');
 
 import { _ } from 'lodash';
 
-import { FactoryGirl } from '../support/factory-girl';
+import FactoryGirl from '../support/factory-girl';
 
 // Edge case tests
-describe('ChildModule integration spec', function () {
+describe('ChildModule integration spec', () => {
   beforeEach(function () {
     this.child = new FactoryGirl('child', 'watch', 'eat', 'sleep');
     this.Tv = new FactoryGirl('Tv');
@@ -20,18 +20,8 @@ describe('ChildModule integration spec', function () {
     const brainFuckPerimeter = new Kindergarten.Perimeter({
       purpose: 'playing',
 
-      'can watch': {
-        items: [
-          this.Tv,
-          this.CableTv
-        ]
-      },
-      'cannot watch': { // cannot has higher priority than can
-        items: [
-          this.Tv,
-          this.CableTv
-        ]
-      },
+      'can watch': [this.Tv, this.CableTv],
+      'cannot watch': [this.Tv, this.CableTv],
 
       expose: [
         'watchTv',
@@ -59,18 +49,9 @@ describe('ChildModule integration spec', function () {
     const brainFuckPerimeter = new Kindergarten.Perimeter({
       purpose: 'playing',
 
-      'can watch': {
-        items: [
-          this.Tv,
-          this.CableTv
-        ]
-      },
-      'cannot watch': { // cannot has higher priority than can
-        items: [
-          this.Tv,
-          this.CableTv
-        ]
-      },
+      'can watch': [this.Tv, this.CableTv],
+      // cannot has higher priority than can
+      'cannot watch': [this.Tv, this.CableTv],
 
       expose: [
         'watch'
@@ -97,16 +78,9 @@ describe('ChildModule integration spec', function () {
     const brainFuckPerimeter = new Kindergarten.Perimeter({
       purpose: 'playing',
 
-      'can watch': {
-        rule() {
-          return true;
-        }
-      },
-      'cannot watch': { // cannot has higher priority than can
-        rule() {
-          return true;
-        }
-      },
+      ['can watch']() { return true; },
+      // cannot has higher priority than can
+      ['cannot watch']() { return true; },
 
       expose: [
         'watch'
@@ -129,16 +103,14 @@ describe('ChildModule integration spec', function () {
     });
   });
 
-  it('The brainfuck #4 should work', function () {
+  it('The brainfuck #4 should work', () => {
     const TV = function () {};
     const user = {};
 
     const perimeter1 = new Kindergarten.Perimeter({
       purpose: 'perimeter1',
       govern: {
-        'can watch': {
-          items: [TV]
-        }
+        'can watch': [TV]
       },
       governess: new Kindergarten.HeadGoverness(user)
     });
@@ -146,9 +118,7 @@ describe('ChildModule integration spec', function () {
     const perimeter2 = new Kindergarten.Perimeter({
       purpose: 'perimeter2',
       govern: {
-        'cannot watch': {
-          items: [TV]
-        }
+        'cannot watch': [TV]
       },
       governess: new Kindergarten.HeadGoverness(user)
     });
@@ -162,25 +132,21 @@ describe('ChildModule integration spec', function () {
     expect(sandbox.isAllowed('watch', new TV())).toBe(false);
   });
 
-  it('The brainfuck #5 should work', function () {
+  it('The brainfuck #5 should work', () => {
     const TV = function () {};
     const user = {};
 
     const perimeter1 = new Kindergarten.Perimeter({
       purpose: 'perimeter1',
       govern: {
-        'can watch': {
-          items: [TV]
-        }
+        'can watch': [TV]
       }
     });
 
     const perimeter2 = new Kindergarten.Perimeter({
       purpose: 'perimeter2',
       govern: {
-        'cannot watch': {
-          items: [TV]
-        }
+        'cannot watch': [TV]
       }
     });
 
@@ -193,15 +159,13 @@ describe('ChildModule integration spec', function () {
     expect(sandbox.isAllowed('watch', new TV())).toBe(false);
   });
 
-  it('The brainfuck #6 should work', function () {
+  it('The brainfuck #6 should work', () => {
     const user = {};
 
     const perimeter = new Kindergarten.Perimeter({
       purpose: 'perimeter1',
       govern: {
-        'can proceed': {
-          rule: /^\S+@\S+\.\w+$/
-        }
+        'can proceed': /^\S+@\S+\.\w+$/
       }
     });
 

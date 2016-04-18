@@ -1,6 +1,6 @@
-import { Logger } from '../../lib/kindergarten/logger';
+import Logger from '../../lib/kindergarten/logger';
 
-describe('Logger', function () {
+describe('Logger', () => {
   beforeEach(function () {
     this.Logger = Logger;
     this.oldConsoleLog = console.log;
@@ -10,8 +10,8 @@ describe('Logger', function () {
     console.log = this.oldConsoleLog;
   });
 
-  describe('_log() static method', function () {
-    it('calls console.log with the given message', function () {
+  describe('_log() static method', () => {
+    it('calls console.log with the given message', () => {
       const msg = 'foo';
 
       spyOn(console, 'log');
@@ -22,7 +22,7 @@ describe('Logger', function () {
       expect(console.log).toHaveBeenCalledWith(msg);
     });
 
-    it('does not call console.log if not defined', function () {
+    it('does not call console.log if not defined', () => {
       /* eslint no-native-reassign: 0 */
       console.log = undefined;
 
@@ -32,13 +32,13 @@ describe('Logger', function () {
     });
   });
 
-  describe('log() static method', function () {
-    it('works', function () {
+  describe('log() static method', () => {
+    it('works', () => {
       const msg = 'foo';
       Logger.log(msg);
     });
 
-    it('calls _log() static method', function () {
+    it('calls _log() static method', () => {
       const msg = 'foo';
 
       spyOn(Logger, '_log');
@@ -49,13 +49,13 @@ describe('Logger', function () {
     });
   });
 
-  describe('warn() static method', function () {
-    it('works', function () {
+  describe('warn() static method', () => {
+    it('works', () => {
       const msg = 'foo';
       Logger.warn(msg);
     });
 
-    it('calls _log() static method', function () {
+    it('calls _log() static method', () => {
       const msg = 'foo';
 
       spyOn(Logger, '_log');

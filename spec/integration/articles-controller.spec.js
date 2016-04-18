@@ -1,13 +1,13 @@
 const Kindergarten = require('../../lib/kindergarten');
 
-import { FactoryGirl } from '../support/factory-girl';
+import FactoryGirl from '../support/factory-girl';
 
-describe('Articles controller integration spec', function () {
+describe('Articles controller integration spec', () => {
   beforeEach(function () {
     this.currentUser = new FactoryGirl('currentUser');
   });
 
-  it('must work', function () {
+  it('must work', () => {
     class Article {
       static find() {
         return new FactoryGirl('article', 'read', 'update', 'destroy');
@@ -32,21 +32,14 @@ describe('Articles controller integration spec', function () {
       purpose: 'articles',
 
       govern: {
-        'can read': {
-          rule() {
-            // everybody can read articles
-            return true;
-          }
+        'can read': () => true, // everybody can read articles
+
+        ['can update'](article) {
+          return this._isAdminOrCreatorOf(article);
         },
-        'can update': {
-          rule(article) {
-            return this._isAdminOrCreatorOf(article);
-          }
-        },
-        'can destroy': {
-          rule(article) {
-            return this.isAllowed('update', article);
-          }
+
+        ['can destroy'](article) {
+          return this.isAllowed('update', article);
         }
       },
 

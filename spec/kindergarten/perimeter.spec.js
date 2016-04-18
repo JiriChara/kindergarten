@@ -1,12 +1,12 @@
 import { _ } from 'lodash';
 
-import { FactoryGirl } from '../support/factory-girl';
-import { Perimeter } from '../../lib/kindergarten/perimeter';
+import FactoryGirl from '../support/factory-girl';
+import Perimeter from '../../lib/kindergarten/perimeter';
 import {
   NoPurposeError
 } from '../../lib/kindergarten/errors';
 
-describe('Perimeter', function () {
+describe('Perimeter', () => {
   beforeEach(function () {
     this.child = new FactoryGirl('child');
 
@@ -21,12 +21,8 @@ describe('Perimeter', function () {
 
     this.options = {
       govern: {
-        'can watch': {
-          items: [this.Television]
-        },
-        'cannot watch': {
-          items: [this.CableTv]
-        }
+        'can watch': [this.Television],
+        'cannot watch': [this.CableTv]
       },
 
       expose: [
@@ -45,7 +41,7 @@ describe('Perimeter', function () {
     );
   });
 
-  describe('constructor', function () {
+  describe('constructor', () => {
     it('returns new instanceof perimeter', function () {
       expect(this.myPerimeter instanceof this.Perimeter).toBe(true);
     });
@@ -87,7 +83,7 @@ describe('Perimeter', function () {
     });
   });
 
-  describe('purpose getter', function () {
+  describe('purpose getter', () => {
     it('returns _purpose', function () {
       this.myPerimeter._purpose = 'heyHou';
 
@@ -95,7 +91,7 @@ describe('Perimeter', function () {
     });
   });
 
-  describe('purpose setter', function () {
+  describe('purpose setter', () => {
     it('throws an error if purpose is not a string', function () {
       expect(() => {
         this.myPerimeter.purpose = {};
@@ -141,7 +137,7 @@ describe('Perimeter', function () {
     });
   });
 
-  describe('govern getter', function () {
+  describe('govern getter', () => {
     it('returns _govern', function () {
       expect(this.myPerimeter.govern).toEqual(this.myPerimeter._govern);
     });
@@ -152,7 +148,7 @@ describe('Perimeter', function () {
     });
   });
 
-  describe('govern setter', function () {
+  describe('govern setter', () => {
     it('sets _govern to given value', function () {
       const obj = {};
       this.myPerimeter.govern = obj;
@@ -171,7 +167,7 @@ describe('Perimeter', function () {
     });
   });
 
-  describe('expose getter', function () {
+  describe('expose getter', () => {
     it('returns value of _expose', function () {
       const expose = ['foo', 'bar'];
       this.myPerimeter._expose = expose;
@@ -184,7 +180,7 @@ describe('Perimeter', function () {
     });
   });
 
-  describe('expose setter', function () {
+  describe('expose setter', () => {
     it('sets _expose to given value', function () {
       const expose = ['foo', 'bar'];
       this.myPerimeter.expose = expose;
@@ -204,7 +200,7 @@ describe('Perimeter', function () {
     });
   });
 
-  describe('sandbox getter', function () {
+  describe('sandbox getter', () => {
     it('returns value of _sandbox', function () {
       this.myPerimeter._sandbox = this.sandbox;
       expect(this.myPerimeter.sandbox).toBe(this.myPerimeter._sandbox);
@@ -215,7 +211,7 @@ describe('Perimeter', function () {
     });
   });
 
-  describe('sandbox setter', function () {
+  describe('sandbox setter', () => {
     it('sets _sandbox to given one', function () {
       this.myPerimeter.sandbox = this.sandbox;
       expect(this.myPerimeter._sandbox).toBe(this.sandbox);
@@ -231,7 +227,7 @@ describe('Perimeter', function () {
     });
   });
 
-  describe('governess getter', function () {
+  describe('governess getter', () => {
     it('returns _governess', function () {
       this.myPerimeter._governess = this.governess;
       expect(this.myPerimeter.governess).toBe(this.governess);
@@ -243,7 +239,7 @@ describe('Perimeter', function () {
     });
   });
 
-  describe('governess setter', function () {
+  describe('governess setter', () => {
     it('sets _governess to given one', function () {
       this.myPerimeter.governess = this.governess;
       expect(this.myPerimeter.governess).toBe(this.governess);
@@ -264,7 +260,7 @@ describe('Perimeter', function () {
     });
   });
 
-  describe('child getter', function () {
+  describe('child getter', () => {
     it('returns _child', function () {
       const child = {};
       this.myPerimeter._child = child;
@@ -277,7 +273,7 @@ describe('Perimeter', function () {
     });
   });
 
-  describe('child setter', function () {
+  describe('child setter', () => {
     it('set _child to given child', function () {
       const child = {};
       this.myPerimeter.child = child;

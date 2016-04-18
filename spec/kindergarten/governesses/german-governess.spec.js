@@ -1,6 +1,6 @@
-import { FactoryGirl } from '../../support/factory-girl';
+import FactoryGirl from '../../support/factory-girl';
 
-describe('GermanGoverness', function () {
+describe('GermanGoverness', () => {
   beforeEach(function () {
     this.child = new FactoryGirl('child');
     this.Tv = new FactoryGirl('Tv');
@@ -21,12 +21,8 @@ describe('GermanGoverness', function () {
       purpose: 'playing',
 
       govern: {
-        'can watch': {
-          items: [this.Tv]
-        },
-        'cannot watch': {
-          items: [this.CableTv]
-        }
+        'can watch': [this.Tv],
+        'cannot watch': [this.CableTv]
       },
 
       expose: [
@@ -49,14 +45,14 @@ describe('GermanGoverness', function () {
     this.sandbox.governess = this.germanGoverness;
   });
 
-  describe('constructor', function () {
+  describe('constructor', () => {
     it('stores reference to child', function () {
       expect(this.germanGoverness.child).toBe(this.child);
       expect(this.germanGoverness.unguarded).toBe(false);
     });
   });
 
-  describe('governed() method', function () {
+  describe('governed() method', () => {
     it('calls guard method with correct arguments', function () {
       spyOn(this.germanGoverness, 'guard');
 

@@ -1,9 +1,9 @@
 import { _ } from 'lodash';
 
-import { Purpose } from '../../lib/kindergarten/purpose';
-import { FactoryGirl } from '../support/factory-girl';
+import Purpose from '../../lib/kindergarten/purpose';
+import FactoryGirl from '../support/factory-girl';
 
-describe('Purpose', function () {
+describe('Purpose', () => {
   beforeEach(function () {
     this.Purpose = Purpose;
     this.Perimeter = new FactoryGirl('Perimeter');
@@ -21,7 +21,7 @@ describe('Purpose', function () {
     );
   });
 
-  describe('constructor', function () {
+  describe('constructor', () => {
     it('stores reference to name', function () {
       expect(this.purpose._name).toEqual(this.purposeName);
     });
@@ -31,7 +31,7 @@ describe('Purpose', function () {
     });
   });
 
-  describe('_addPerimeter() method', function () {
+  describe('_addPerimeter() method', () => {
     it('throws an error when perimeter is no a perimeter', function () {
       const nonPerimeter = new FactoryGirl('fake');
 
@@ -144,7 +144,8 @@ describe('Purpose', function () {
       const assumption = () => { this.purpose._addPerimeter(perimeter); };
 
       expect(assumption).toThrowError(
-          `The exposed method ${nonExistingMethodName} is not defined on perimeter ${this.purposeName}`
+        `The exposed method ${nonExistingMethodName}` +
+        ` is not defined on perimeter ${this.purposeName}`
       );
 
       try {

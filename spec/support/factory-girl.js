@@ -1,13 +1,16 @@
 import { _ } from 'lodash';
 
-import { Perimeter } from '../../lib/kindergarten/perimeter';
-import { Logger } from '../../lib/kindergarten/logger';
-import { Sandbox } from '../../lib/kindergarten/sandbox';
-import { HeadGoverness } from '../../lib/kindergarten/governesses/head-governess';
-import { EasyGoverness } from '../../lib/kindergarten/governesses/easy-governess';
-import { StrictGoverness } from '../../lib/kindergarten/governesses/strict-governess';
-import { GermanGoverness } from '../../lib/kindergarten/governesses/german-governess';
-import { Rule } from '../../lib/kindergarten/rule';
+import BaseObject from '../../lib/kindergarten/base-object';
+import PubSub from '../../lib/kindergarten/utils/pub-sub';
+import Perimeter from '../../lib/kindergarten/perimeter';
+import Logger from '../../lib/kindergarten/logger';
+import Sandbox from '../../lib/kindergarten/sandbox';
+import HeadGoverness from '../../lib/kindergarten/governesses/head-governess';
+import EasyGoverness from '../../lib/kindergarten/governesses/easy-governess';
+import StrictGoverness from '../../lib/kindergarten/governesses/strict-governess';
+import GermanGoverness from '../../lib/kindergarten/governesses/german-governess';
+import Rule from '../../lib/kindergarten/rule';
+import Type from '../../lib/kindergarten/rule/type';
 import {
   AccessDenied,
   ArgumentError,
@@ -19,7 +22,7 @@ import {
   WrongRuleDefinition
 } from '../../lib/kindergarten/errors';
 
-export class FactoryGirl {
+export default class FactoryGirl {
   constructor(obj, ...args) {
     const objFactory = `${obj}Factory`;
 
@@ -63,8 +66,20 @@ export class FactoryGirl {
       }));
   }
 
+  BaseObjectFactory() {
+    return BaseObject;
+  }
+
+  PubSubFactory() {
+    return PubSub;
+  }
+
   RuleFactory() {
     return Rule;
+  }
+
+  TypeFactory() {
+    return Type;
   }
 
   SandboxFactory() {

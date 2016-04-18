@@ -7,8 +7,8 @@ import {
   WrongRuleDefinition
 } from '../../lib/kindergarten/errors';
 
-describe('errors', function () {
-  describe('AccessDenied', function () {
+describe('errors', () => {
+  describe('AccessDenied', () => {
     beforeEach(function () {
       this.AccessDenied = AccessDenied;
     });
@@ -31,7 +31,7 @@ describe('errors', function () {
     });
   });
 
-  describe('ArgumentError', function () {
+  describe('ArgumentError', () => {
     beforeEach(function () {
       this.ArgumentError = ArgumentError;
     });
@@ -54,7 +54,7 @@ describe('errors', function () {
     });
   });
 
-  describe('NoPurposeError', function () {
+  describe('NoPurposeError', () => {
     beforeEach(function () {
       this.NoPurposeError = NoPurposeError;
     });
@@ -77,7 +77,7 @@ describe('errors', function () {
     });
   });
 
-  describe('NoSanboxError', function () {
+  describe('NoSanboxError', () => {
     beforeEach(function () {
       this.NoSanboxError = NoSanboxError;
     });
@@ -100,7 +100,7 @@ describe('errors', function () {
     });
   });
 
-  describe('RestrictedMethodError', function () {
+  describe('RestrictedMethodError', () => {
     beforeEach(function () {
       this.RestrictedMethodError = RestrictedMethodError;
     });
@@ -123,7 +123,7 @@ describe('errors', function () {
     });
   });
 
-  describe('WrongRuleDefinition', function () {
+  describe('WrongRuleDefinition', () => {
     beforeEach(function () {
       this.WrongRuleDefinition = WrongRuleDefinition;
     });

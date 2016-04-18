@@ -1,10 +1,10 @@
-import { FactoryGirl } from '../../support/factory-girl';
+import FactoryGirl from '../../support/factory-girl';
 
 import {
   AccessDenied
 } from '../../../lib/kindergarten/errors';
 
-describe('HeadGoverness', function () {
+describe('HeadGoverness', () => {
   beforeEach(function () {
     this.child = new FactoryGirl('child');
     this.Tv = new FactoryGirl('Tv');
@@ -20,28 +20,24 @@ describe('HeadGoverness', function () {
       this.child
     );
 
-    this.rule1 = this.Rule.create(
-      'can watch', {
-        items: [this.Tv]
-      }
+    this.rule1 = new this.Rule(
+      'can watch', [this.Tv]
     );
 
-    this.rule2 = this.Rule.create(
-      'cannot watch', {
-        items: [this.CableTv]
-      }
+    this.rule2 = new this.Rule(
+      'cannot watch', [this.CableTv]
     );
 
     this.headGoverness.addRule(this.rule1, this.rule2);
   });
 
-  describe('constructor', function () {
+  describe('constructor', () => {
     it('stores reference to child', function () {
       expect(this.headGoverness.child).toBe(this.child);
     });
   });
 
-  describe('guard', function () {
+  describe('guard', () => {
     it('it allows watch tv', function () {
       expect(this.headGoverness.guard('watch', this.tv)).toBe(this.tv);
     });

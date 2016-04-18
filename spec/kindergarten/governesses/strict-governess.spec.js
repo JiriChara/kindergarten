@@ -1,6 +1,6 @@
-import { FactoryGirl } from '../../support/factory-girl';
+import FactoryGirl from '../../support/factory-girl';
 
-describe('StrictGoverness', function () {
+describe('StrictGoverness', () => {
   beforeEach(function () {
     this.child = new FactoryGirl('child');
     this.Tv = new FactoryGirl('Tv');
@@ -16,22 +16,13 @@ describe('StrictGoverness', function () {
       this.child
     );
 
-    this.rule1 = this.Rule.create(
-      'can watch', {
-        items: [this.Tv]
-      }
-    );
-
-    this.rule2 = this.Rule.create(
-      'cannot watch', {
-        items: [this.CableTv]
-      }
-    );
+    this.rule1 = new this.Rule('can watch', [this.Tv]);
+    this.rule2 = new this.Rule('cannot watch', [this.CableTv]);
 
     this.strictGoverness.addRule(this.rule1, this.rule2);
   });
 
-  describe('constructor', function () {
+  describe('constructor', () => {
     it('stores reference to child', function () {
       expect(this.strictGoverness.child).toBe(this.child);
       expect(this.strictGoverness.unguarded).toBe(false);
@@ -46,10 +37,10 @@ describe('StrictGoverness', function () {
     });
   });
 
-  describe('governed() method', function () {
+  describe('governed() method', () => {
     it('throws an error if calling unprotected method', function () {
       expect(() => {
-        this.strictGoverness.governed(() => {});
+        this.strictGoverness.governed(() => ({}));
       }).toThrowError(
         'All exposed methods must call guard method.'
       );
@@ -74,7 +65,7 @@ describe('StrictGoverness', function () {
     });
   });
 
-  describe('guard() method', function () {
+  describe('guard() method', () => {
     it('increases the `_guardCount`', function () {
       expect(this.strictGoverness._guardCount).toBe(0);
       this.strictGoverness.guard('watch', this.tv);

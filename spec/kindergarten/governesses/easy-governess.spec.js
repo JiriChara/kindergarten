@@ -1,6 +1,6 @@
-import { FactoryGirl } from '../../support/factory-girl';
+import FactoryGirl from '../../support/factory-girl';
 
-describe('EasyGoverness', function () {
+describe('EasyGoverness', () => {
   beforeEach(function () {
     this.child = new FactoryGirl('child');
 
@@ -18,22 +18,13 @@ describe('EasyGoverness', function () {
       this.child
     );
 
-    this.rule1 = this.Rule.create(
-      'can watch', {
-        items: [this.Tv]
-      }
-    );
-
-    this.rule2 = this.Rule.create(
-      'cannot watch', {
-        items: [this.CableTv]
-      }
-    );
+    this.rule1 = new this.Rule('can watch', [this.Tv]);
+    this.rule2 = new this.Rule('cannot watch', [this.CableTv]);
 
     this.easyGoverness.addRule(this.rule1, this.rule2);
   });
 
-  describe('constructor', function () {
+  describe('constructor', () => {
     it('stores reference to child', function () {
       expect(this.easyGoverness.child).toBe(this.child);
     });
@@ -45,7 +36,7 @@ describe('EasyGoverness', function () {
     });
   });
 
-  describe('guard', function () {
+  describe('guard', () => {
     it('let child to watch TV', function () {
       expect(this.easyGoverness.guard('watch', this.tv)).toBe(this.tv);
     });

@@ -1,11 +1,9 @@
 import { _ } from 'lodash';
 
-import { FactoryGirl } from '../../support/factory-girl.js';
-import {
-  AllowedMethodsService
-} from '../../../lib/kindergarten/utils/allowed-methods-service';
+import FactoryGirl from '../../support/factory-girl.js';
+import AllowedMethodsService from '../../../lib/kindergarten/utils/allowed-methods-service';
 
-describe('AllowedMethodsService', function () {
+describe('AllowedMethodsService', () => {
   beforeEach(function () {
     this.myDummy1 = new FactoryGirl('my-dummy', 'foo', 'bar');
 
@@ -22,7 +20,7 @@ describe('AllowedMethodsService', function () {
 
     this.myDummy4 = {
       foo: 'bar',
-      bar: () => {}
+      bar: () => ({})
     };
 
     this.AllowedMethodsService = AllowedMethodsService;
@@ -45,7 +43,7 @@ describe('AllowedMethodsService', function () {
     ];
   });
 
-  describe('isRestricted', function () {
+  describe('isRestricted', () => {
     it('returns true if method is not safe', function () {
       _.each([
         'IAMnotSafe', '-', 'foo bar', '1_123', 'void', 'class', 'constructor'
@@ -63,13 +61,13 @@ describe('AllowedMethodsService', function () {
     });
   });
 
-  describe('constructor', function () {
+  describe('constructor', () => {
     it('it stores a reference to dummy object', function () {
       expect(this.allowedMethodsService1.dummyObj).toBe(this.myDummy1);
     });
   });
 
-  describe('_restrictedMethods', function () {
+  describe('_restrictedMethods', () => {
     it('returns array of properties and methods of the object', function () {
       expect(this.allowedMethodsService1._restrictedMethods()).toEqual(['foo', 'bar']);
       expect(this.allowedMethodsService2._restrictedMethods()).toEqual(['foo', 'bar']);
@@ -79,13 +77,13 @@ describe('AllowedMethodsService', function () {
     });
   });
 
-  describe('_reservedWords', function () {
+  describe('_reservedWords', () => {
     it('returns list of reserved words', function () {
       expect(this.allowedMethodsService1._reservedWords()).toEqual(this.reservedWords);
     });
   });
 
-  describe('_customUnsafeList', function () {
+  describe('_customUnsafeList', () => {
     it('returns list of custom unsafe words', function () {
       expect(this.allowedMethodsService1._customUnsafeList()).toEqual([
         'constructor', 'property', '__proto__'

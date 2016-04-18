@@ -6,56 +6,43 @@
 [![NPM Dowloads](https://img.shields.io/npm/dm/kindergarten.svg)](https://www.npmjs.com/package/kindergarten)
 [![NPM Version](https://img.shields.io/npm/v/kindergarten.svg)](https://www.npmjs.com/package/kindergarten)
 
-![Kindergarten](https://raw.github.com/JiriChara/kindergarten/master/images/kindergarten.png) (beta)
+![Kindergarten](https://raw.github.com/JiriChara/kindergarten/master/images/kindergarten.png) v0.2.0
 
 Kindergarten is here to help you to separate your authorization logic into modules. Those modules are called perimeters and they contains instructions & rules for it's governess and methods to be exposed to sandbox (I will tell you about the sandbox and the governess later in this README - don't worry). A very simple perimeter might look like this:
 
 ```javascript
-var childPerimeter = new Kindergarten.Perimeter(
-  'playing', // the purpose of the perimeter
-  {
-    govern: { // instruction for governess
-      'can watch': {
-        items: [Television]
-      },
-      'cannot watch': {
-        items: [CableTv]
-      },
-      'can eat': {
-        rule: function (candy) {
-          // `this` will point to the current perimeter
-          return candy instanceof Candy && this.child.quotum.allows(candy);
-        }
-      }
-    },
-
-    expose: [ // what should be exposed to sandbox?
-      'watchTv',
-      'eat'
-    ]
-  }
-);
-
-// implement the logic of perimeter
-_.extend(childModule, {
-  watchTv: function(tv) {
+const childPerimeter = new Kindergarten.Perimeter({
+  purpose: 'playing', // the purpose of the perimeter
+  govern: { // instruction for governess
+    'can watch': [Television],
+    'cannot watch': [CableTv],
+    ['can eat'](candy) {
+      // `this` will point to childPerimeter
+      return candy instanceof Candy && this.child.quotum.allows(candy);
+    }
+  },
+  expose: [ // what should be exposed to sandbox?
+    'watchTv',
+    'eat'
+  ],
+  watchTv(tv) {
     // governess will guard child
     this.guard('watch', tv);
 
-    // `this` will point to the current perimeter
+    // `this` eferences the current perimeter
     this.child.watch(tv);
 
     this.sleep(4);
   },
 
-  eat: function(candy) {
+  eat: (candy) {
     this.guard('eat', candy);
 
     this.child.eat(candy);
   },
 
-  // this method is private and it will not be available in sandbox
-  sleep: function(len) {
+  // this method will be private and it will not be available in sandbox
+  sleep: (len) {
     this.child.sleep(len);
   }
 });
@@ -70,7 +57,8 @@ We have created a child perimeter with following instructions for the governess:
 We have specified that `watchTv` and `eat` methods should be exposed to sandbox. This means when sandbox loads the perimeter, only the `watchTv` and `eat` methods will be publicly available. The `sleep` method can be called within one of the exposed methods, but we can't call that method through the sandbox - it's private. Let me show you what sandbox can do:
 
 ```javascript
-var sandbox = Kindergarten.sandbox(child);
+const sandbox = Kindergarten.sandbox(child);
+// or `const sandbox = new Kindergarten.Sandbox(child);`
 sandbox.loadModule(childPerimeter);
 
 // child will watch television
@@ -105,13 +93,14 @@ Fist we have created a new sandbox and we gave it a reference to a child - in re
 
 ### npm
 
-```
+```shell
 npm install kindergarten
 ```
 
 ### Bower
 
-```
+```shell
+# TBD
 bower install kindergarten
 ```
 
@@ -124,59 +113,18 @@ Let's look on some classes available in Kindergarten in more detail. I really re
 Rules are used by a governess. Governess can learn many rules and they are specified in perimeter in most of the cases. Rules can be constructed programmatically as well and it is simple as that:
 
 ```javascript
-var Article = function () {};
-
-var rule = Kindergarten.Rule.create('can view', {
-  items: [Article]
-});
-
-// or
-
-var anotherRule = Kindergarten.Rule.create('can update', {
-  rule: function (item1, item2) {
-    return item1 === item2;
-  }
-});
-```
-
-Does it look similar? It should, because the definition of the rule is very similar to `govern` object of a perimeter! Actually that's how the governess learn the rules from the perimeter. Note: rules are not meant to be used as a standalone object, but they are rather used by governess internally. It's faster and safer to define multiple rules using perimeter. It is possible to create a rule using it's constructor as well, but I will not describe that here. Dive into the code if you are interested.
-
-OK. Now you have a `rule`, but what can you do with it? Actually not much..: `rule` only have one method `verify()` and some attributes. The interesting attributes are `isPositive`, `isCustom` and `isStrict`, so let me explain what they do:
-
-* `isPositive` 'can' rules are positive and 'cannot' rules are negative.
-* `isCustom` look at the example above the second rule is custom, because it's definition contains the custom `rule` callback.
-* `isStrict` negative rules are strict and custom rules are strict. This flag is used by governess internally. See below.
-
-Governess uses those flags to authorize child's actions. This authorization process has following steps:
-
-1. governess checks if she is guarded. If not (meaning the `ungarded` flag is set to `true`), then the child is allowed to do anything.
-2. governess checks if she has any rule that allows child to perform given action. This means that she goes through all the rules that have `isPositive` flag and calls the `verify()` method on them. If one of that calls returns `true` then she found one.
-3. governess checks if there is a strict rule that disallows child to perform given action. It's basically same process as above, but now governess is looking for a rule which `isStrict` and it's `verify()` method returns `false`.
-4. If governess didn't found any rule that allows child to perform desired action or she found a rule that strictly disallows that action, then it means that child is not authorized. In any other case child is authorized.
-
-#### "Why the hell is governess looking only for strict rules in the step #3?" asked a vigilant programmer..
-
-Let me show you an example:
-
-```javascript
 var user = {};
 var Like = function () {};
 
-var rule1 = Kindergarten.Rule.create('can create', {
-  items: [Comment]
-});
+var rule1 = Kindergarten.Rule.create('can create', [Comment]);
 
-var rule2 = Kindergarten.Rule.create('can create', {
-  items: [Like]
-});
+var rule2 = Kindergarten.Rule.create('can create', [Like]);
 
 var governess = new Kindergarten.HeadGoverness(user);
 governess.addRule(rule1, rule2);
 
 governess.guard('create', new Like()); // no problem!
 ```
-
-Both of the rules are positive and not strict. When `governess.guard('create', new Like());` is evaluated the `verify()` method of the `rule1` returns `false` if the rule would have been strict, then the child would never be able to **like** something :crying_cat:.
 
 ### Governess
 
@@ -185,12 +133,14 @@ Both of the rules are positive and not strict. When `governess.guard('create', n
 Governess is responsible for a child on a sandbox. Sandbox uses `HeadGoverness` by default, but you can replace her by your own governess or by one of the predefined governess: `GermanGoverness`, `StrictGoverness` or `EasyGoverness`.
 
 ```javascript
-var sandbox = Kindergarten.sandbox(currentUser);
+const sandbox = Kindergarten.sandbox(currentUser);
 
 // Sandbox will use GermanGoverness
 sandbox.governess = Kindergarten.GermanGoverness;
 ```
+
 Governess calls all exposed methods in sandbox through `governed()` method. By default it looks like this:
+
 
 ```javascript
 governed(callback, args = [], callingContext = null) {
@@ -205,14 +155,12 @@ governed(callback, args = [], callingContext = null) {
 German governess loves rules as every German :trollface:. She automatically guards all exposed methods. This means that she calls `guard()` and passes the name of the exposed method as a first argument and arguments passed to that exposed method accordingly. German governess can only be used within a sandbox.
 
 ```javascript
-var perimeter = new Kindergarten.Perimeter({
+const perimeter = new Kindergarten.Perimeter({
   purpose: 'articles',
 
   govern: {
-    'can update': {
-      rule(article) {
+    ['can update'](article) {
         return this._isAdminOrCreatorOf(article);
-      }
     }
   },
 
@@ -237,9 +185,9 @@ var perimeter = new Kindergarten.Perimeter({
 
 // ...
 
-var currentUser = { role: 'regularGuy' };
+const currentUser = { role: 'regularGuy' };
 
-var sandbox = Kindergarten.sandbox(currentUser);
+const sandbox = Kindergarten.sandbox(currentUser);
 
 sandbox.loadModule(perimeter);
 
@@ -256,20 +204,16 @@ German governess is really good if you wish to protect all the exposed methods t
 Strict governess is useful if you sometimes forget to protect your exposed methods by calling `guard()` in their body. Strict governess throws an `AccessDenied` error if user calls exposed method that does not contain call of `guard()`. **Careful!** The exposed method is executed and then it throws the `AccessDenied` error. Rollback is on your own!
 
 ```javascript
-var governess = new Kindergarten.StrictGoverness({});
+const governess = new Kindergarten.StrictGoverness({});
 
-governess.addRule(Kindergarten.Rule.create('can watch', {
-  rule: function () {
-    return true;
-  }
-}));
+governess.addRule(Kindergarten.Rule.create('can watch', () => true);
 
-governess.governed(function (tv) {
+governess.governed((tv) => {
   governess.guard('watch', tv);
   return 'hello';
 }); // all right
 
-governess.governed(function () {
+governess.governed(() => {
   // NO guard call here
   return 'hello';
 }); // throws Kindergarten.AccessDenied
@@ -280,20 +224,18 @@ governess.governed(function () {
 `EasyGoverness` allows child to do anything:
 
 ```javascript
-var perimeter = new Kindergarten.Perimeter({
+const perimeter = new Kindergarten.Perimeter({
   purpose: 'playing',
   govern: {
-    'cannot watch': {
-      rule: function () {
-        // child can't watch anything
-        return true;
-      }
+    ['cannot watch']() {
+      // child can't watch anything
+      return true;
     }
   },
   expose: [
     'watch'
   ],
-  watch: function (thing) {
+  watch(thing) {
     this.guard('watch', thing);
   }
 });
@@ -350,18 +292,14 @@ var TV = function () {};
 var perimeter1 = new Kindergarten.Perimeter({
   purpose: 'perimeter1',
   govern: {
-    'can watch': {
-      items: [TV]
-    }
+    'can watch': [TV]
   }
 });
 
 var perimeter2 = new Kindergarten.Perimeter({
   purpose: 'perimeter2',
   govern: {
-    'cannot watch': {
-      items: [TV]
-    }
+    'cannot watch': [TV]
   }
 });
 
@@ -383,9 +321,7 @@ var user = {};
 var perimeter1 = new Kindergarten.Perimeter({
   purpose: 'perimeter1',
   govern: {
-    'can watch': {
-      items: [TV]
-    }
+    'can watch': [TV]
   },
   governess: new Kindergarten.HeadGoverness(user)
 });
@@ -393,9 +329,7 @@ var perimeter1 = new Kindergarten.Perimeter({
 var perimeter2 = new Kindergarten.Perimeter({
   purpose: 'perimeter2',
   govern: {
-    'cannot watch': {
-      items: [TV]
-    }
+    'cannot watch': [TV]
   },
   governess: new Kindergarten.HeadGoverness(user)
 });

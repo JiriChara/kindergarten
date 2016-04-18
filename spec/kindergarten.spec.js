@@ -1,15 +1,15 @@
 const Kindergarten = require('../lib/kindergarten');
 
-import { Perimeter } from '../lib/kindergarten/perimeter';
-import { Sandbox } from '../lib/kindergarten/sandbox';
-import { HeadGoverness } from '../lib/kindergarten/governesses/head-governess';
-import { EasyGoverness } from '../lib/kindergarten/governesses/easy-governess';
-import { StrictGoverness } from '../lib/kindergarten/governesses/strict-governess';
-import { GermanGoverness } from '../lib/kindergarten/governesses/german-governess';
-import { Rule } from '../lib//kindergarten/rule';
-import { Purpose } from '../lib//kindergarten/purpose';
-import { Logger } from '../lib/kindergarten/logger';
-import { VERSION } from '../lib/kindergarten/version';
+import Perimeter from '../lib/kindergarten/perimeter';
+import Sandbox from '../lib/kindergarten/sandbox';
+import HeadGoverness from '../lib/kindergarten/governesses/head-governess';
+import EasyGoverness from '../lib/kindergarten/governesses/easy-governess';
+import StrictGoverness from '../lib/kindergarten/governesses/strict-governess';
+import GermanGoverness from '../lib/kindergarten/governesses/german-governess';
+import Rule from '../lib//kindergarten/rule';
+import Purpose from '../lib//kindergarten/purpose';
+import Logger from '../lib/kindergarten/logger';
+import VERSION from '../lib/kindergarten/version';
 import {
   AccessDenied,
   ArgumentError,
@@ -20,7 +20,7 @@ import {
   WrongRuleDefinition
 } from '../lib/kindergarten/errors';
 
-describe('Kindergarten', function () {
+describe('Kindergarten', () => {
   beforeEach(function () {
     this.Kindergarten = Kindergarten;
   });
@@ -75,7 +75,7 @@ describe('Kindergarten', function () {
     expect(this.Kindergarten.VERSION).toBeDefined();
   });
 
-  describe('exposed errors', function () {
+  describe('exposed errors', () => {
     it('exposes AccessDenied', function () {
       expect(this.Kindergarten.AccessDenied).toBe(AccessDenied);
       expect(this.Kindergarten.AccessDenied).toBeDefined();
@@ -112,7 +112,7 @@ describe('Kindergarten', function () {
     });
   });
 
-  describe('sandbox() method', function () {
+  describe('sandbox() method', () => {
     beforeEach(function () {
       this.child = {};
     });

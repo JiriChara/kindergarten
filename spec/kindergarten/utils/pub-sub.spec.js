@@ -1,6 +1,6 @@
-import { PubSub } from '../../../lib/kindergarten/utils/pub-sub';
+import PubSub from '../../../lib/kindergarten/utils/pub-sub';
 
-describe('PubSub', function () {
+describe('PubSub', () => {
   beforeEach(function () {
     this.PubSub = PubSub;
 
@@ -14,7 +14,7 @@ describe('PubSub', function () {
     this.subject = new this.Subject();
   });
 
-  describe('trigger', function () {
+  describe('trigger', () => {
     it('calls the trigger method of it\'s parent', function () {
       spyOn(this.PubSub.prototype, 'trigger');
 
@@ -39,7 +39,7 @@ describe('PubSub', function () {
     it('is proceed the callback synchronously', function () {
       let counter = 0;
 
-      this.subject.on('foo', function () {
+      this.subject.on('foo', () => {
         ++counter;
       });
 
@@ -49,19 +49,19 @@ describe('PubSub', function () {
     });
   });
 
-  describe('triggerAsync', function () {
-    beforeEach(function () {
+  describe('triggerAsync', () => {
+    beforeEach(() => {
       jasmine.clock().install();
     });
 
-    afterEach(function () {
+    afterEach(() => {
       jasmine.clock().uninstall();
     });
 
     it('is proceed the callback asynchronously', function () {
       let counter = 0;
 
-      this.subject.on('foo', function () {
+      this.subject.on('foo', () => {
         ++counter;
       });
 

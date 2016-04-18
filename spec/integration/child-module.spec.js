@@ -2,9 +2,9 @@ const Kindergarten = require('../../lib/kindergarten');
 
 import { _ } from 'lodash';
 
-import { FactoryGirl } from '../support/factory-girl';
+import FactoryGirl from '../support/factory-girl';
 
-describe('ChildModule integration spec', function () {
+describe('ChildModule integration spec', () => {
   beforeEach(function () {
     this.child = new FactoryGirl('child', 'watch', 'eat', 'sleep');
     this.Tv = new FactoryGirl('Tv');
@@ -20,16 +20,10 @@ describe('ChildModule integration spec', function () {
       'playing', // purpose
       {
         govern: {
-          'can watch': {
-            items: [this.Tv]
-          },
-          'cannot watch': {
-            items: [this.CableTv]
-          },
-          'can eat': {
-            rule: (candy) => {
-              return this.child.quotum.allows(candy);
-            }
+          'can watch': [this.Tv],
+          'cannot watch': [this.CableTv],
+          ['can eat'](candy) {
+            return this.child.quotum.allows(candy);
           }
         },
         expose: [

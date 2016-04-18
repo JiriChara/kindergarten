@@ -1,9 +1,9 @@
 import { _ } from 'lodash';
 
-import { FactoryGirl } from '../support/factory-girl';
-import { Sandbox } from '../../lib/kindergarten/sandbox';
+import FactoryGirl from '../support/factory-girl';
+import Sandbox from '../../lib/kindergarten/sandbox';
 
-describe('Sandbox', function () {
+describe('Sandbox', () => {
   beforeEach(function () {
     this.Sandbox = Sandbox;
     this.child = new FactoryGirl('child', 'watch', 'eat', 'sleep');
@@ -13,9 +13,7 @@ describe('Sandbox', function () {
     this.governess = new FactoryGirl('headGoverness', this.child);
     this.perimeter = new FactoryGirl('perimeter', 'foo', {
       govern: {
-        'can watch': {
-          items: [this.Television]
-        }
+        'can watch': [this.Television]
       },
 
       expose: [
@@ -32,9 +30,7 @@ describe('Sandbox', function () {
       purpose: 'foo1',
 
       govern: {
-        'can watch': {
-          items: [this.Television]
-        }
+        'can watch': [this.Television]
       },
 
       expose: [
@@ -50,9 +46,7 @@ describe('Sandbox', function () {
       purpose: 'foo2',
 
       govern: {
-        'can watch': {
-          items: [this.Television]
-        }
+        'can watch': [this.Television]
       },
 
       expose: [
@@ -67,7 +61,7 @@ describe('Sandbox', function () {
     this.sandbox = new this.Sandbox(this.child);
   });
 
-  describe('constructor', function () {
+  describe('constructor', () => {
     it('stores reference to child', function () {
       expect(this.sandbox.child).toBe(this.child);
       expect(this.sandbox._child).toBe(this.child);
@@ -88,7 +82,7 @@ describe('Sandbox', function () {
     });
   });
 
-  describe('child getter', function () {
+  describe('child getter', () => {
     it('returns _child', function () {
       expect(this.sandbox.child).toBe(this.sandbox._child);
     });
@@ -99,7 +93,7 @@ describe('Sandbox', function () {
     });
   });
 
-  describe('child setter', function () {
+  describe('child setter', () => {
     it('sets _child to given one', function () {
       const customChild = 'foo';
 
@@ -121,7 +115,7 @@ describe('Sandbox', function () {
     });
   });
 
-  describe('governess getter', function () {
+  describe('governess getter', () => {
     it('returns _governess', function () {
       this.sandbox._governess = this.governess;
       expect(this.sandbox.governess).toBe(this.governess);
@@ -133,7 +127,7 @@ describe('Sandbox', function () {
     });
   });
 
-  describe('governess setter', function () {
+  describe('governess setter', () => {
     it('sets _governess to given one', function () {
       this.sandbox.governess = this.governess;
       expect(this.sandbox.governess).toBe(this.governess);
@@ -154,7 +148,7 @@ describe('Sandbox', function () {
     });
   });
 
-  describe('loadPerimeter() method', function () {
+  describe('loadPerimeter() method', () => {
     it('throws an error if perimeter is not perimeter', function () {
       _.each([
         {}, [], 'foo', undefined, null
@@ -174,9 +168,9 @@ describe('Sandbox', function () {
     });
 
     it('adds perimeter into _perimeters array', function () {
-      expect(_.contains(this.sandbox._perimeters, this.perimeter)).toBe(false);
+      expect(_.includes(this.sandbox._perimeters, this.perimeter)).toBe(false);
       this.sandbox.loadPerimeter(this.perimeter);
-      expect(_.contains(this.sandbox._perimeters, this.perimeter)).toBe(true);
+      expect(_.includes(this.sandbox._perimeters, this.perimeter)).toBe(true);
     });
 
     it('sets the governess of perimeter if it does\'t have one', function () {
@@ -194,7 +188,7 @@ describe('Sandbox', function () {
     });
   });
 
-  describe('loadModule() method', function () {
+  describe('loadModule() method', () => {
     it('calls loadPerimeter() method', function () {
       spyOn(this.sandbox, 'loadPerimeter');
 
