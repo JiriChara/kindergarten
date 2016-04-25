@@ -1,7 +1,7 @@
 import { _ } from 'lodash';
 
 import FactoryGirl from '../../support/factory-girl.js';
-import AllowedMethodsService from '../../../lib/kindergarten/utils/allowed-methods-service';
+import AllowedMethodsService from '../../../src/kindergarten/utils/allowed-methods-service';
 
 describe('AllowedMethodsService', () => {
   beforeEach(function () {
@@ -14,8 +14,6 @@ describe('AllowedMethodsService', () => {
     this.MyDummy2.prototype.bar = function () {};
 
     this.MyDummy3 = class {
-      constructor() {
-      }
     };
 
     this.myDummy4 = {

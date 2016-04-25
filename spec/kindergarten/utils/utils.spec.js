@@ -3,7 +3,7 @@ import { _ } from 'lodash';
 import {
   isGoverness,
   isSandbox
-} from '../../../lib/kindergarten/utils/utils';
+} from '../../../src/kindergarten/utils/utils';
 
 import FactoryGirl from '../../support/factory-girl';
 

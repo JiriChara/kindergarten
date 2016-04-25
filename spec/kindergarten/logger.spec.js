@@ -1,4 +1,4 @@
-import Logger from '../../lib/kindergarten/logger';
+import Logger from '../../src/kindergarten/logger';
 
 describe('Logger', () => {
   beforeEach(function () {

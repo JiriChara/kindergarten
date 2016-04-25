@@ -1,4 +1,4 @@
-const Kindergarten = require('../../lib/kindergarten');
+const Kindergarten = require('../../src/kindergarten');
 
 import { _ } from 'lodash';
 

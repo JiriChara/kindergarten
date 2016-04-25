@@ -1,15 +1,15 @@
-const Kindergarten = require('../lib/kindergarten');
+const Kindergarten = require('../src/kindergarten');
 
-import Perimeter from '../lib/kindergarten/perimeter';
-import Sandbox from '../lib/kindergarten/sandbox';
-import HeadGoverness from '../lib/kindergarten/governesses/head-governess';
-import EasyGoverness from '../lib/kindergarten/governesses/easy-governess';
-import StrictGoverness from '../lib/kindergarten/governesses/strict-governess';
-import GermanGoverness from '../lib/kindergarten/governesses/german-governess';
-import Rule from '../lib//kindergarten/rule';
-import Purpose from '../lib//kindergarten/purpose';
-import Logger from '../lib/kindergarten/logger';
-import VERSION from '../lib/kindergarten/version';
+import Perimeter from '../src/kindergarten/perimeter';
+import Sandbox from '../src/kindergarten/sandbox';
+import HeadGoverness from '../src/kindergarten/governesses/head-governess';
+import EasyGoverness from '../src/kindergarten/governesses/easy-governess';
+import StrictGoverness from '../src/kindergarten/governesses/strict-governess';
+import GermanGoverness from '../src/kindergarten/governesses/german-governess';
+import Rule from '../src//kindergarten/rule';
+import Purpose from '../src//kindergarten/purpose';
+import Logger from '../src/kindergarten/logger';
+import VERSION from '../src/kindergarten/version';
 import {
   AccessDenied,
   ArgumentError,
@@ -18,7 +18,7 @@ import {
   NoSanboxError,
   RestrictedMethodError,
   WrongRuleDefinition
-} from '../lib/kindergarten/errors';
+} from '../src/kindergarten/errors';
 
 describe('Kindergarten', () => {
   beforeEach(function () {

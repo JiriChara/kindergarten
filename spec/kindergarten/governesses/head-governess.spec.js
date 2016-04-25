@@ -2,7 +2,7 @@ import FactoryGirl from '../../support/factory-girl';
 
 import {
   AccessDenied
-} from '../../../lib/kindergarten/errors';
+} from '../../../src/kindergarten/errors';
 
 describe('HeadGoverness', () => {
   beforeEach(function () {

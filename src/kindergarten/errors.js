@@ -1,19 +1,9 @@
-'use strict';
-
-exports.__esModule = true;
-exports.AccessDenied = AccessDenied;
-exports.ArgumentError = ArgumentError;
-exports.NoExposedMethodError = NoExposedMethodError;
-exports.NoPurposeError = NoPurposeError;
-exports.NoSanboxError = NoSanboxError;
-exports.RestrictedMethodError = RestrictedMethodError;
-exports.WrongRuleDefinition = WrongRuleDefinition;
 // List of possible errors sorted alphabetically
 
 /**
  * AccessDenied Error
  */
-function AccessDenied(message) {
+export function AccessDenied(message) {
   this.name = 'AccessDenied';
   this.message = message;
 }
@@ -22,7 +12,7 @@ AccessDenied.prototype = new Error();
 /**
  * ArgumentError Error
  */
-function ArgumentError(message) {
+export function ArgumentError(message) {
   this.name = 'ArgumentError';
   this.message = message;
 }
@@ -31,7 +21,7 @@ ArgumentError.prototype = new Error();
 /**
  * NoExposedMethod Error
  */
-function NoExposedMethodError(message) {
+export function NoExposedMethodError(message) {
   this.name = 'NoExposedMethodError';
   this.message = message;
 }
@@ -40,7 +30,7 @@ NoExposedMethodError.prototype = new Error();
 /**
  * NoPurposeError Error
  */
-function NoPurposeError(message) {
+export function NoPurposeError(message) {
   this.name = 'NoPurposeError';
   this.message = message || 'Perimeter must have a purpose.';
 }
@@ -49,7 +39,7 @@ NoPurposeError.prototype = new Error();
 /**
  * NoSanboxError Error
  */
-function NoSanboxError(message) {
+export function NoSanboxError(message) {
   this.name = 'NoSanboxError';
   this.message = message || 'Perimeter must be imported into a sandbox.';
 }
@@ -58,7 +48,7 @@ NoSanboxError.prototype = new Error();
 /**
  * RestrictedMethodError Error
  */
-function RestrictedMethodError(message) {
+export function RestrictedMethodError(message) {
   this.name = 'RestrictedMethodError';
   this.message = message;
 }
@@ -67,7 +57,7 @@ RestrictedMethodError.prototype = new Error();
 /**
  * WrongRuleDefinition Error
  */
-function WrongRuleDefinition(message) {
+export function WrongRuleDefinition(message) {
   this.name = 'WrongRuleDefinition';
   this.message = message;
 }

@@ -5,7 +5,7 @@ import {
   NoSanboxError,
   RestrictedMethodError,
   WrongRuleDefinition
-} from '../../lib/kindergarten/errors';
+} from '../../src/kindergarten/errors';
 
 describe('errors', () => {
   describe('AccessDenied', () => {

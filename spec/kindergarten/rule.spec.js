@@ -1,7 +1,7 @@
 import { _ } from 'lodash';
 
-import { Rule } from '../../lib/kindergarten/rule';
-import { WrongRuleDefinition } from '../../lib/kindergarten/errors';
+import { Rule } from '../../src/kindergarten/rule';
+import { WrongRuleDefinition } from '../../src/kindergarten/errors';
 
 xdescribe('Rule', () => {
   beforeEach(function () {

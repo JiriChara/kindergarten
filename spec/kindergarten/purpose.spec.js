@@ -1,6 +1,6 @@
 import { _ } from 'lodash';
 
-import Purpose from '../../lib/kindergarten/purpose';
+import Purpose from '../../src/kindergarten/purpose';
 import FactoryGirl from '../support/factory-girl';
 
 describe('Purpose', () => {
