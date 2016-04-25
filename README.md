@@ -6,7 +6,7 @@
 [![NPM Dowloads](https://img.shields.io/npm/dm/kindergarten.svg)](https://www.npmjs.com/package/kindergarten)
 [![NPM Version](https://img.shields.io/npm/v/kindergarten.svg)](https://www.npmjs.com/package/kindergarten)
 
-![Kindergarten](https://raw.github.com/JiriChara/kindergarten/master/images/kindergarten.png) v0.3.0
+![Kindergarten](https://raw.github.com/JiriChara/kindergarten/master/images/kindergarten.png) v0.3.2
 
 Kindergarten is here to help you to separate your authorization logic into modules. Those modules are called perimeters and they contains instructions & rules for it's governess and methods to be exposed to sandbox (I will tell you about the sandbox and the governess later in this README - don't worry). A very simple perimeter might look like this:
 

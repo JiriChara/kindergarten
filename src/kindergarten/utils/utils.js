@@ -1,7 +1,7 @@
 import isObject from 'lodash/isObject';
 
 import Sandbox from '../sandbox';
-import HeadGoverness from '../governesses/head-governess';
+import { HeadGoverness } from '../governesses';
 
 export const isGoverness = (obj) =>
   isObject(obj) && obj instanceof HeadGoverness;

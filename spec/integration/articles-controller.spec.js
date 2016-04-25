@@ -1,4 +1,4 @@
-const Kindergarten = require('../../src/kindergarten');
+import Kindergarten from '../../src/kindergarten';
 
 import FactoryGirl from '../support/factory-girl';
 

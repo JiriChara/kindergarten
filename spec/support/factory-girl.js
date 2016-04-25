@@ -5,10 +5,12 @@ import PubSub from '../../src/kindergarten/utils/pub-sub';
 import Perimeter from '../../src/kindergarten/perimeter';
 import Logger from '../../src/kindergarten/logger';
 import Sandbox from '../../src/kindergarten/sandbox';
-import HeadGoverness from '../../src/kindergarten/governesses/head-governess';
-import EasyGoverness from '../../src/kindergarten/governesses/easy-governess';
-import StrictGoverness from '../../src/kindergarten/governesses/strict-governess';
-import GermanGoverness from '../../src/kindergarten/governesses/german-governess';
+import {
+  HeadGoverness,
+  EasyGoverness,
+  StrictGoverness,
+  GermanGoverness
+} from '../../src/kindergarten/governesses';
 import Rule from '../../src/kindergarten/rule';
 import Type from '../../src/kindergarten/rule/type';
 import {

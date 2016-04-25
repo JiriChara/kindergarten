@@ -1,9 +1,11 @@
 import Perimeter from './kindergarten/perimeter';
 import Sandbox from './kindergarten/sandbox';
-import HeadGoverness from './kindergarten/governesses/head-governess';
-import EasyGoverness from './kindergarten/governesses/easy-governess';
-import StrictGoverness from './kindergarten/governesses/strict-governess';
-import GermanGoverness from './kindergarten/governesses/german-governess';
+import {
+  HeadGoverness,
+  EasyGoverness,
+  GermanGoverness,
+  StrictGoverness
+} from './kindergarten/governesses';
 import Rule from './kindergarten/rule';
 import Purpose from './kindergarten/purpose';
 import Logger from './kindergarten/logger';
