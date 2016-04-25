@@ -18,10 +18,6 @@ import {
   WrongRuleDefinition
 } from './kindergarten/errors';
 
-/**
- * The base namespace of the library.
- * It expose all publicly available classes.
- */
 const Kindergarten = {
   Perimeter,
   Sandbox,
@@ -34,7 +30,6 @@ const Kindergarten = {
   Logger,
   VERSION,
 
-  // expose all the possible errors so user can catch them
   AccessDenied,
   ArgumentError,
   NoExposedMethodError,
@@ -43,12 +38,30 @@ const Kindergarten = {
   RestrictedMethodError,
   WrongRuleDefinition,
 
-  /**
-   * Create and return new sandbox
-   */
   sandbox(child) {
     return new Kindergarten.Sandbox(child);
   }
 };
 
-module.exports = Kindergarten;
+export default Kindergarten;
+
+export {
+  Perimeter,
+  Sandbox,
+  HeadGoverness,
+  EasyGoverness,
+  StrictGoverness,
+  GermanGoverness,
+  Rule,
+  Purpose,
+  Logger,
+  VERSION,
+
+  AccessDenied,
+  ArgumentError,
+  NoExposedMethodError,
+  NoPurposeError,
+  NoSanboxError,
+  RestrictedMethodError,
+  WrongRuleDefinition
+};
