@@ -7,7 +7,7 @@
   "main": "lib/kindergarten.js",
   "scripts": {
     "clean": "rimraf lib dist coverage",
-    "dist": "mkdirp dist && browserify src/kindergarten.js -t [ babelify --presets [es2015] ] --standalone Kindergarten --outfile dist/kindergarten.js",
+    "dist": "mkdirp dist && browserify src/Kindergarten.js -t [ babelify --presets [es2015] ] --standalone Kindergarten --outfile dist/kindergarten.js",
     "build": "npm run clean && npm run dist && npm run uglify && npm run build:commonjs",
     "test": "npm run lint && npm run karma",
     "testAsync": "parallelshell 'npm run lint' 'npm run karma'",

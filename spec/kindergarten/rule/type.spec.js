@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import FactoryGirl from '../../support/factory-girl';
+import FactoryGirl from '../../support/FactoryGirl';
 
 describe('Type', () => {
   beforeEach(function () {

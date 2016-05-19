@@ -2,7 +2,7 @@ import {
   AccessDenied,
   ArgumentError,
   NoPurposeError,
-  NoSanboxError,
+  NoSandboxError,
   RestrictedMethodError,
   WrongRuleDefinition
 } from '../../src/kindergarten/errors';
@@ -77,26 +77,28 @@ describe('errors', () => {
     });
   });
 
-  describe('NoSanboxError', () => {
+  describe('NoSandboxError', () => {
     beforeEach(function () {
-      this.NoSanboxError = NoSanboxError;
+      this.NoSandboxError = NoSandboxError;
     });
 
-    it('has name NoSanboxError', function () {
-      expect((new this.NoSanboxError()).name).toEqual('NoSanboxError');
+    it('has name NoSandboxError', function () {
+      expect((new this.NoSandboxError()).name).toEqual('NoSandboxError');
     });
 
     it('accepts message', function () {
       const msg = 'foo';
-      expect((new this.NoSanboxError(msg)).message).toEqual(msg);
+      expect((new this.NoSandboxError(msg)).message).toEqual(msg);
     });
 
     it('iherits from Error', function () {
-      expect((new this.NoSanboxError()) instanceof Error).toBe(true);
+      expect((new this.NoSandboxError()) instanceof Error).toBe(true);
     });
 
     it('has default message', function () {
-      expect((new this.NoSanboxError()).message).toBe('Perimeter must be imported into a sandbox.');
+      expect((new this.NoSandboxError()).message).toBe(
+        'Perimeter must be imported into a sandbox.'
+      );
     });
   });
 

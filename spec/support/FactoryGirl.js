@@ -1,25 +1,25 @@
 import { _ } from 'lodash';
 
-import BaseObject from '../../src/kindergarten/base-object';
-import PubSub from '../../src/kindergarten/utils/pub-sub';
-import Perimeter from '../../src/kindergarten/perimeter';
-import Logger from '../../src/kindergarten/logger';
-import Sandbox from '../../src/kindergarten/sandbox';
+import BaseObject from '../../src/kindergarten/BaseObject';
+import PubSub from '../../src/kindergarten/utils/PubSub';
+import Perimeter from '../../src/kindergarten/Perimeter';
+import Logger from '../../src/kindergarten/Logger';
+import Sandbox from '../../src/kindergarten/Sandbox';
 import {
   HeadGoverness,
   EasyGoverness,
   StrictGoverness,
   GermanGoverness
 } from '../../src/kindergarten/governesses';
-import Rule from '../../src/kindergarten/rule';
-import Type from '../../src/kindergarten/rule/type';
+import Rule from '../../src/kindergarten/Rule';
+import Type from '../../src/kindergarten/rule/Type';
 import {
   AccessDenied,
   ArgumentError,
   NoExposedMethodsError,
   NoExposedMethodError,
   NoPurposeError,
-  NoSanboxError,
+  NoSandboxError,
   RestrictedMethodError,
   WrongRuleDefinition
 } from '../../src/kindergarten/errors';
@@ -136,8 +136,8 @@ export default class FactoryGirl {
     return NoPurposeError;
   }
 
-  NoSanboxErrorFactory() {
-    return NoSanboxError;
+  NoSandboxError() {
+    return NoSandboxError;
   }
 
   RestrictedMethodErrorFactory() {

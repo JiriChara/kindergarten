@@ -1,4 +1,4 @@
-import PubSub from '../../../src/kindergarten/utils/pub-sub';
+import PubSub from '../../../src/kindergarten/utils/PubSub';
 
 describe('PubSub', () => {
   beforeEach(function () {

@@ -1,4 +1,4 @@
-import FactoryGirl from '../support/factory-girl';
+import FactoryGirl from '../support/FactoryGirl';
 
 describe('BaseObject', () => {
   beforeEach(function () {

@@ -1,8 +1,10 @@
-import isObject from 'lodash/isObject';
-import each from 'lodash/each';
+import {
+  each,
+  isObject
+} from 'lodash';
 
-import Perimeter from '../perimeter';
-import HeadGoverness from './head-governess';
+import Perimeter from '../Perimeter';
+import HeadGoverness from './HeadGoverness';
 
 /**
  * German governess loves rules as every German. She automatically guards all
@@ -13,10 +15,6 @@ import HeadGoverness from './head-governess';
  * Note: this governess can only be used within the sandbox.
  */
 export default class GermanGoverness extends HeadGoverness {
-  constructor(...args) {
-    super(...args);
-  }
-
   governed(callback, args = [], callingContext = null) {
     const guardArgs = args;
 
@@ -32,7 +30,7 @@ export default class GermanGoverness extends HeadGoverness {
       guardArgs
     );
 
-    return HeadGoverness.prototype.governed.apply(this, arguments);
+    return HeadGoverness.prototype.governed.call(this, callback, args, callingContext);
   }
 
   _detectNameOfExposedMethod(source, method) {

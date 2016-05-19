@@ -13,7 +13,7 @@ const Logger = {
   },
 
   warn(msg) {
-    Logger._log(`WARN ${msg}`);
+    Logger._log(`[WARN] ${msg}`);
   }
 };
 

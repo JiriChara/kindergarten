@@ -1,7 +1,7 @@
 import { _ } from 'lodash';
 
-import FactoryGirl from '../support/factory-girl';
-import Sandbox from '../../src/kindergarten/sandbox';
+import FactoryGirl from '../support/FactoryGirl';
+import Sandbox from '../../src/kindergarten/Sandbox';
 
 describe('Sandbox', () => {
   beforeEach(function () {

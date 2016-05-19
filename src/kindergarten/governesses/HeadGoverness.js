@@ -1,11 +1,13 @@
-import isFunction from 'lodash/isFunction';
-import isEmpty from 'lodash/isEmpty';
-import some from 'lodash/some';
-import filter from 'lodash/filter';
-import each from 'lodash/each';
+import {
+  each,
+  filter,
+  isEmpty,
+  isFunction,
+  some
+} from 'lodash';
 
-import Rule from '../rule';
-import BaseObject from '../base-object';
+import Rule from '../Rule';
+import BaseObject from '../BaseObject';
 import {
   AccessDenied,
   ArgumentError

@@ -1,12 +1,16 @@
-import isFunction from 'lodash/isFunction';
-import isArray from 'lodash/isArray';
-import isRegExp from 'lodash/isRegExp';
-import isEmpty from 'lodash/isEmpty';
-import find from 'lodash/find';
+import {
+  find,
+  isArray,
+  isEmpty,
+  isFunction,
+  isRegExp,
+  memoize
+} from 'lodash';
 
-import BaseObject from '../base-object';
-import memoize from 'lodash/memoize';
-import { WrongRuleDefinition } from '../errors';
+import BaseObject from '../BaseObject';
+import {
+  WrongRuleDefinition
+} from '../errors';
 
 const TYPES = [
   [

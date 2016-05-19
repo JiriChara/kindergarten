@@ -1,5 +1,7 @@
-import HeadGoverness from './head-governess';
-import { AccessDenied } from '../errors';
+import HeadGoverness from './HeadGoverness';
+import {
+  AccessDenied
+} from '../errors';
 
 /**
  * A very strict governess! She forces all exposed methods from the sandbox or
@@ -20,8 +22,8 @@ export default class StrictGoverness extends HeadGoverness {
     this._governedCount = 0;
   }
 
-  governed() {
-    const returnVal = HeadGoverness.prototype.governed.apply(this, arguments);
+  governed(...args) {
+    const returnVal = HeadGoverness.prototype.governed.apply(this, args);
 
     if (++this._governedCount > this._guardCount && !this.unguarded) {
       throw new AccessDenied(
@@ -33,10 +35,10 @@ export default class StrictGoverness extends HeadGoverness {
     return returnVal;
   }
 
-  guard() {
+  guard(...args) {
     ++this._guardCount;
 
     // TODO: test for return value
-    return HeadGoverness.prototype.guard.apply(this, arguments);
+    return HeadGoverness.prototype.guard.apply(this, args);
   }
 }

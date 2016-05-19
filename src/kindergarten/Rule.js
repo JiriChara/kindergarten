@@ -1,9 +1,13 @@
-import upperFirst from 'lodash/upperFirst';
-import some from 'lodash/some';
+import {
+  some,
+  upperFirst
+} from 'lodash';
 
-import BaseObject from './base-object';
-import Type from './rule/type';
-import Definition from './rule/definition';
+import BaseObject from './BaseObject';
+import {
+  Definition,
+  Type
+} from './rule';
 
 /**
  * The definition of Rule class.

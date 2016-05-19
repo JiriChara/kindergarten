@@ -1,17 +1,18 @@
-import isString from 'lodash/isString';
+import extend from 'lodash/extend';
 import isArray from 'lodash/isArray';
 import isObject from 'lodash/isObject';
-import extend from 'lodash/extend';
+import isString from 'lodash/isString';
 
-import BaseObject from './base-object';
-import AllowedMethodsService from './utils/allowed-methods-service';
+import AllowedMethodsService from './utils/AllowedMethodsService';
+import BaseObject from './BaseObject';
+import HeadGoverness from './governesses/HeadGoverness';
 import {
-  isSandbox,
-  isGoverness
-} from './utils/utils';
-import HeadGoverness from './governesses/head-governess';
+  isGoverness,
+  isSandbox
+} from './utils';
 import {
-  NoPurposeError, NoSanboxError
+  NoPurposeError,
+  NoSandboxError
 } from './errors';
 
 const allowedMethodsService = new AllowedMethodsService({});
@@ -98,7 +99,7 @@ export default class Perimeter extends BaseObject {
 
   set sandbox(value) {
     if (!isSandbox(value)) {
-      throw new NoSanboxError();
+      throw new NoSandboxError();
     }
 
     this._sandbox = value;

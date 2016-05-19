@@ -1,7 +1,10 @@
-import isString from 'lodash/isString';
-import includes from 'lodash/includes';
+import {
+  includes,
+  isString,
+  keys
+} from 'lodash';
 
-const METHOD_REGEX = /^[a-z_$][a-zA-Z0-9_$]*$/;
+const METHOD_NAME_REGEX = /^[a-z_$][a-zA-Z0-9_$]*$/;
 
 /**
  * Definition of AllowedMethodsService class.
@@ -14,8 +17,6 @@ export default class AllowedMethodsService {
   constructor(dummyObj = {}, isStrict = true) {
     this.dummyObj = dummyObj || {};
     this.isStrict = isStrict;
-
-    // TODO: add spec
     this._initRestricted = this._restrictedMethods();
   }
 
@@ -24,26 +25,21 @@ export default class AllowedMethodsService {
    */
   isRestricted(methodName) {
     return !isString(methodName) ||
-      !METHOD_REGEX.test(methodName) ||
-      includes((this.isStrict ?
+      !METHOD_NAME_REGEX.test(methodName) ||
+      includes((
+        this.isStrict ?
         this._restrictedMethods() :
-        this._initRestricted), methodName) ||
+        this._initRestricted), methodName
+      ) ||
       includes(this._customUnsafeList(), methodName) ||
       includes(this._reservedWords(), methodName);
   }
 
   /**
-   * Return list of properties available for the current object
+   * Return list of all propertis defined on given object
    */
   _restrictedMethods() {
-    const restricted = [];
-
-    /* eslint guard-for-in: 0 */
-    for (const prop in this.dummyObj) {
-      restricted.push(prop);
-    }
-
-    return restricted;
+    return keys(this.dummyObj);
   }
 
   /**
@@ -63,8 +59,11 @@ export default class AllowedMethodsService {
     ];
   }
 
+  /**
+   * List of other restricted words
+   */
   _customUnsafeList() {
-    return [ // TODO: add more?
+    return [
       'constructor', 'property', '__proto__'
     ];
   }

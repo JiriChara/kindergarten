@@ -1,8 +1,8 @@
-import Kindergarten from '../../src/kindergarten';
+import Kindergarten from '../../src/Kindergarten';
 
 import { _ } from 'lodash';
 
-import FactoryGirl from '../support/factory-girl';
+import FactoryGirl from '../support/FactoryGirl';
 
 describe('ChildModule integration spec', () => {
   beforeEach(function () {

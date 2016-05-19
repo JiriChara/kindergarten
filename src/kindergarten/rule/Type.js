@@ -1,8 +1,10 @@
-import isArray from 'lodash/isArray';
-import isString from 'lodash/isString';
+import {
+  isArray,
+  isString
+} from 'lodash';
 
-import BaseObject from '../base-object';
-import AllowedMethodsService from '../utils/allowed-methods-service';
+import BaseObject from '../BaseObject';
+import AllowedMethodsService from '../utils/AllowedMethodsService';
 import {
   WrongRuleDefinition
 } from '../errors';
@@ -19,7 +21,7 @@ export default class Type extends BaseObject {
 
     // Extract type of the rule.
     // e.g. "cannot watch" => "watch"
-    this._type = (() => isArray(match) ? match[2] : undefined)();
+    this._type = (() => (isArray(match) ? match[2] : undefined))();
 
     this._str = str;
 
@@ -39,8 +41,7 @@ export default class Type extends BaseObject {
       allowedMethodsService.isRestricted(type)
     ) {
       throw new WrongRuleDefinition(
-        `Cannot create a rule ${this._str}. ` +
-        `The type of the rule cannot be parsed.`
+        `Cannot create a rule ${this._str}. The type of the rule cannot be parsed.`
       );
     }
 

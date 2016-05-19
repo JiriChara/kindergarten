@@ -1,7 +1,7 @@
 import { _ } from 'lodash';
 
-import Purpose from '../../src/kindergarten/purpose';
-import FactoryGirl from '../support/factory-girl';
+import Purpose from '../../src/kindergarten/Purpose';
+import FactoryGirl from '../support/FactoryGirl';
 
 describe('Purpose', () => {
   beforeEach(function () {
@@ -31,15 +31,15 @@ describe('Purpose', () => {
     });
   });
 
-  describe('_addPerimeter() method', () => {
+  describe('_loadPerimeter() method', () => {
     it('throws an error when perimeter is no a perimeter', function () {
       const nonPerimeter = new FactoryGirl('fake');
 
       const noPerimeterArg = () => {
-        this.purpose._addPerimeter(nonPerimeter);
+        this.purpose._loadPerimeter(nonPerimeter);
       };
 
-      expect(noPerimeterArg).toThrowError('Cannot add perimeter. Is it a perimeter?');
+      expect(noPerimeterArg).toThrowError('Cannot load perimeter. Is it an instance of perimeter?');
 
       try {
         noPerimeterArg();
@@ -53,7 +53,7 @@ describe('Purpose', () => {
         '1', '^^', 'constructor', 'class'
       ], (restricted) => {
         const restrictedLambda = () => {
-          this.purpose._addPerimeter(
+          this.purpose._loadPerimeter(
             new this.Perimeter(
               this.purposeName,
               {
@@ -64,7 +64,7 @@ describe('Purpose', () => {
         };
 
         expect(restrictedLambda).toThrowError(
-          `Method name ${restricted} is restricted.`
+          `Cannot create a method ${restricted}. It is restricted.`
         );
 
         try {
@@ -87,7 +87,7 @@ describe('Purpose', () => {
 
       perimeter.foo = _.noop;
 
-      this.purpose._addPerimeter(perimeter);
+      this.purpose._loadPerimeter(perimeter);
 
       expect(this.Logger.warn).toHaveBeenCalledWith(
         `Overriding already sandboxed method ${this.purpose._name}.foo.`
@@ -120,7 +120,7 @@ describe('Purpose', () => {
         }
       });
 
-      this.purpose._addPerimeter(perimeter);
+      this.purpose._loadPerimeter(perimeter);
 
       expect(this.purpose.foo()).toEqual(
         `foo ${childName}`
@@ -141,11 +141,11 @@ describe('Purpose', () => {
         }
       );
 
-      const assumption = () => { this.purpose._addPerimeter(perimeter); };
+      const assumption = () => { this.purpose._loadPerimeter(perimeter); };
 
       expect(assumption).toThrowError(
         `The exposed method ${nonExistingMethodName}` +
-        ` is not defined on perimeter ${this.purposeName}`
+        ` is not defined on perimeter ${this.purposeName}.`
       );
 
       try {

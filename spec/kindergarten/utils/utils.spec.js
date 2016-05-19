@@ -3,9 +3,9 @@ import { _ } from 'lodash';
 import {
   isGoverness,
   isSandbox
-} from '../../../src/kindergarten/utils/utils';
+} from '../../../src/kindergarten/utils';
 
-import FactoryGirl from '../../support/factory-girl';
+import FactoryGirl from '../../support/FactoryGirl';
 
 describe('utils', () => {
   describe('isGoverness', () => {

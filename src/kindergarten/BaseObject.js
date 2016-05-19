@@ -1,4 +1,4 @@
-import PubSub from './utils/pub-sub';
+import PubSub from './utils/PubSub';
 
 export default class BaseObject extends PubSub {
 }

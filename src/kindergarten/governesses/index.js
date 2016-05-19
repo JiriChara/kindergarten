@@ -1,7 +1,7 @@
-import EasyGoverness from './easy-governess';
-import GermanGoverness from './german-governess';
-import HeadGoverness from './head-governess';
-import StrictGoverness from './strict-governess';
+import EasyGoverness from './EasyGoverness';
+import GermanGoverness from './GermanGoverness';
+import HeadGoverness from './HeadGoverness';
+import StrictGoverness from './StrictGoverness';
 
 export {
   EasyGoverness,

@@ -1,22 +1,24 @@
-import Kindergarten from '../src/kindergarten.js';
-import Perimeter from '../src/kindergarten/perimeter';
-import Sandbox from '../src/kindergarten/sandbox';
+import Kindergarten from '../src/Kindergarten';
+import Logger from '../src/kindergarten/Logger';
+import Perimeter from '../src/kindergarten/Perimeter';
+import Purpose from '../src//kindergarten/Purpose';
+import Sandbox from '../src/kindergarten/Sandbox';
+import Rule from '../src//kindergarten/Rule';
+import VERSION from '../src/kindergarten/VERSION';
+
 import {
   HeadGoverness,
   EasyGoverness,
   StrictGoverness,
   GermanGoverness
 } from '../src/kindergarten/governesses';
-import Rule from '../src//kindergarten/rule';
-import Purpose from '../src//kindergarten/purpose';
-import Logger from '../src/kindergarten/logger';
-import VERSION from '../src/kindergarten/version';
+
 import {
   AccessDenied,
   ArgumentError,
   NoExposedMethodError,
   NoPurposeError,
-  NoSanboxError,
+  NoSandboxError,
   RestrictedMethodError,
   WrongRuleDefinition
 } from '../src/kindergarten/errors';
@@ -97,9 +99,9 @@ describe('Kindergarten', () => {
       expect(this.Kindergarten.NoPurposeError).toBeDefined();
     });
 
-    it('exposes NoSanboxError', function () {
-      expect(this.Kindergarten.NoSanboxError).toBe(NoSanboxError);
-      expect(this.Kindergarten.NoSanboxError).toBeDefined();
+    it('exposes NoSandboxError', function () {
+      expect(this.Kindergarten.NoSandboxError).toBe(NoSandboxError);
+      expect(this.Kindergarten.NoSandboxError).toBeDefined();
     });
 
     it('exposes RestrictedMethodError', function () {

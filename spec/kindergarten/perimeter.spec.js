@@ -1,7 +1,7 @@
 import { _ } from 'lodash';
 
-import FactoryGirl from '../support/factory-girl';
-import Perimeter from '../../src/kindergarten/perimeter';
+import FactoryGirl from '../support/FactoryGirl';
+import Perimeter from '../../src/kindergarten/Perimeter';
 import {
   NoPurposeError
 } from '../../src/kindergarten/errors';

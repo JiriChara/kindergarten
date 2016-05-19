@@ -1,6 +1,6 @@
-import Kindergarten from '../../src/kindergarten';
+import Kindergarten from '../../src/Kindergarten';
 
-import FactoryGirl from '../support/factory-girl';
+import FactoryGirl from '../support/FactoryGirl';
 
 describe('Articles controller integration spec', () => {
   beforeEach(function () {

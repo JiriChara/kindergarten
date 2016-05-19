@@ -1,7 +1,7 @@
 import { _ } from 'lodash';
 
-import FactoryGirl from '../../support/factory-girl.js';
-import AllowedMethodsService from '../../../src/kindergarten/utils/allowed-methods-service';
+import FactoryGirl from '../../support/FactoryGirl';
+import AllowedMethodsService from '../../../src/kindergarten/utils/AllowedMethodsService';
 
 describe('AllowedMethodsService', () => {
   beforeEach(function () {
@@ -68,7 +68,7 @@ describe('AllowedMethodsService', () => {
   describe('_restrictedMethods', () => {
     it('returns array of properties and methods of the object', function () {
       expect(this.allowedMethodsService1._restrictedMethods()).toEqual(['foo', 'bar']);
-      expect(this.allowedMethodsService2._restrictedMethods()).toEqual(['foo', 'bar']);
+      expect(this.allowedMethodsService2._restrictedMethods()).toEqual(['foo']);
       expect(this.allowedMethodsService3._restrictedMethods()).toEqual([]);
       expect(this.allowedMethodsService4._restrictedMethods()).toEqual([]);
       expect(this.allowedMethodsService5._restrictedMethods()).toEqual(['foo', 'bar']);

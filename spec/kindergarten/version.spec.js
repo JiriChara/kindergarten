@@ -1,6 +1,6 @@
 import pg from '../../package';
 
-import VERSION from '../../src/kindergarten/version';
+import VERSION from '../../src/kindergarten/VERSION';
 
 describe('VERSION', () => {
   it('should have correct version number format', () => {

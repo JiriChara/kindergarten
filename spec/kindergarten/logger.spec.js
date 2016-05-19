@@ -1,4 +1,4 @@
-import Logger from '../../src/kindergarten/logger';
+import Logger from '../../src/kindergarten/Logger';
 
 describe('Logger', () => {
   beforeEach(function () {
@@ -62,7 +62,7 @@ describe('Logger', () => {
 
       Logger.warn(msg);
 
-      expect(Logger._log).toHaveBeenCalledWith(`WARN ${msg}`);
+      expect(Logger._log).toHaveBeenCalledWith(`[WARN] ${msg}`);
     });
   });
 });

@@ -1,17 +1,19 @@
-import isString from 'lodash/isString';
-import isObject from 'lodash/isObject';
-import isUndefined from 'lodash/isUndefined';
-import each from 'lodash/each';
-import find from 'lodash/find';
+import {
+  each,
+  find,
+  isObject,
+  isString,
+  isUndefined
+} from 'lodash';
 
-import HeadGoverness from './governesses/head-governess';
-import Perimeter from './perimeter';
-import Purpose from './purpose';
-import BaseObject from './base-object';
-import AllowedMethodsService from './utils/allowed-methods-service';
+import HeadGoverness from './governesses/HeadGoverness';
+import Perimeter from './Perimeter';
+import Purpose from './Purpose';
+import BaseObject from './BaseObject';
+import AllowedMethodsService from './utils/AllowedMethodsService';
 import {
   isGoverness
-} from './utils/utils';
+} from './utils';
 import {
   ArgumentError,
   NoPurposeError,
@@ -37,7 +39,7 @@ export default class Sandbox extends BaseObject {
 
     this._perimeters = [];
 
-    this.trigger('created', arguments);
+    this.trigger('created', this);
   }
 
   /**
@@ -161,7 +163,7 @@ export default class Sandbox extends BaseObject {
     }
 
     this[name] = this[name] || new Purpose(name, this);
-    this[name]._addPerimeter(perimeter);
+    this[name]._loadPerimeter(perimeter);
   }
 
   /**

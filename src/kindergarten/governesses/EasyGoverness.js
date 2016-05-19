@@ -1,4 +1,4 @@
-import HeadGoverness from './head-governess';
+import HeadGoverness from './HeadGoverness';
 
 /**
  * Very easy governess who lets everything happen unguarded.
