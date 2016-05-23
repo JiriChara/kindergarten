@@ -65,22 +65,6 @@ describe('Perimeter', () => {
         }
       });
     });
-
-    it('sets _govern to govern', function () {
-      expect(this.myPerimeter._govern).toBe(this.options.govern);
-    });
-
-    it('defaults _govern to {}', function () {
-      expect(this.myStupidPerimeter._govern).toEqual({});
-    });
-
-    it('sets _expose to expose', function () {
-      expect(this.myPerimeter._expose).toBe(this.options.expose);
-    });
-
-    it('defaults _expose to []', function () {
-      expect(this.myStupidPerimeter._expose).toEqual([]);
-    });
   });
 
   describe('purpose getter', () => {
@@ -137,77 +121,10 @@ describe('Perimeter', () => {
     });
   });
 
-  describe('govern getter', () => {
-    it('returns _govern', function () {
-      expect(this.myPerimeter.govern).toEqual(this.myPerimeter._govern);
-    });
-
-    it('returns {} if govern is not an object', function () {
-      this.myPerimeter._govern = 'x';
-      expect(this.myPerimeter.govern).toEqual({});
-    });
-  });
-
-  describe('govern setter', () => {
-    it('sets _govern to given value', function () {
-      const obj = {};
-      this.myPerimeter.govern = obj;
-      expect(this.myPerimeter._govern).toBe(obj);
-    });
-
-    it('returns the given value', function () {
-      const obj = {};
-      expect(this.myPerimeter.govern = obj).toBe(obj);
-    });
-
-    it('sets _govern to {} if not object given', function () {
-      const obj = 'x';
-      this.myPerimeter.govern = obj;
-      expect(this.myPerimeter._govern).toEqual({});
-    });
-  });
-
-  describe('expose getter', () => {
-    it('returns value of _expose', function () {
-      const expose = ['foo', 'bar'];
-      this.myPerimeter._expose = expose;
-      expect(this.myPerimeter.expose).toBe(expose);
-    });
-
-    it('returns [] by default', function () {
-      this.myPerimeter._expose = undefined;
-      expect(this.myPerimeter.expose).toEqual([]);
-    });
-  });
-
-  describe('expose setter', () => {
-    it('sets _expose to given value', function () {
-      const expose = ['foo', 'bar'];
-      this.myPerimeter.expose = expose;
-      expect(this.myPerimeter._expose).toBe(expose);
-    });
-
-    it('sets _expose to [] by default', function () {
-      _.each(undefined, 'not array', {}, (notAllowed) => {
-        this.myPerimeter.expose = notAllowed;
-        expect(this.myPerimeter._expose).toEqual([]);
-      });
-    });
-
-    it('returns the given value', function () {
-      const expose = ['foo', 'bar'];
-      expect(this.myPerimeter.expose = expose).toEqual(expose);
-    });
-  });
-
   describe('sandbox getter', () => {
     it('returns value of _sandbox', function () {
       this.myPerimeter._sandbox = this.sandbox;
       expect(this.myPerimeter.sandbox).toBe(this.myPerimeter._sandbox);
-    });
-
-    it('returns null by default', function () {
-      expect(this.myPerimeter.sandbox).toBeNull();
     });
   });
 
@@ -257,37 +174,6 @@ describe('Perimeter', () => {
 
       this.myPerimeter.governess = {};
       expect(this.myPerimeter._governess).toBeNull();
-    });
-  });
-
-  describe('child getter', () => {
-    it('returns _child', function () {
-      const child = {};
-      this.myPerimeter._child = child;
-      expect(this.myPerimeter.child).toBe(child);
-    });
-
-    it('returns null by default', function () {
-      this.myPerimeter._child = undefined;
-      expect(this.myPerimeter.child).toBe(null);
-    });
-  });
-
-  describe('child setter', () => {
-    it('set _child to given child', function () {
-      const child = {};
-      this.myPerimeter.child = child;
-      expect(this.myPerimeter._child).toBe(child);
-    });
-
-    it('returns the given value', function () {
-      const child = {};
-      expect(this.myPerimeter.child = child).toBe(child);
-    });
-
-    it('sets child to null by default', function () {
-      this.myPerimeter.child = undefined;
-      expect(this.myPerimeter._child).toBeNull();
     });
   });
 });

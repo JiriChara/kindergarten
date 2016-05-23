@@ -1,7 +1,7 @@
 import extend from 'lodash/extend';
-import isArray from 'lodash/isArray';
 import isObject from 'lodash/isObject';
 import isString from 'lodash/isString';
+import omit from 'lodash/omit';
 
 import AllowedMethodsService from './utils/AllowedMethodsService';
 import BaseObject from './BaseObject';
@@ -21,46 +21,69 @@ const allowedMethodsService = new AllowedMethodsService({});
  * A Perimeter is used to define the places where child can play.
  */
 export default class Perimeter extends BaseObject {
+  /**
+   * Create new perimeter
+   */
   constructor(purpose, opts = {}) {
     super();
 
-    // TODO: added spec for it
     if (isObject(purpose) && isString(purpose.purpose)) {
       opts = purpose;
       this.purpose = purpose.purpose;
     }
 
     this.purpose = this.purpose || purpose;
-    this.govern = opts.govern;
-    this.expose = opts.expose;
+    this.govern = opts.govern || {};
+    this.expose = opts.expose || [];
+    this.governess = opts.governess;
 
+    // Perimeter doesn't require governess
     if (isGoverness(this.governess)) {
       this.governess.learnRules(this, this.govern);
     }
 
-    extend(this, opts);
+    extend(this, omit(opts, ['purpose', 'govern', 'expose', 'governess']));
   }
 
+  /**
+   * Forward guard call to governess.
+   */
   guard(...args) {
     return this.governess.guard.call(this.governess, ...args);
   }
 
+  /**
+   * Forward governed call to governess.
+   */
   governed(...args) {
     return this.governess.governed.call(this.governess, ...args);
   }
 
-  isAllowed(...args) { // TODO: add spec
+  /**
+   * Forward isAllowed call to governess.
+   */
+  isAllowed(...args) {
     return this.governess.isAllowed.call(this.governess, ...args);
   }
 
-  isNotAllowed(...args) { // TODO: add spec
+  /**
+   * Forward isNotAllowed call to governess.
+   */
+  isNotAllowed(...args) {
     return this.governess.isNotAllowed.call(this.governess, ...args);
   }
 
+  /**
+   * The getter of the purpose.
+   */
   get purpose() {
     return this._purpose;
   }
 
+  /**
+   * The setter of the purpose. Make sure that name of the purpose is not
+   * restricted.
+   */
   set purpose(value) {
     if (!isString(value) || allowedMethodsService.isRestricted(value)) {
       throw new NoPurposeError();
@@ -71,32 +94,17 @@ export default class Perimeter extends BaseObject {
     return value;
   }
 
-  get govern() {
-    return isObject(this._govern) ? this._govern : {};
-  }
-
-  set govern(value) {
-    this._govern = isObject(value) ? value : {};
-
-    return value;
-  }
-
-  get expose() {
-    return isArray(this._expose) ? this._expose : [];
-  }
-
-  set expose(value) {
-    this._expose = isArray(value) ? value : [];
-
-    return value;
-  }
-
+  /**
+   * The getter of the sandbox.
+   */
   get sandbox() {
-    return isSandbox(this._sandbox) ?
-      this._sandbox :
-      null;
+    return this._sandbox;
   }
 
+  /**
+   * The setter of the sandbox.
+   * Make sure that given sandbox is an instance of Sandbox class.
+   */
   set sandbox(value) {
     if (!isSandbox(value)) {
       throw new NoSandboxError();
@@ -108,19 +116,26 @@ export default class Perimeter extends BaseObject {
     return value;
   }
 
+  /**
+   * The getter of the governess.
+   */
   get governess() {
     return isGoverness(this._governess) ?
-      this._governess : (() => isSandbox(this.sandbox) ?
-          this.sandbox.governess : null
-      )();
+      this._governess : (() => (
+        isSandbox(this.sandbox) ? this.sandbox.governess : null
+      ))();
   }
 
+  /**
+   * The setter of the governess.
+   *
+   */
   set governess(value) {
     // if governess is null perimeter will use the governess of it's sandbox
-    this._governess = (isObject(value) && value instanceof HeadGoverness) ?
-      value : (() =>
+    this._governess = (isGoverness(value)) ?
+      value : (() => (
         isSandbox(this.sandbox) ? this.sandbox.governess : null
-      )();
+    ))();
 
     // Make sure governess know all the rules
     if (
@@ -130,13 +145,5 @@ export default class Perimeter extends BaseObject {
     }
 
     return value;
-  }
-
-  get child() {
-    return this._child || null;
-  }
-
-  set child(child) {
-    this._child = (child || null);
   }
 }
