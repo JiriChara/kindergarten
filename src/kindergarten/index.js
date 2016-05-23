@@ -7,8 +7,10 @@ import Sandbox from './Sandbox';
 import VERSION from './VERSION';
 
 import {
-  isSandbox,
   isGoverness,
+  isPerimeter,
+  isPurpose,
+  isSandbox,
   PubSub
 } from './utils';
 
@@ -23,6 +25,7 @@ import {
   AccessDenied,
   ArgumentError,
   NoExposedMethodError,
+  NoGovernessError,
   NoPurposeError,
   NoSandboxError,
   RestrictedMethodError,
@@ -37,9 +40,13 @@ export {
   GermanGoverness,
   HeadGoverness,
   isGoverness,
+  isPerimeter,
+  isPurpose,
+  isSandbox,
   isSandbox,
   Logger,
   NoExposedMethodError,
+  NoGovernessError,
   NoPurposeError,
   NoSandboxError,
   Perimeter,

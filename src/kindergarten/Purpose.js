@@ -47,6 +47,8 @@ export default class Purpose extends BaseObject {
 
   /**
    * Load perimeter & copy all exposed method into the purpose.
+   * This method is used internally by Sandbox and it is not recommended to use
+   * it externally.
    */
   _loadPerimeter(perimeter) {
     if (!isPerimeter(perimeter)) {

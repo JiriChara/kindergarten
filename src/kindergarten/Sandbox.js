@@ -1,107 +1,68 @@
 import {
   each,
   find,
-  isObject,
-  isString,
-  isUndefined
+  some
 } from 'lodash';
 
 import HeadGoverness from './governesses/HeadGoverness';
-import Perimeter from './Perimeter';
 import Purpose from './Purpose';
 import BaseObject from './BaseObject';
 import AllowedMethodsService from './utils/AllowedMethodsService';
 import {
-  isGoverness
+  isGoverness,
+  isPerimeter,
+  isPurpose
 } from './utils';
 import {
   ArgumentError,
-  NoPurposeError,
+  NoGovernessError,
   RestrictedMethodError
 } from './errors';
 
 /**
  * The definition of Sandbox class.
- * The sandbox can load multiple perimeters and define a kind of container,
- * where child can play governed by a governess. Sandbox is always under sharp
- * eye of a governess.
+ * The sandbox is place where children can play governed by a govenress.
  */
 export default class Sandbox extends BaseObject {
   /**
    * Create a new empty sandbox.
    */
-  constructor(child) {
+  constructor(child = null, opts = {}) {
     super(); // init publish/subscribe
 
     this.child = child;
 
-    this.governess = new HeadGoverness(child);
+    // Sandbox is governed by a HeadGoverness by default
+    this.governess = opts.governess || new HeadGoverness(child);
 
-    this._perimeters = [];
+    this._perimeters = opts.perimeters || [];
 
-    this.trigger('created', this);
+    this.trigger('initialize', this);
   }
 
   /**
-   * The getter of a child.
-   * Return null if sandbox does not reference any child.
-   */
-  get child() {
-    const child = this._child;
-
-    return isUndefined(child) ?
-      null : child;
-  }
-
-  /**
-   * The setter of a child.
-   * Store null instead of undefined.
-   */
-  set child(value) {
-    this._child = isUndefined(value) ?
-      null : value;
-
-    return value;
-  }
-
-  /**
-   * The getter of a governess.
-   * Sandbox MUST always reference a governess. If no governess is set, use
-   * HeadGoverness.
-   * Make sure new governess learn all the rules.
+   * The getter of the governess.
    */
   get governess() {
-    return isGoverness(this._governess) ?
-      this._governess : (() => {
-        // New governess must know all the rules (if any)
-        this._learnRules();
-
-        return new HeadGoverness(this.child);
-      })();
+    return this._governess;
   }
 
   /**
    * The setter of the governess.
-   * Make sure new governess learn all the rules.
+   * Make sure new governess learn all the rules when governess is set.
    */
   set governess(value) {
+    if (!isGoverness(value)) {
+      throw new NoGovernessError();
+    }
+
     // if governess is null perimeter will use the governess of it's sandbox
-    this._governess = isGoverness(value) ?
-      value : new HeadGoverness(this.child);
+    this._governess = value;
 
     // New governess must know all the rules (if any)
     this._learnRules();
 
     return value;
-  }
-
-  /**
-   * Make sure governess know all the rules from the loaded perimeters.
-   */
-  _learnRules() {
-    each(this._perimeters || [], (perimeter) => {
-      this.governess.learnRules(perimeter);
-    });
   }
 
   /**
@@ -113,22 +74,17 @@ export default class Sandbox extends BaseObject {
 
     each(perimeters, (perimeter) => {
       // Sandbox only accepts perimeters
-      if (!isObject(perimeter) || !(perimeter instanceof Perimeter)) {
+      if (!isPerimeter(perimeter)) {
         throw new ArgumentError(
           'Module must be instance of Kindergarten.Perimeter.'
         );
       }
 
-      // Skip if sandbox already contains the perimeter
+      // Skip if sandbox already have the perimeter
       if (this.hasPerimeter(perimeter)) return;
 
-      ++counter;
-
       // If perimeter has a governess, then she has to learn the rules as well
-      if (
-        isObject(perimeter.governess) &&
-        (perimeter.governess instanceof HeadGoverness)
-      ) {
+      if (isGoverness(perimeter.governess)) {
         perimeter.governess.learnRules(perimeter, perimeter.govern);
       }
 
@@ -139,7 +95,12 @@ export default class Sandbox extends BaseObject {
 
       this._perimeters.push(perimeter);
 
+      // Make sure the purpose is available on Sandbox
       this._extendPurpose(perimeter);
+
+      ++counter;
+
+      this.trigger('load-perimeter', this, perimeter);
     });
 
     return counter;
@@ -152,48 +113,64 @@ export default class Sandbox extends BaseObject {
     return this.loadPerimeter(...args);
   }
 
-  _extendPurpose(perimeter) {
-    const name = perimeter.purpose;
-    const allowedMethodsService = new AllowedMethodsService(this);
-
-    if (!isString(name)) throw new NoPurposeError();
-
-    if (allowedMethodsService.isRestricted(name)) {
-      throw new RestrictedMethodError();
-    }
-
-    this[name] = this[name] || new Purpose(name, this);
-    this[name]._loadPerimeter(perimeter);
-  }
-
   /**
-   * Return true if sandbox already contains a perimeter
+   * Return true if sandbox already contains a perimeter.
    */
   hasPerimeter(perimeter) {
-    return this._perimeters.some((p) => p.purpose === perimeter.purpose);
+    return some(this._perimeters, (p) => p.purpose === perimeter.purpose);
   }
 
   /**
-   * Return perimeter by purpose
+   * Return perimeter by a purpose or null.
    */
   getPerimeter(purpose) {
     const perimeter = find(this._perimeters, (p) => (p.purpose === purpose));
 
-    return isObject(perimeter) && perimeter instanceof Perimeter ?
-      perimeter : null;
+    return isPerimeter(perimeter) ? perimeter : null;
   }
 
   /**
-   * Return true if allowed to do action on target
+   * Return true if allowed to do action on target.
    */
   isAllowed(...args) {
     return this.governess.isAllowed(...args);
   }
 
   /**
-   * Return true if not allowed to do action on target
+   * Return true if not allowed to do action on target.
    */
   isNotAllowed(...args) {
     return !this.isAllowed(...args);
+  }
+
+  /**
+   * Expose the purpose of a perimeter, make sure the purpose of the perimeter
+   * is available on this sandbox.
+   * This method is used internally by Sandbox and shouldn't be used
+   * externally.
+   */
+  _extendPurpose(perimeter) {
+    const name = perimeter.purpose;
+    const allowedMethodsService = new AllowedMethodsService(this);
+
+    if (allowedMethodsService.isRestricted(name)) {
+      throw new RestrictedMethodError(
+        `Cannot expose purpose ${name} to sandbox. Restricted method name.`
+      );
+    }
+
+    this[name] = isPurpose(this[name]) ? this[name] : new Purpose(name, this);
+    this[name]._loadPerimeter(perimeter);
+  }
+
+  /**
+   * Make sure governess know all the rules from all loaded perimeters.
+   * This method is used internally by Sandbox and shouldn't be used
+   * externally.
+   */
+  _learnRules() {
+    each(this._perimeters || [], (perimeter) => {
+      this.governess.learnRules(perimeter);
+    });
   }
 }
