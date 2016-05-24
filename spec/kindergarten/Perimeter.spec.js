@@ -7,22 +7,32 @@ import {
 } from '../../src/kindergarten/errors';
 
 describe('Perimeter', () => {
-  beforeEach(function () {
-    this.child = new FactoryGirl('child');
+  let child;
+  let sandbox;
+  let governess;
+  let Television;
+  let CableTv;
+  let purpose;
+  let options;
+  let myPerimeter;
 
-    this.sandbox = new FactoryGirl('sandbox', this.child);
-    this.governess = new FactoryGirl('headGoverness', this.child);
-    this.Television = new FactoryGirl('Television');
-    this.CableTv = new FactoryGirl('CableTv');
+  beforeEach(() => {
+    child = new FactoryGirl('child');
 
-    this.Perimeter = Perimeter;
+    sandbox = new FactoryGirl('sandbox', child);
 
-    this.purpose = 'foo';
+    governess = new FactoryGirl('headGoverness', child);
 
-    this.options = {
+    Television = new FactoryGirl('Television');
+
+    CableTv = new FactoryGirl('CableTv');
+
+    purpose = 'foo';
+
+    options = {
       govern: {
-        'can watch': [this.Television],
-        'cannot watch': [this.CableTv]
+        'can watch': [Television],
+        'cannot watch': [CableTv]
       },
 
       expose: [
@@ -30,36 +40,31 @@ describe('Perimeter', () => {
       ]
     };
 
-    this.myPerimeter = new this.Perimeter(
-      this.purpose,
-      this.options
-    );
-
-    this.myStupidPerimeter = new this.Perimeter(
-      this.purpose,
-      {}
+    myPerimeter = new Perimeter(
+      purpose,
+      options
     );
   });
 
   describe('constructor', () => {
-    it('returns new instanceof perimeter', function () {
-      expect(this.myPerimeter instanceof this.Perimeter).toBe(true);
+    it('returns new instanceof perimeter', () => {
+      expect(myPerimeter instanceof Perimeter).toBe(true);
     });
 
-    it('sets _purpose to purpose', function () {
-      expect(this.myPerimeter._purpose).toBe(this.purpose);
+    it('sets _purpose to purpose', () => {
+      expect(myPerimeter._purpose).toBe(purpose);
     });
 
-    it('throws an NoPurposeError if purpose is not string', function () {
+    it('throws an NoPurposeError if purpose is not string', () => {
       _.each([
-        {}, [], null, undefined, this.Perimeter
+        {}, [], null, undefined, Perimeter
       ], (x) => {
         expect(() => {
-          this.myPerimeter = new this.Perimeter(x);
+          myPerimeter = new Perimeter(x);
         }).toThrowError('Perimeter must have a purpose.');
 
         try {
-          this.myPerimeter = new this.Perimeter(x);
+          myPerimeter = new Perimeter(x);
         } catch (e) {
           expect(e instanceof NoPurposeError).toBe(true);
         }
@@ -68,27 +73,27 @@ describe('Perimeter', () => {
   });
 
   describe('purpose getter', () => {
-    it('returns _purpose', function () {
-      this.myPerimeter._purpose = 'heyHou';
+    it('returns _purpose', () => {
+      myPerimeter._purpose = 'heyHou';
 
-      expect(this.myPerimeter.purpose).toEqual(this.myPerimeter.purpose);
+      expect(myPerimeter.purpose).toEqual(myPerimeter.purpose);
     });
   });
 
   describe('purpose setter', () => {
-    it('throws an error if purpose is not a string', function () {
+    it('throws an error if purpose is not a string', () => {
       expect(() => {
-        this.myPerimeter.purpose = {};
+        myPerimeter.purpose = {};
       }).toThrowError('Perimeter must have a purpose.');
 
       try {
-        this.myPerimeter.purpose = {};
+        myPerimeter.purpose = {};
       } catch (e) {
         expect(e instanceof NoPurposeError).toBe(true);
       }
     });
 
-    it('must match a regex', function () {
+    it('must match a regex', () => {
       const wrong = [
         '123', 'A', 'abc12$?', '_!'
       ];
@@ -99,11 +104,11 @@ describe('Perimeter', () => {
 
       _.each(wrong, (x) => {
         expect(() => {
-          this.myPerimeter = new this.Perimeter(x);
+          myPerimeter = new Perimeter(x);
         }).toThrowError('Perimeter must have a purpose.');
 
         try {
-          this.myPerimeter = new this.Perimeter(x);
+          myPerimeter = new Perimeter(x);
         } catch (e) {
           expect(e instanceof NoPurposeError).toBe(true);
         }
@@ -111,69 +116,69 @@ describe('Perimeter', () => {
 
       _.each(funky, (x) => {
         expect(() => {
-          this.myPerimeter = new this.Perimeter(x);
+          myPerimeter = new Perimeter(x);
         }).not.toThrowError();
       });
     });
 
-    it('returns the given value', function () {
-      expect(this.myPerimeter.purpose = 'foo').toEqual('foo');
+    it('returns the given value', () => {
+      expect(myPerimeter.purpose = 'foo').toEqual('foo');
     });
   });
 
   describe('sandbox getter', () => {
-    it('returns value of _sandbox', function () {
-      this.myPerimeter._sandbox = this.sandbox;
-      expect(this.myPerimeter.sandbox).toBe(this.myPerimeter._sandbox);
+    it('returns value of _sandbox', () => {
+      myPerimeter._sandbox = sandbox;
+      expect(myPerimeter.sandbox).toBe(myPerimeter._sandbox);
     });
   });
 
   describe('sandbox setter', () => {
-    it('sets _sandbox to given one', function () {
-      this.myPerimeter.sandbox = this.sandbox;
-      expect(this.myPerimeter._sandbox).toBe(this.sandbox);
+    it('sets _sandbox to given one', () => {
+      myPerimeter.sandbox = sandbox;
+      expect(myPerimeter._sandbox).toBe(sandbox);
     });
 
-    it('sets child to child of the sandbox', function () {
-      this.myPerimeter.sandbox = this.sandbox;
-      expect(this.myPerimeter.child).toBe(this.sandbox.child);
+    it('sets child to child of the sandbox', () => {
+      myPerimeter.sandbox = sandbox;
+      expect(myPerimeter.child).toBe(sandbox.child);
     });
 
-    it('returns the given value', function () {
-      expect(this.myPerimeter.sandbox = this.sandbox).toEqual(this.sandbox);
+    it('returns the given value', () => {
+      expect(myPerimeter.sandbox = sandbox).toEqual(sandbox);
     });
   });
 
   describe('governess getter', () => {
-    it('returns _governess', function () {
-      this.myPerimeter._governess = this.governess;
-      expect(this.myPerimeter.governess).toBe(this.governess);
+    it('returns _governess', () => {
+      myPerimeter._governess = governess;
+      expect(myPerimeter.governess).toBe(governess);
     });
 
-    it('returns null by default', function () {
-      this.myPerimeter._governess = {};
-      expect(this.myPerimeter.governess).toBeNull();
+    it('returns null by default', () => {
+      myPerimeter._governess = {};
+      expect(myPerimeter.governess).toBeNull();
     });
   });
 
   describe('governess setter', () => {
-    it('sets _governess to given one', function () {
-      this.myPerimeter.governess = this.governess;
-      expect(this.myPerimeter.governess).toBe(this.governess);
+    it('sets _governess to given one', () => {
+      myPerimeter.governess = governess;
+      expect(myPerimeter.governess).toBe(governess);
     });
 
-    it('returns the given value', function () {
-      expect(this.myPerimeter.governess = this.governess).toEqual(
-        this.governess
+    it('returns the given value', () => {
+      expect(myPerimeter.governess = governess).toEqual(
+        governess
       );
     });
 
-    it('set governess to null by default', function () {
-      this.myPerimeter.governess = 'foo';
-      expect(this.myPerimeter._governess).toBeNull();
+    it('set governess to null by default', () => {
+      myPerimeter.governess = 'foo';
+      expect(myPerimeter._governess).toBeNull();
 
-      this.myPerimeter.governess = {};
-      expect(this.myPerimeter._governess).toBeNull();
+      myPerimeter.governess = {};
+      expect(myPerimeter._governess).toBeNull();
     });
   });
 });
