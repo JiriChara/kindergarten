@@ -6,6 +6,7 @@ import HeadGoverness from './HeadGoverness';
 export default class EasyGoverness extends HeadGoverness {
   constructor(child) {
     super(child);
+
     this.unguarded = true;
   }
 }

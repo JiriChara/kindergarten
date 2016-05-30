@@ -19,7 +19,7 @@ export default class Rule extends BaseObject {
   constructor(str, def) {
     super();
 
-    this.type = new Type(str);
+    this.type = new Type(this, str);
     this.definition = new Definition(this, def);
   }
 

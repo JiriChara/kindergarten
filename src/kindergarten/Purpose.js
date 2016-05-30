@@ -21,11 +21,17 @@ import {
 /**
  * Definition of Purpose class.
  *
- * Purpose is used as a connection between Sandbox and Perimeter. Whenever
- * a Perimeter is added to a Sandbox new Purpose is created. And all exposed
- * methods from Perimeter and copied to Purpose.
+ * Purpose is a connection between Sandbox and Perimeter.
+ * Whenever a Perimeter is added to a Sandbox new Purpose is created.
+ * And all exposed methods from Perimeter and copied to Purpose.
+ * Purpose should have as less methods as possible.
+ * Purpose is used internally by Sandbox and shouldn't be used as standalone
+ * object.
  */
 export default class Purpose extends BaseObject {
+  /**
+   * Create new instance of purpose.
+   */
   constructor(name, sandbox) {
     super();
 

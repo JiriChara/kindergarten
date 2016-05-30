@@ -1,18 +1,14 @@
 import {
-  each,
-  isObject
+  each
 } from 'lodash';
 
-import Perimeter from '../Perimeter';
 import HeadGoverness from './HeadGoverness';
+import { isPerimeter } from '../utils';
 
 /**
- * German governess loves rules as every German. She automatically guards all
- * exposed methods. This means that she calls `guard()` and passes the name of
- * the exposed method as a first argument and arguments passed to exposed
- * method as well.
- *
- * Note: this governess can only be used within the sandbox.
+ * German governess loves rules. She automatically guards all exposed methods.
+ * This means that she calls `guard()` and passes the name of the exposed
+ * method as a first argument and arguments passed to exposed method as well.
  */
 export default class GermanGoverness extends HeadGoverness {
   governed(callback, args = [], callingContext = null) {
@@ -34,7 +30,7 @@ export default class GermanGoverness extends HeadGoverness {
   }
 
   _detectNameOfExposedMethod(source, method) {
-    if (isObject(source) && source instanceof Perimeter) {
+    if (isPerimeter(source)) {
       let methodName;
 
       each(source.expose, (m) => {

@@ -35,19 +35,26 @@ const TYPES = [
 export default class Definition extends BaseObject {
   constructor(rule, def) {
     super();
-    this._rule = rule;
-    this._raw = def;
+
+    this.rule = rule;
+
+    this.raw = def;
 
     this._resolve();
+  }
+
+  isStrict() {
+    return !this.rule.type.isPositive() ||
+      this._isStrict(this._type);
+  }
+
+  isCustom() {
+    return this._type === 'customMethod';
   }
 
   get items() {
     return this._condition('items')(this._items) ?
       this._items : null;
-  }
-
-  getItems() {
-    return this.items;
   }
 
   set items(val) {
@@ -56,18 +63,8 @@ export default class Definition extends BaseObject {
     return val;
   }
 
-  setItems(val) {
-    this.items = val;
-
-    return val;
-  }
-
   get regex() {
     return this._regex || null;
-  }
-
-  getRegex() {
-    return this.regex;
   }
 
   set regex(val) {
@@ -76,18 +73,8 @@ export default class Definition extends BaseObject {
     return val;
   }
 
-  setRegex(val) {
-    this.regex = val;
-
-    return val;
-  }
-
   get customMethod() {
     return this._customMethod || null;
-  }
-
-  getCustomMethod() {
-    return this.customMethod;
   }
 
   set customMethod(val) {
@@ -96,43 +83,28 @@ export default class Definition extends BaseObject {
     return val;
   }
 
-  setCustomMethod(val) {
-    this.customMethod = val;
-
-    return val;
+  get type() {
+    return this._type;
   }
 
   _resolve() {
     const definitionObj = find(TYPES, (type) => {
       const condition = type[1];
 
-      return condition(this._raw);
+      return condition(this.raw);
     }) || null;
 
     if (!isArray(definitionObj)) {
       throw new WrongRuleDefinition(
-        `Cannot create a new rule "${this._rule.type.type}". Wrong rule definition.`
+        `Cannot create a new rule "${this.rule.type.type}". Wrong rule definition.`
       );
     }
 
-    this.ruleContext = this._raw.ruleContext;
+    this.ruleContext = this.raw.ruleContext;
 
     [this._type] = definitionObj;
 
-    this[this._type] = this._raw;
-  }
-
-  get type() {
-    return this._type;
-  }
-
-  isStrict() {
-    return !this._rule.type.isPositive() ||
-      this._isStrict(this._type);
-  }
-
-  isCustom() {
-    return this._type === 'customMethod';
+    this[this._type] = this.raw;
   }
 }
 

@@ -24,6 +24,11 @@ import {
   createSandbox
 } from './kindergarten';
 
+/**
+ * Main namespace is exported by default to keep Kindergarten compatible with
+ * versions < 1.0 and for programmers that like to use the classes through the
+ * namespace.
+ */
 const Kindergarten = {
   AccessDenied,
   ArgumentError,

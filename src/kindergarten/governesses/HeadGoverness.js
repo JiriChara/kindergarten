@@ -3,6 +3,7 @@ import {
   filter,
   isEmpty,
   isFunction,
+  isString,
   some
 } from 'lodash';
 
@@ -29,7 +30,7 @@ export default class HeadGoverness extends BaseObject {
 
     throw new AccessDenied(
       // TODO: is there a way to get a type of target?
-      `Child is not allowed to ${action} the target.`
+      `Child is not allowed to ${action} ${isString(target) ? target : 'the target'}.`
     );
   }
 
@@ -93,7 +94,7 @@ export default class HeadGoverness extends BaseObject {
 
   getRules(type) {
     // TODO: implement new method on type to compare that
-    return filter(this.rules, (rule) => rule.type.getType() === type);
+    return filter(this.rules, (rule) => rule.type.type === type);
   }
 
   verify(action, ...args) {

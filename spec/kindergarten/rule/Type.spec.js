@@ -3,23 +3,26 @@ import _ from 'lodash';
 import FactoryGirl from '../../support/FactoryGirl';
 
 describe('Type', () => {
-  beforeEach(function () {
-    this.Type = new FactoryGirl('Type');
-    this.type = new this.Type('can watch');
+  let Type;
+  let type;
+
+  beforeEach(() => {
+    Type = new FactoryGirl('Type');
+    type = new Type({}, 'can watch');
   });
 
   describe('constructor', () => {
     describe('success', () => {
-      it('extract the type of the rule', function () {
+      it('extract the type of the rule', () => {
         _.each([
           'can watch',
           'cannot watch'
         ], (str) => {
-          expect((new this.Type(str))._type).toBe('watch');
+          expect((new Type({}, str)).type).toBe('watch');
         });
       });
 
-      it('stores reference to given string', function () {
+      it('stores reference to given string', () => {
         _.each([
           'can watch',
           'cannot watch',
@@ -27,13 +30,13 @@ describe('Type', () => {
           'cannot updateSomeStuff123',
           'can $'
         ], (str) => {
-          expect((new this.Type(str))._str).toBe(str);
+          expect((new Type({}, str)).raw).toBe(str);
         });
       });
     });
 
     describe('failure', () => {
-      it('throws an error if string is not parsable', function () {
+      it('throws an error if string is not parsable', () => {
         _.each([
           'foo',
           'can foo bar',
@@ -41,11 +44,11 @@ describe('Type', () => {
           'can 123foo',
           'cannnot foo'
         ], (str) => {
-          const persumption = () => new this.Type(str);
+          const persumption = () => new Type({}, str);
 
           expect(persumption).toThrowError(
             `Cannot create a rule ${str}. ` +
-            `The type of the rule cannot be parsed.`
+            'The type of the rule cannot be parsed.'
           );
 
           try {
@@ -60,10 +63,10 @@ describe('Type', () => {
     });
   });
 
-  describe('_validate() method', () => {
+  describe('validate() method', () => {
     describe('success', () => {
-      it('returns true if type can be a method name', function () {
-        const myType = new this.Type('can something');
+      it('returns true if type can be a method name', () => {
+        const myType = new Type({}, 'can something');
 
         _.each([
           'foo',
@@ -71,17 +74,17 @@ describe('Type', () => {
           '$',
           '_foo',
           'foo1'
-        ], (type) => {
-          myType._type = type;
+        ], (t) => {
+          myType.type = t;
 
-          expect(myType._validate()).toBe(true);
+          expect(myType.validate()).toBe(true);
         });
       });
     });
 
     describe('failure', () => {
-      it('throws an error if type cannot be a function name', function () {
-        const myType = new this.Type('can something');
+      it('throws an error if type cannot be a function name', () => {
+        const myType = new Type({}, 'can something');
 
         _.each([
           '123foo',
@@ -90,10 +93,10 @@ describe('Type', () => {
           '$$$$$:',
           {},
           'abc&'
-        ], (type) => {
-          myType._type = type;
+        ], (t) => {
+          myType.type = t;
 
-          const persumption = () => myType._validate();
+          const persumption = () => myType.validate();
 
           expect(persumption).toThrowError(/^Cannot create a rule.+$/);
 
@@ -110,22 +113,14 @@ describe('Type', () => {
   });
 
   describe('isPositive() method', () => {
-    it('returns true if rule is positive', function () {
-      this.type._isPositive = true;
-      expect(this.type.isPositive()).toBe(true);
+    it('returns true if rule is positive', () => {
+      type._isPositive = true;
+      expect(type.isPositive()).toBe(true);
     });
 
-    it('returns false if rule is not positive', function () {
-      this.type._isPositive = false;
-      expect(this.type.isPositive()).toBe(false);
-    });
-  });
-
-  describe('getType() method', () => {
-    it('returns the _type', function () {
-      const customType = 'foo';
-      this.type._type = customType;
-      expect(this.type.getType()).toBe(customType);
+    it('returns false if rule is not positive', () => {
+      type._isPositive = false;
+      expect(type.isPositive()).toBe(false);
     });
   });
 });

@@ -4,7 +4,7 @@
   "license": "MIT",
   "version": "0.3.2",
   "description": "Kindergarten is a JavaScript library which helps programmers to achieve modular security using sandbox pattern",
-  "main": "lib/kindergarten.js",
+  "main": "lib/Kindergarten.js",
   "scripts": {
     "clean": "rimraf lib dist coverage",
     "dist": "mkdirp dist && browserify src/Kindergarten.js -t [ babelify --presets [es2015] ] --standalone Kindergarten --outfile dist/kindergarten.js",

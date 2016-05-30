@@ -5,6 +5,9 @@ import Purpose from './Purpose';
 import Rule from './Rule';
 import Sandbox from './Sandbox';
 import VERSION from './VERSION';
+import createPerimeter from './createPerimeter';
+import createRule from './createRule';
+import createSandbox from './createSandbox';
 
 import {
   isGoverness,
@@ -57,5 +60,8 @@ export {
   Sandbox,
   StrictGoverness,
   VERSION,
-  WrongRuleDefinition
+  WrongRuleDefinition,
+  createPerimeter,
+  createRule,
+  createSandbox
 };

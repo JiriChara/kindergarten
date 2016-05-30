@@ -13,46 +13,64 @@ import {
 // rule is later on validated using AllowedMethodsService as well.
 const TYPE_REGEX = /^can(not)? ([a-z_$][a-zA-Z0-9_$]*)$/;
 
+/**
+ * Implementation of the Rule Type class.
+ * Type is responsible for the rule string e.g. `can watch` validation and
+ * for extracting all relevant infos out of that string.
+ */
 export default class Type extends BaseObject {
-  constructor(str) {
+  constructor(rule, str) {
     super();
 
     const match = isString(str) && str.match(TYPE_REGEX);
 
     // Extract type of the rule.
     // e.g. "cannot watch" => "watch"
-    this._type = (() => (isArray(match) ? match[2] : undefined))();
+    this.type = (() => (isArray(match) ? match[2] : undefined))();
 
-    this._str = str;
+    /**
+     * Just store the given string. Used internally by Type class.
+     */
+    this.raw = str;
 
-    this._validate();
+    /**
+     * Reference to a original rule
+     */
+    this.rule = rule;
+
+    this.validate();
 
     // 'can' rules are positive 'cannot' rules are NOT positive.
     this._isPositive = !match[1];
   }
 
-  // Throw an error if the type of the rule is not applicable.
-  _validate() {
+  /**
+   * Throws an error if the type of the rule is not applicable.
+   */
+  validate() {
     const allowedMethodsService = new AllowedMethodsService();
-    const type = this.getType();
+    const type = this.type;
 
-    if (
-      !isString(type) ||
-      allowedMethodsService.isRestricted(type)
-    ) {
+    if (!isString(type) || allowedMethodsService.isRestricted(type)) {
       throw new WrongRuleDefinition(
-        `Cannot create a rule ${this._str}. The type of the rule cannot be parsed.`
+        `Cannot create a rule ${this.raw}. The type of the rule cannot be parsed.`
       );
     }
 
     return true;
   }
 
+  /**
+   * `can` rules are positive `cannot` rules are negative.
+   */
   isPositive() {
     return !!this._isPositive;
   }
 
-  getType() {
-    return this._type;
+  /**
+   * Opposite of `isPositive()` method.
+   */
+  isNegative() {
+    return !this.isPositive();
   }
 }
