@@ -76,7 +76,6 @@ sandbox.playing.watchTv(new Television());
 sandbox.playing.watchTv(new CableTv());
 
 // Fails after a while
-times(6, () => {
 for (let i = 0; i <= 6; i++) {
   sandbox.playing.eat('Tasty Candy');
 });
