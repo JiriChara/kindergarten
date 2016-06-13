@@ -3,6 +3,7 @@ import { _ } from 'lodash';
 import BaseObject from '../../src/kindergarten/BaseObject';
 import PubSub from '../../src/kindergarten/utils/PubSub';
 import Perimeter from '../../src/kindergarten/Perimeter';
+import Purpose from '../../src/kindergarten/Purpose';
 import Logger from '../../src/kindergarten/Logger';
 import Sandbox from '../../src/kindergarten/Sandbox';
 import {
@@ -68,6 +69,10 @@ export default class FactoryGirl {
           }
         }
       }));
+  }
+
+  PurposeFactory() {
+    return Purpose;
   }
 
   BaseObjectFactory() {
