@@ -21,6 +21,7 @@ import {
   EasyGoverness,
   GermanGoverness,
   HeadGoverness,
+  MiddlewareGoverness,
   StrictGoverness
 } from './governesses';
 
@@ -48,6 +49,7 @@ export {
   isSandbox,
   isSandbox,
   Logger,
+  MiddlewareGoverness,
   NoExposedMethodError,
   NoGovernessError,
   NoPurposeError,

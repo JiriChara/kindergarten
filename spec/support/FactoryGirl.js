@@ -9,7 +9,8 @@ import {
   HeadGoverness,
   EasyGoverness,
   StrictGoverness,
-  GermanGoverness
+  GermanGoverness,
+  MiddlewareGoverness
 } from '../../src/kindergarten/governesses';
 import Rule from '../../src/kindergarten/Rule';
 import Type from '../../src/kindergarten/rule/Type';
@@ -108,6 +109,10 @@ export default class FactoryGirl {
 
   GermanGovernessFactory() {
     return GermanGoverness;
+  }
+
+  MiddlewareGovernessFactory() {
+    return MiddlewareGoverness;
   }
 
   headGovernessFactory(...args) {

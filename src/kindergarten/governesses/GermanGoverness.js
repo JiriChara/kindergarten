@@ -1,5 +1,5 @@
 import {
-  each
+  find
 } from 'lodash';
 
 import HeadGoverness from './HeadGoverness';
@@ -11,16 +11,21 @@ import { isPerimeter } from '../utils';
  * method as a first argument and arguments passed to exposed method as well.
  */
 export default class GermanGoverness extends HeadGoverness {
+  /**
+   * The overriden governed method of the HeadGoverness, that calls guard
+   * method before any exposed method is executed. The first parameter passed
+   * to guard method will be the name of the exposed method. So make sure the
+   * name of exposed method and rule is the same when defining a perimeter.
+   */
   governed(callback, args = [], callingContext = null) {
     const guardArgs = args;
 
-    const exposedMethodName = this._detectNameOfExposedMethod(
+    guardArgs.unshift(this._detectNameOfExposedMethod(
       callingContext,
       callback
-    );
+    ));
 
-    guardArgs.unshift(exposedMethodName);
-
+    // Call the guard method on each exposed method
     this.guard.apply(
       this,
       guardArgs
@@ -29,18 +34,12 @@ export default class GermanGoverness extends HeadGoverness {
     return HeadGoverness.prototype.governed.call(this, callback, args, callingContext);
   }
 
-  _detectNameOfExposedMethod(source, method) {
-    if (isPerimeter(source)) {
-      let methodName;
-
-      each(source.expose, (m) => {
-        if (source[m] === method) {
-          methodName = m;
-          return;
-        }
-      });
-
-      return methodName;
+  /**
+   * Find the method in the perimeter.
+   */
+  _detectNameOfExposedMethod(perimeter, method) {
+    if (isPerimeter(perimeter)) {
+      return find((perimeter.expose || []), (m) => perimeter[m] === method);
     }
 
     // TODO: throw a custom error
