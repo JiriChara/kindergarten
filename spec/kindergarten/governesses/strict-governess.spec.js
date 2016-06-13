@@ -1,75 +1,86 @@
 import FactoryGirl from '../../support/FactoryGirl';
 
 describe('StrictGoverness', () => {
-  beforeEach(function () {
-    this.child = new FactoryGirl('child');
-    this.Tv = new FactoryGirl('Tv');
-    this.CableTv = new FactoryGirl('CableTv');
+  let child;
+  let Tv;
+  let CableTv;
+  let tv;
+  let cableTv;
+  let StrictGoverness;
+  let Rule;
+  let strictGoverness;
+  let rule1;
+  let rule2;
 
-    this.tv = new this.Tv();
-    this.cableTv = new this.CableTv();
+  beforeEach(() => {
+    child = new FactoryGirl('child');
+    Tv = new FactoryGirl('Tv');
+    CableTv = new FactoryGirl('CableTv');
 
-    this.StrictGoverness = new FactoryGirl('StrictGoverness');
-    this.Rule = new FactoryGirl('Rule');
+    tv = new Tv();
+    cableTv = new CableTv();
 
-    this.strictGoverness = new this.StrictGoverness(
-      this.child
+    StrictGoverness = new FactoryGirl('StrictGoverness');
+    Rule = new FactoryGirl('Rule');
+
+    strictGoverness = new StrictGoverness(
+      child
     );
 
-    this.rule1 = new this.Rule('can watch', [this.Tv]);
-    this.rule2 = new this.Rule('cannot watch', [this.CableTv]);
+    rule1 = new Rule('can watch', [Tv]);
+    rule2 = new Rule('cannot watch', [CableTv]);
 
-    this.strictGoverness.addRule(this.rule1, this.rule2);
+    strictGoverness.addRule(rule1, rule2);
   });
 
   describe('constructor', () => {
-    it('stores reference to child', function () {
-      expect(this.strictGoverness.child).toBe(this.child);
-      expect(this.strictGoverness.unguarded).toBe(false);
+    it('stores reference to child', () => {
+      expect(strictGoverness.child).toBe(child);
+      expect(strictGoverness.unguarded).toBe(false);
     });
 
-    it('initialises `_guardCount` to 0', function () {
-      expect(this.strictGoverness._guardCount).toBe(0);
+    it('initialises `_guardCount` to 0', () => {
+      expect(strictGoverness._guardCount).toBe(0);
     });
 
-    it('initialises `_governedCount` to 0', function () {
-      expect(this.strictGoverness._governedCount).toBe(0);
+    it('initialises `_governedCount` to 0', () => {
+      expect(strictGoverness._governedCount).toBe(0);
     });
   });
 
   describe('governed() method', () => {
-    it('throws an error if calling unprotected method', function () {
+    it('throws an error if calling unprotected method', () => {
       expect(() => {
-        this.strictGoverness.governed(() => ({}));
+        strictGoverness.governed(() => ({}));
       }).toThrowError(
         'All exposed methods must call guard method.'
       );
     });
 
-    it('does not throw an error if calling protected method', function () {
+    it('does not throw an error if calling protected method', () => {
       expect(() => {
-        this.strictGoverness.governed(() => {
-          this.strictGoverness.guard('watch', this.tv);
+        strictGoverness.governed(() => {
+          strictGoverness.guard('watch', tv);
         });
       }).not.toThrowError();
     });
 
-    it('still throws an error if child is not allowed', function () {
+    it('still throws an error if child is not allowed', () => {
       expect(() => {
-        this.strictGoverness.governed(() => {
-          this.strictGoverness.guard('watch', this.cableTv);
+        strictGoverness.governed(() => {
+          strictGoverness.guard('watch', cableTv);
         });
       }).toThrowError(
-        `Child is not allowed to watch the target.`
+        'Child is not allowed to watch the target.'
       );
     });
   });
 
   describe('guard() method', () => {
-    it('increases the `_guardCount`', function () {
-      expect(this.strictGoverness._guardCount).toBe(0);
-      this.strictGoverness.guard('watch', this.tv);
-      expect(this.strictGoverness._guardCount).toBe(1);
+    it('increases the `_guardCount`', () => {
+      expect(strictGoverness._guardCount).toBe(0);
+      strictGoverness.guard('watch', tv);
+      expect(strictGoverness._guardCount).toBe(1);
     });
   });
 });
