@@ -1,13 +1,16 @@
-import Logger from '../../src/kindergarten/Logger';
+import FactoryGirl from '../support/FactoryGirl';
 
 describe('Logger', () => {
-  beforeEach(function () {
-    this.Logger = Logger;
-    this.oldConsoleLog = console.log;
+  let Logger;
+  let oldConsoleLog;
+
+  beforeEach(() => {
+    Logger = new FactoryGirl('Logger');
+    oldConsoleLog = console.log;
   });
 
-  afterEach(function () {
-    console.log = this.oldConsoleLog;
+  afterEach(() => {
+    console.log = oldConsoleLog;
   });
 
   describe('_log() static method', () => {
