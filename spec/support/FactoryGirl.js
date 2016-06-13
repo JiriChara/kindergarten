@@ -6,6 +6,7 @@ import Perimeter from '../../src/kindergarten/Perimeter';
 import Purpose from '../../src/kindergarten/Purpose';
 import Logger from '../../src/kindergarten/Logger';
 import Sandbox from '../../src/kindergarten/Sandbox';
+import createRule from '../../src/kindergarten/createRule';
 import {
   HeadGoverness,
   EasyGoverness,
@@ -15,6 +16,7 @@ import {
 } from '../../src/kindergarten/governesses';
 import Rule from '../../src/kindergarten/Rule';
 import Type from '../../src/kindergarten/rule/Type';
+import Definition from '../../src/kindergarten/rule/Definition';
 import {
   AccessDenied,
   ArgumentError,
@@ -91,6 +93,10 @@ export default class FactoryGirl {
     return Type;
   }
 
+  DefinitionFactory() {
+    return Definition;
+  }
+
   SandboxFactory() {
     return Sandbox;
   }
@@ -161,5 +167,9 @@ export default class FactoryGirl {
 
   WrongRuleDefinitionFactory() {
     return WrongRuleDefinition;
+  }
+
+  createRuleFactory() {
+    return createRule;
   }
 }
