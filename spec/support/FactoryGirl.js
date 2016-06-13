@@ -19,6 +19,7 @@ import {
   ArgumentError,
   NoExposedMethodsError,
   NoExposedMethodError,
+  NoGovernessError,
   NoPurposeError,
   NoSandboxError,
   RestrictedMethodError,
@@ -133,6 +134,10 @@ export default class FactoryGirl {
     return NoExposedMethodsError;
   }
 
+  NoGovernessErrorFactory() {
+    return NoGovernessError;
+  }
+
   NoExposedMethodErrorFactory() {
     return NoExposedMethodError;
   }
@@ -141,7 +146,7 @@ export default class FactoryGirl {
     return NoPurposeError;
   }
 
-  NoSandboxError() {
+  NoSandboxErrorFactory() {
     return NoSandboxError;
   }
 
