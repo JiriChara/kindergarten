@@ -15,6 +15,10 @@ describe('Perimeter', () => {
   let purpose;
   let options;
   let myPerimeter;
+  let govern;
+  let expose;
+  let method1;
+  let method2;
 
   beforeEach(() => {
     child = new FactoryGirl('child');
@@ -29,15 +33,28 @@ describe('Perimeter', () => {
 
     purpose = 'foo';
 
-    options = {
-      govern: {
-        'can watch': [Television],
-        'cannot watch': [CableTv]
-      },
+    govern = {
+      'can watch': [Television],
+      'cannot watch': [CableTv]
+    };
 
-      expose: [
-        'watchTv'
-      ]
+    expose = [
+      'watchTv'
+    ];
+
+    method1 = () => true;
+    method2 = () => false;
+
+    options = {
+      govern,
+
+      expose,
+
+      governess,
+
+      method1,
+
+      method2
     };
 
     myPerimeter = new Perimeter(
@@ -51,8 +68,8 @@ describe('Perimeter', () => {
       expect(myPerimeter instanceof Perimeter).toBe(true);
     });
 
-    it('sets _purpose to purpose', () => {
-      expect(myPerimeter._purpose).toBe(purpose);
+    it('sets purpose to given one', () => {
+      expect(myPerimeter.purpose).toBe(purpose);
     });
 
     it('throws an NoPurposeError if purpose is not string', () => {
@@ -69,6 +86,28 @@ describe('Perimeter', () => {
           expect(e instanceof NoPurposeError).toBe(true);
         }
       });
+    });
+
+    it('sets govern', () => {
+      expect(myPerimeter.govern).toBe(govern);
+    });
+
+    it('sets expose', () => {
+      expect(myPerimeter.expose).toBe(expose);
+    });
+
+    it('sets governess', () => {
+      expect(myPerimeter.governess).toBe(governess);
+    });
+
+    it('teaches governess rules', () => {
+      expect(myPerimeter.governess.isAllowed('watch', Television)).toBeTrue();
+      expect(myPerimeter.governess.isAllowed('watch', CableTv)).toBeFalse();
+    });
+
+    it('adds all methods to perimeter', () => {
+      expect(myPerimeter.method1).toBe(method1);
+      expect(myPerimeter.method2).toBe(method2);
     });
   });
 
@@ -126,6 +165,12 @@ describe('Perimeter', () => {
     });
   });
 
+  describe('getPurpose() method', () => {
+    it('returns purpose', () => {
+      expect(myPerimeter.getPurpose()).toBe(purpose);
+    });
+  });
+
   describe('sandbox getter', () => {
     it('returns value of _sandbox', () => {
       myPerimeter._sandbox = sandbox;
@@ -146,6 +191,13 @@ describe('Perimeter', () => {
 
     it('returns the given value', () => {
       expect(myPerimeter.sandbox = sandbox).toEqual(sandbox);
+    });
+  });
+
+  describe('getSandbox() method', () => {
+    it('returns the sandbox of the perimeter', () => {
+      myPerimeter._sandbox = sandbox;
+      expect(myPerimeter.getSandbox()).toBe(sandbox);
     });
   });
 
@@ -179,6 +231,70 @@ describe('Perimeter', () => {
 
       myPerimeter.governess = {};
       expect(myPerimeter._governess).toBeNull();
+    });
+  });
+
+  describe('getGoverness() method', () => {
+    it('returns governess', () => {
+      myPerimeter._governess = governess;
+      expect(myPerimeter.getGoverness()).toBe(governess);
+    });
+
+    it('returns null by default', () => {
+      myPerimeter._governess = {};
+      expect(myPerimeter.getGoverness()).toBeNull();
+    });
+  });
+
+  describe('guard() method', () => {
+    it('throws an error if child cannot do the action', () => {
+      expect(() => {
+        myPerimeter.guard('watch', CableTv);
+      }).toThrowError('Child is not allowed to watch the target.');
+    });
+
+    it('calls guard method of the governess', () => {
+      spyOn(governess, 'guard');
+      myPerimeter.guard('watch', CableTv);
+      expect(governess.guard).toHaveBeenCalledWith('watch', CableTv);
+    });
+
+    it('does not throw an error if child can perfom an action', () => {
+      expect(() => {
+        myPerimeter.guard('watch', Television);
+      }).not.toThrowError();
+    });
+  });
+
+  describe('isAllowed() method', () => {
+    it('returns false if child cannot do the action', () => {
+      expect(myPerimeter.isAllowed('watch', CableTv)).toBeFalse();
+    });
+
+    it('returns true if child can do the action', () => {
+      expect(myPerimeter.isAllowed('watch', Television)).toBeTrue();
+    });
+
+    it('calls isAllowed method of the governess', () => {
+      spyOn(governess, 'isAllowed');
+      myPerimeter.isAllowed('watch', CableTv);
+      expect(governess.isAllowed).toHaveBeenCalledWith('watch', CableTv);
+    });
+  });
+
+  describe('isNotAllowed() method', () => {
+    it('returns false if child cannot do the action', () => {
+      expect(myPerimeter.isNotAllowed('watch', CableTv)).toBeTrue();
+    });
+
+    it('returns true if child can do the action', () => {
+      expect(myPerimeter.isNotAllowed('watch', Television)).toBeFalse();
+    });
+
+    it('calls isNotAllowed method of the governess', () => {
+      spyOn(governess, 'isNotAllowed');
+      myPerimeter.isNotAllowed('watch', CableTv);
+      expect(governess.isNotAllowed).toHaveBeenCalledWith('watch', CableTv);
     });
   });
 });

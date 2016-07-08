@@ -46,34 +46,6 @@ export default class Perimeter extends BaseObject {
   }
 
   /**
-   * Forward guard call to governess.
-   */
-  guard(...args) {
-    return this.governess.guard.call(this.governess, ...args);
-  }
-
-  /**
-   * Forward governed call to governess.
-   */
-  governed(...args) {
-    return this.governess.governed.call(this.governess, ...args);
-  }
-
-  /**
-   * Forward isAllowed call to governess.
-   */
-  isAllowed(...args) {
-    return this.governess.isAllowed.call(this.governess, ...args);
-  }
-
-  /**
-   * Forward isNotAllowed call to governess.
-   */
-  isNotAllowed(...args) {
-    return this.governess.isNotAllowed.call(this.governess, ...args);
-  }
-
-  /**
    * The getter of the purpose.
    */
   get purpose() {
@@ -92,6 +64,13 @@ export default class Perimeter extends BaseObject {
     this._purpose = value;
 
     return value;
+  }
+
+  /**
+   * Returns purpose of the perimeter.
+   */
+  getPurpose() {
+    return this.purpose;
   }
 
   /**
@@ -117,6 +96,13 @@ export default class Perimeter extends BaseObject {
   }
 
   /**
+   * Returns sandbox of the perimeter
+   */
+  getSandbox() {
+    return this.sandbox;
+  }
+
+  /**
    * The getter of the governess.
    */
   get governess() {
@@ -128,7 +114,6 @@ export default class Perimeter extends BaseObject {
 
   /**
    * The setter of the governess.
-   *
    */
   set governess(value) {
     // if governess is null perimeter will use the governess of it's sandbox
@@ -145,5 +130,40 @@ export default class Perimeter extends BaseObject {
     }
 
     return value;
+  }
+
+  /**
+   * Return the governess of the perimeter or the governess of it's sandbox
+   */
+  getGoverness() {
+    return this.governess;
+  }
+
+  /**
+   * Forward guard call to governess.
+   */
+  guard(...args) {
+    return this.governess.guard.call(this.governess, ...args);
+  }
+
+  /**
+   * Forward governed call to governess.
+   */
+  governed(...args) {
+    return this.governess.governed.call(this.governess, ...args);
+  }
+
+  /**
+   * Forward isAllowed call to governess.
+   */
+  isAllowed(...args) {
+    return this.governess.isAllowed.call(this.governess, ...args);
+  }
+
+  /**
+   * Forward isNotAllowed call to governess.
+   */
+  isNotAllowed(...args) {
+    return this.governess.isNotAllowed.call(this.governess, ...args);
   }
 }
