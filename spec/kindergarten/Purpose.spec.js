@@ -164,4 +164,58 @@ describe('Purpose', () => {
       }
     });
   });
+
+  describe('isAllowed() method', () => {
+    let perimeter;
+    let mySandbox;
+
+    beforeEach(() => {
+      mySandbox = new (new FactoryGirl('Sandbox'))({});
+
+      perimeter = new Perimeter({
+        purpose: 'foo',
+        govern: {
+          ['can watch']() { return true; },
+          ['cannot play']() { return true; }
+        }
+      });
+
+      mySandbox.loadModule(perimeter);
+    });
+
+    it('should return true if child is allowed', () => {
+      expect(mySandbox.foo.isAllowed('watch')).toBeTrue();
+    });
+
+    it('should return false if child is not allowed', () => {
+      expect(mySandbox.foo.isAllowed('play')).toBeFalse();
+    });
+  });
+
+  describe('isNotAllowed() method', () => {
+    let perimeter;
+    let mySandbox;
+
+    beforeEach(() => {
+      mySandbox = new (new FactoryGirl('Sandbox'))({});
+
+      perimeter = new Perimeter({
+        purpose: 'foo',
+        govern: {
+          ['can watch']() { return true; },
+          ['cannot play']() { return true; }
+        }
+      });
+
+      mySandbox.loadModule(perimeter);
+    });
+
+    it('should return false if child is allowed', () => {
+      expect(mySandbox.foo.isNotAllowed('watch')).toBeFalse();
+    });
+
+    it('should return true if child is not allowed', () => {
+      expect(mySandbox.foo.isNotAllowed('play')).toBeTrue();
+    });
+  });
 });

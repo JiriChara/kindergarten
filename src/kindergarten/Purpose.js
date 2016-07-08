@@ -94,11 +94,19 @@ export default class Purpose extends BaseObject {
     });
   }
 
+  /**
+   * Return true if perimeter is allowed to perform an action. It uses the
+   * governess of the perimeter.
+   */
   isAllowed(...args) {
     const perimeter = this._sandbox.getPerimeter(this._name);
     return perimeter.isAllowed(...args);
   }
 
+  /**
+   * Return true if perimeter is not allowed to perform an action. It uses the
+   * governess of the perimeter.
+   */
   isNotAllowed(...args) {
     return !this.isAllowed(...args);
   }
