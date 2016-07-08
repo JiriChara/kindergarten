@@ -9,18 +9,25 @@ import {
 
 import Rule from '../Rule';
 import BaseObject from '../BaseObject';
+import isRule from '../utils/isRule';
 import {
   AccessDenied,
   ArgumentError
 } from '../errors';
 
 export default class HeadGoverness extends BaseObject {
+  /**
+   * Creates a new instance of the HeadGoverness
+   */
   constructor(child) {
     super();
     this.child = child;
     this.rules = [];
   }
 
+  /**
+   * Throws an error if child is not allowed to do some action
+   */
   guard(action, ...args) {
     const target = args[0];
 
@@ -29,7 +36,6 @@ export default class HeadGoverness extends BaseObject {
     }
 
     throw new AccessDenied(
-      // TODO: is there a way to get a type of target?
       `Child is not allowed to ${action} ${isString(target) ? target : 'the target'}.`
     );
   }
@@ -43,16 +49,19 @@ export default class HeadGoverness extends BaseObject {
     return callback.apply(callingContext, args);
   }
 
+  /**
+   * Returns true if child is allowed to perform some action
+   */
   isAllowed(action, ...args) {
     if (this.isGuarded()) {
       // Is there any rule explicitly allowing the child to do that?
       const hasAllowRule = some(this.getRules(action), (rule) =>
-        this.isRule(rule) && rule.type.isPositive && rule.verify(...args)
+        isRule(rule) && rule.type.isPositive && rule.verify(...args)
       );
 
       // Is there any rule strictly disallowing the child to do that?
       const hasStrictDisallowRule = some(this.getRules(action), (rule) =>
-        this.isRule(rule) && !rule.verify(...args) && rule.definition.isStrict
+        isRule(rule) && !rule.verify(...args) && rule.definition.isStrict
       );
 
       if (!hasAllowRule || hasStrictDisallowRule) {
@@ -63,33 +72,29 @@ export default class HeadGoverness extends BaseObject {
     return true;
   }
 
+  /**
+   * Returns false if child is allowed to perform some action
+   */
   isNotAllowed(...args) {
     return !this.isAllowed(...args);
   }
 
+  /**
+   * The getter of unguarded property. If governess is ungarded, then no errors will be
+   * thrown when guard() method is called.
+   */
   get unguarded() {
     return !!this._unguarded;
   }
 
+  /**
+   * The setter of unguarded property. If governess is ungarded, then no errors will be
+   * thrown when guard() method is called.
+   */
   set unguarded(value) {
     this._unguarded = !!value;
 
     return value;
-  }
-
-  /**
-   * Return true if given rule is an instance of Kindergarten.Rule class
-   */
-  isRule(rule) {
-    let res = false;
-
-    try {
-      res = (rule instanceof Rule);
-    } catch (ignore) {
-      // ignore
-    }
-
-    return res;
   }
 
   getRules(type) {
@@ -128,7 +133,7 @@ export default class HeadGoverness extends BaseObject {
 
   addRule(...rules) {
     each(rules, (rule) => {
-      if (!this.isRule(rule)) {
+      if (!isRule(rule)) {
         throw new ArgumentError(
           'Governess cannot learn the rule. Does it inherit from Rule class?'
         );

@@ -13,6 +13,7 @@ import {
   isGoverness,
   isPerimeter,
   isPurpose,
+  isRule,
   isSandbox,
   PubSub
 } from './utils';
@@ -46,7 +47,7 @@ export {
   isGoverness,
   isPerimeter,
   isPurpose,
-  isSandbox,
+  isRule,
   isSandbox,
   Logger,
   MiddlewareGoverness,

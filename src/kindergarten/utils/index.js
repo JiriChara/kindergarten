@@ -3,6 +3,7 @@ import PubSub from './PubSub';
 import isGoverness from './isGoverness';
 import isPerimeter from './isPerimeter';
 import isPurpose from './isPurpose';
+import isRule from './isRule';
 import isSandbox from './isSandbox';
 
 export {
@@ -11,5 +12,6 @@ export {
   isGoverness,
   isPerimeter,
   isPurpose,
+  isRule,
   isSandbox
 };
