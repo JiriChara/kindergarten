@@ -7,6 +7,7 @@ import Purpose from '../../src/kindergarten/Purpose';
 import Logger from '../../src/kindergarten/Logger';
 import Sandbox from '../../src/kindergarten/Sandbox';
 import createRule from '../../src/kindergarten/createRule';
+import createSandbox from '../../src/kindergarten/createSandbox';
 import createPerimeter from '../../src/kindergarten/createPerimeter';
 import {
   HeadGoverness,
@@ -176,5 +177,9 @@ export default class FactoryGirl {
 
   createPerimeterFactory() {
     return createPerimeter;
+  }
+
+  createSandboxFactory() {
+    return createSandbox;
   }
 }
