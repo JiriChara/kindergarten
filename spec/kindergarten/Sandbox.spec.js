@@ -84,8 +84,30 @@ describe('Sandbox', () => {
       expect(sandbox.governess instanceof HeadGoverness).toBe(true);
     });
 
+    it('sets governess to the given one', () => {
+      const myGoverness = new HeadGoverness(child);
+      const mySandbox = new Sandbox(child, {
+        governess: myGoverness
+      });
+
+      expect(mySandbox.governess).toBe(myGoverness);
+    });
+
     it('initializes perimeters to empty array', () => {
       expect(sandbox._perimeters).toEqual([]);
+    });
+
+    it('sets perimeters if given', () => {
+      const perimeters = [
+        perimeter1,
+        perimeter2
+      ];
+
+      const mySandbox = new Sandbox(child, {
+        perimeters
+      });
+
+      expect(mySandbox._perimeters).toBe(perimeters);
     });
   });
 
@@ -194,6 +216,102 @@ describe('Sandbox', () => {
       sandbox.loadModule(perimeter1, perimeter2);
       expect(sandbox.getPerimeter('foo1')).toBe(perimeter1);
       expect(sandbox.getPerimeter('foo2')).toBe(perimeter2);
+    });
+  });
+
+  describe('hasPerimeter() method', () => {
+    it('returns true if sandbox has a perimeter by purpose', () => {
+      sandbox.loadModule(perimeter1);
+      expect(sandbox.hasPerimeter('foo1')).toBeTrue();
+    });
+
+    it('returns true if sandbox has a perimeter', () => {
+      sandbox.loadModule(perimeter1);
+      expect(sandbox.hasPerimeter(perimeter1)).toBeTrue();
+    });
+
+    it('returns false if sandbox has a no such perimeter', () => {
+      expect(sandbox.hasPerimeter('foo')).toBeFalse();
+    });
+  });
+
+  describe('isAllowed', () => {
+    it('delegates the call to governess', () => {
+      spyOn(sandbox.governess, 'isAllowed');
+      sandbox.isAllowed('watch', Television);
+
+      expect(sandbox.governess.isAllowed).toHaveBeenCalledWith(
+        'watch',
+        Television
+      );
+    });
+  });
+
+  describe('isNotAllowed', () => {
+    it('delegates the call to governess', () => {
+      spyOn(sandbox.governess, 'isNotAllowed');
+      sandbox.isNotAllowed('watch', Television);
+
+      expect(sandbox.governess.isNotAllowed).toHaveBeenCalledWith(
+        'watch',
+        Television
+      );
+    });
+  });
+
+  describe('_extendPurpose() method', () => {
+    it('creates new purpose on the sandbox', () => {
+      const myPerimeter = new (new FactoryGirl('Perimeter'))('myPurpose');
+      sandbox._extendPurpose(myPerimeter);
+      expect(sandbox.myPurpose instanceof (new FactoryGirl('Purpose'))).toBeTrue();
+    });
+
+    it('throws an error if purpose name is not allowed', () => {
+      const myPerimeter = new (new FactoryGirl('Perimeter'))('validPurpose');
+      myPerimeter._purpose = '%%invalidPurpose';
+      expect(() => {
+        sandbox._extendPurpose(myPerimeter);
+      }).toThrowError('Cannot expose purpose %%invalidPurpose to sandbox. Restricted method name.');
+    });
+
+    it('exposes methods to purpose', () => {
+      const foo = () => 'foo';
+      const myPerimeter = new (new FactoryGirl('Perimeter'))('foo', {
+        expose: [
+          'foo'
+        ],
+
+        foo,
+
+        governess
+      });
+
+      sandbox._extendPurpose(myPerimeter);
+
+      expect(sandbox.foo.foo()).toBe('foo');
+    });
+  });
+
+  describe('_learnRules() method', () => {
+    it('teaches governess rules from all perimeters', () => {
+      const myPerimeter = new (new FactoryGirl('Perimeter'))({
+        purpose: 'foo',
+
+        govern: {
+          ['can play']() { return true; },
+          ['cannot watch']: /TV/
+        }
+      });
+
+      sandbox._perimeters = [
+        myPerimeter
+      ];
+
+      expect(sandbox.governess.rules.length).toBe(0);
+
+      sandbox._learnRules();
+
+      expect(sandbox.governess.rules.length).toBe(2);
     });
   });
 });

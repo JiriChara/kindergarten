@@ -105,7 +105,8 @@ export default class HeadGoverness extends BaseObject {
     return true;
   }
 
-  learnRules(perimeter, governObj) {
+  learnRules(perimeter) {
+    const governObj = perimeter.govern || {};
     let keys = 0;
 
     for (const key in governObj) {

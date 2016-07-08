@@ -21,7 +21,7 @@ import {
 
 /**
  * The definition of Sandbox class.
- * The sandbox is place where children can play governed by a govenress.
+ * The sandbox is place where children can play governed by a governess.
  */
 export default class Sandbox extends BaseObject {
   /**
@@ -36,8 +36,6 @@ export default class Sandbox extends BaseObject {
     this.governess = opts.governess || new HeadGoverness(child);
 
     this._perimeters = opts.perimeters || [];
-
-    this.trigger('initialize', this);
   }
 
   /**
@@ -85,11 +83,11 @@ export default class Sandbox extends BaseObject {
 
       // If perimeter has a governess, then she has to learn the rules as well
       if (isGoverness(perimeter.governess)) {
-        perimeter.governess.learnRules(perimeter, perimeter.govern);
+        perimeter.governess.learnRules(perimeter);
       }
 
       // The governess of a sandbox must know all the rules
-      this.governess.learnRules(perimeter, perimeter.govern);
+      this.governess.learnRules(perimeter);
 
       perimeter.sandbox = this;
 
@@ -114,10 +112,10 @@ export default class Sandbox extends BaseObject {
   }
 
   /**
-   * Return true if sandbox already contains a perimeter.
+   * Return all loaded perimeters
    */
-  hasPerimeter(perimeter) {
-    return some(this._perimeters, (p) => p.purpose === perimeter.purpose);
+  getPerimeters() {
+    return this._perimeters || [];
   }
 
   /**
@@ -130,10 +128,14 @@ export default class Sandbox extends BaseObject {
   }
 
   /**
-   * Return all loaded perimeters
+   * Return true if sandbox already contains a perimeter.
    */
-  getPerimeters() {
-    return this._perimeters || [];
+  hasPerimeter(perimeter) {
+    const purpose = isPerimeter(perimeter) ?
+      perimeter.purpose :
+      perimeter;
+
+    return some(this.getPerimeters(), (p) => p.purpose === purpose);
   }
 
   /**
@@ -147,7 +149,7 @@ export default class Sandbox extends BaseObject {
    * Return true if not allowed to do action on target.
    */
   isNotAllowed(...args) {
-    return !this.isAllowed(...args);
+    return this.governess.isNotAllowed(...args);
   }
 
   /**
@@ -176,8 +178,8 @@ export default class Sandbox extends BaseObject {
    * externally.
    */
   _learnRules() {
-    each(this._perimeters || [], (perimeter) => {
-      this.governess.learnRules(perimeter);
-    });
+    each(this.getPerimeters() || [], (perimeter) =>
+      this.governess.learnRules(perimeter)
+    );
   }
 }

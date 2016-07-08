@@ -39,7 +39,7 @@ export default class Perimeter extends BaseObject {
 
     // Perimeter doesn't require governess
     if (isGoverness(this.governess)) {
-      this.governess.learnRules(this, this.govern);
+      this.governess.learnRules(this);
     }
 
     extend(this, omit(opts, ['purpose', 'govern', 'expose', 'governess']));
@@ -126,7 +126,7 @@ export default class Perimeter extends BaseObject {
     if (
       isObject(this._governess) && this._governess instanceof HeadGoverness
     ) {
-      this._governess.learnRules(this, this.govern);
+      this._governess.learnRules(this);
     }
 
     return value;
