@@ -76,6 +76,12 @@ describe('GermanGoverness', () => {
       );
     });
 
+    it('throws an error if it has no reference to perimeter', () => {
+      expect(() => {
+        germanGoverness.governed(() => true, [], 'not a perimeter');
+      }).toThrowError('German governess can only be used within sandbox.');
+    });
+
     it('throws an error when guard method is not happy', () => {
       expect(() => {
         sandbox.playing.watch(cableTv);

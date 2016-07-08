@@ -42,7 +42,6 @@ export default class GermanGoverness extends HeadGoverness {
       return find((perimeter.expose || []), (m) => perimeter[m] === method);
     }
 
-    // TODO: throw a custom error
     throw new Error(
       'German governess can only be used within sandbox.'
     );
