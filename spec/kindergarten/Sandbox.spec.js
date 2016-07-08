@@ -171,4 +171,29 @@ describe('Sandbox', () => {
       expect(sandbox.loadModule(perimeter)).toBe(1);
     });
   });
+
+  describe('getPerimeters() method', () => {
+    it('returns empty array by default', () => {
+      expect(sandbox.getPerimeters()).toEqual([]);
+    });
+
+    it('returns list of loaded perimeters', () => {
+      sandbox.loadModule(perimeter1, perimeter2);
+      expect(sandbox.getPerimeters().length).toBe(2);
+      expect(sandbox.getPerimeters()).toContain(perimeter1);
+      expect(sandbox.getPerimeters()).toContain(perimeter2);
+    });
+  });
+
+  describe('getPerimeter() method', () => {
+    it('returns null if perimeter not found', () => {
+      expect(sandbox.getPerimeter('foo')).toBeNull();
+    });
+
+    it('returns perimeter by it\'s purpose', () => {
+      sandbox.loadModule(perimeter1, perimeter2);
+      expect(sandbox.getPerimeter('foo1')).toBe(perimeter1);
+      expect(sandbox.getPerimeter('foo2')).toBe(perimeter2);
+    });
+  });
 });

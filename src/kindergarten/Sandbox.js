@@ -124,9 +124,16 @@ export default class Sandbox extends BaseObject {
    * Return perimeter by a purpose or null.
    */
   getPerimeter(purpose) {
-    const perimeter = find(this._perimeters, (p) => (p.purpose === purpose));
+    const perimeter = find(this.getPerimeters(), (p) => (p.purpose === purpose));
 
     return isPerimeter(perimeter) ? perimeter : null;
+  }
+
+  /**
+   * Return all loaded perimeters
+   */
+  getPerimeters() {
+    return this._perimeters || [];
   }
 
   /**
