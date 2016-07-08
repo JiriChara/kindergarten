@@ -192,6 +192,12 @@ describe('Perimeter', () => {
     it('returns the given value', () => {
       expect(myPerimeter.sandbox = sandbox).toEqual(sandbox);
     });
+
+    it('throw an error if sandbox is not sanbox', () => {
+      expect(() => {
+        myPerimeter.sandbox = {};
+      }).toThrowError('Perimeter must be imported into a sandbox.');
+    });
   });
 
   describe('getSandbox() method', () => {
@@ -263,6 +269,22 @@ describe('Perimeter', () => {
       expect(() => {
         myPerimeter.guard('watch', Television);
       }).not.toThrowError();
+    });
+  });
+
+  describe('governed() method', () => {
+    it('delegates call to governess', () => {
+      const cb = () => true;
+      const args = [];
+      spyOn(governess, 'governed');
+      myPerimeter.governed(cb, args);
+      expect(governess.governed).toHaveBeenCalledWith(cb, args);
+    });
+
+    it('returs the result of the callback', () => {
+      const cb = () => true;
+      const args = [];
+      expect(myPerimeter.governed(cb, args)).toBe(cb());
     });
   });
 

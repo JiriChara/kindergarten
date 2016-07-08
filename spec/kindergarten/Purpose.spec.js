@@ -38,6 +38,16 @@ describe('Purpose', () => {
     it('stores reference to sandbox', () => {
       expect(purpose._sandbox).toBe(sandbox);
     });
+
+    it('throws an error if sandbox is not a sandbox', () => {
+      expect(() => new Purpose('foo', {}))
+        .toThrowError('Purpose must have a sandbox.');
+    });
+
+    it('throws an error if name is missing', () => {
+      expect(() => new Purpose(undefined, sandbox))
+        .toThrowError('Purpose must have a name.');
+    });
   });
 
   describe('_loadPerimeter() method', () => {
