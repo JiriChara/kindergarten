@@ -99,16 +99,9 @@ export default class HeadGoverness extends BaseObject {
   }
 
   getRules(type) {
-    // TODO: implement new method on type to compare that
-    return filter(this.rules, (rule) => rule.type.type === type);
-  }
-
-  verify(action, ...args) {
-    each(this.getRules(action), (rule) => {
-      rule.verify(...args);
-    });
-
-    return true;
+    return type ?
+      filter(this.rules, (rule) => rule.type.type === type) :
+      this.rules;
   }
 
   learnRules(perimeter) {
@@ -133,6 +126,8 @@ export default class HeadGoverness extends BaseObject {
   }
 
   addRule(...rules) {
+    let counter = 0;
+
     each(rules, (rule) => {
       if (!isRule(rule)) {
         throw new ArgumentError(
@@ -140,36 +135,41 @@ export default class HeadGoverness extends BaseObject {
         );
       }
 
+      ++counter;
       this.rules.push(rule);
     });
 
-    return this.rules.length;
+    return counter;
   }
 
   /**
    * The governess is empty when no rules have been defined
    */
-  isEmpty() {
-    return isEmpty(this.rules);
+  hasAnyRules() {
+    return !isEmpty(this.rules);
   }
 
   /**
    * Perform some stuff unguarded
    */
   doUnguarded(callback, context) {
+    let returnValue;
+
     context = context || null;
 
     if (isFunction(callback)) {
       const before = this.unguarded;
 
       this.unguarded = true;
-      callback.apply(context);
+      returnValue = callback.apply(context);
       this.unguarded = before;
     }
+
+    return returnValue;
   }
 
   isUnguarded() {
-    return !!this.unguarded;
+    return this.unguarded;
   }
 
   isGuarded() {
