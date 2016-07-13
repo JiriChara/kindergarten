@@ -22,9 +22,7 @@ describe('ChildModule integration spec', () => {
         govern: {
           'can watch': [this.Tv],
           'cannot watch': [this.CableTv],
-          ['can eat'](candy) {
-            return this.child.quotum.allows(candy);
-          }
+          'can eat': (candy) => this.child.quotum.allows(candy)
         },
         expose: [
           'watchTv',

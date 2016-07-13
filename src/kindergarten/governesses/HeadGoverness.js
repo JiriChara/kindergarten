@@ -1,6 +1,7 @@
 import {
   each,
   filter,
+  forIn,
   isEmpty,
   isFunction,
   isString,
@@ -114,7 +115,7 @@ export default class HeadGoverness extends BaseObject {
     const governObj = perimeter.govern || {};
     let keys = 0;
 
-    for (const key in governObj) {
+    forIn(governObj, (val, key) => {
       if (governObj.hasOwnProperty(key)) {
         keys++;
 
@@ -126,7 +127,7 @@ export default class HeadGoverness extends BaseObject {
           key, ruleDef
         ));
       }
-    }
+    });
 
     return keys;
   }
@@ -155,7 +156,7 @@ export default class HeadGoverness extends BaseObject {
   /**
    * Perform some stuff unguarded
    */
-  unguarded(callback, context) {
+  doUnguarded(callback, context) {
     context = context || null;
 
     if (isFunction(callback)) {

@@ -8,7 +8,8 @@
     "func-names": 0,
     "comma-dangle": [2, "never"],
     "no-param-reassign": 0,
-    "space-before-function-paren": [2, { "anonymous": "always", "named": "never" }]
+    "space-before-function-paren": [2, { "anonymous": "always", "named": "never" }],
+    "no-underscore-dangle": 0
   },
 
   "globals": {

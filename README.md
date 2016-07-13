@@ -49,7 +49,7 @@ const homePerimeter = createPerimeter({
   govern: {
     'can watch': [Television],
     'cannot watch': [CableTv],
-    ['can eat'](candy) {
+    'can eat': (candy) => {
       // Only 5 candies allowed
       return this.child.eatenCandies < 5;
     },

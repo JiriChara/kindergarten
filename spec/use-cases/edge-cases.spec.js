@@ -78,9 +78,9 @@ describe('ChildModule integration spec', () => {
     const brainFuckPerimeter = new Kindergarten.Perimeter({
       purpose: 'playing',
 
-      ['can watch']() { return true; },
+      'can watch': () => true,
       // cannot has higher priority than can
-      ['cannot watch']() { return true; },
+      'cannot watch': () => true,
 
       expose: [
         'watch'

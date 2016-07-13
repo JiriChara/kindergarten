@@ -185,8 +185,8 @@ describe('Purpose', () => {
       perimeter = new Perimeter({
         purpose: 'foo',
         govern: {
-          ['can watch']() { return true; },
-          ['cannot play']() { return true; }
+          'can watch': () => true,
+          'cannot play': () => true
         }
       });
 
@@ -212,8 +212,8 @@ describe('Purpose', () => {
       perimeter = new Perimeter({
         purpose: 'foo',
         govern: {
-          ['can watch']() { return true; },
-          ['cannot play']() { return true; }
+          'can watch': () => true,
+          'cannot play': () => true
         }
       });
 

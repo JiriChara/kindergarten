@@ -298,8 +298,8 @@ describe('Sandbox', () => {
         purpose: 'foo',
 
         govern: {
-          ['can play']() { return true; },
-          ['cannot watch']: /TV/
+          'can play': () => true,
+          'cannot watch': /TV/
         }
       });
 

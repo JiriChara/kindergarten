@@ -34,11 +34,11 @@ describe('Articles controller integration spec', () => {
       govern: {
         'can read': () => true, // everybody can read articles
 
-        ['can update'](article) {
+        'can update'(article) {
           return this._isAdminOrCreatorOf(article);
         },
 
-        ['can destroy'](article) {
+        'can destroy'(article) {
           return this.isAllowed('update', article);
         }
       },
