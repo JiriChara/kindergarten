@@ -12,29 +12,35 @@ import {
   WrongRuleDefinition
 } from '../errors';
 
-const TYPES = [
-  [
-    'items',
-    (def) => isArray(def) && !isEmpty(def),
-    false // is not strict
-  ],
-
-  [
-    'regex',
-    (def) => isRegExp(def),
-    true // is strict
-  ],
-
-  [
-    'customMethod',
-    (def) => isFunction(def),
-    true // is strict
-  ]
-];
-
 export default class Definition extends BaseObject {
   constructor(rule, def) {
     super();
+
+    this.TYPES = [
+      [
+        // The name of the definition type
+        'items',
+        // Condition that has to be met for raw value
+        (ruleDef) => isArray(ruleDef) && !isEmpty(ruleDef),
+        false // is not strict
+      ],
+
+      [
+        // The name of the definition type
+        'regex',
+        // Condition that has to be met for raw value
+        (ruleDef) => isRegExp(ruleDef),
+        true // is strict
+      ],
+
+      [
+        // The name of the definition type
+        'customMethod',
+        // Condition that has to be met for raw value
+        (ruleDef) => isFunction(ruleDef),
+        true // is strict
+      ]
+    ];
 
     this.rule = rule;
 
@@ -45,50 +51,11 @@ export default class Definition extends BaseObject {
 
   isStrict() {
     return !this.rule.type.isPositive() ||
-      this._isStrict(this._type);
-  }
-
-  isCustom() {
-    return this._type === 'customMethod';
-  }
-
-  get items() {
-    return this._condition('items')(this._items) ?
-      this._items : null;
-  }
-
-  set items(val) {
-    this._items = this._condition('items')(val) ? val : null;
-
-    return val;
-  }
-
-  get regex() {
-    return this._regex || null;
-  }
-
-  set regex(val) {
-    this._regex = this._condition('regex')(val) ? val : null;
-
-    return val;
-  }
-
-  get customMethod() {
-    return this._customMethod || null;
-  }
-
-  set customMethod(val) {
-    this._customMethod = this._condition('customMethod')(val) ? val : null;
-
-    return val;
-  }
-
-  get type() {
-    return this._type;
+      this._isStrict(this.type);
   }
 
   _resolve() {
-    const definitionObj = find(TYPES, (type) => {
+    const definitionObj = find(this.TYPES, (type) => {
       const condition = type[1];
 
       return condition(this.raw);
@@ -100,18 +67,17 @@ export default class Definition extends BaseObject {
       );
     }
 
-    this.ruleContext = this.raw.ruleContext;
+    if (isFunction(this.raw) && this.raw.ruleContext) {
+      this.ruleContext = this.raw.ruleContext;
+    }
 
-    [this._type] = definitionObj;
+    // set the type of the rule definition (items/customMethod/regex/...)
+    [this.type] = definitionObj;
 
-    this[this._type] = this.raw;
+    this[this.type] = this.raw;
   }
 }
 
-Definition.prototype._condition = memoize((type) =>
-  (find(TYPES, (t) => type === t[0])[1] || (() => false)
-));
-
-Definition.prototype._isStrict = memoize((type) =>
-  (find(TYPES, (t) => type === t[0])[2] || (() => false)()
-));
+Definition.prototype._isStrict = memoize(function (type) {
+  return (find(this.TYPES, (t) => type === t[0]) || [])[2] || false;
+});

@@ -85,7 +85,6 @@
   },
   "dependencies": {
     "hookies": "^1.0.7",
-    "lodash": "^4.1.0",
-    "memoizejs": "^0.1.1"
+    "lodash": "^4.1.0"
   }
 }
