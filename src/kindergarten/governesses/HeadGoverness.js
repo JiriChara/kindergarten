@@ -114,7 +114,11 @@ export default class HeadGoverness extends BaseObject {
 
         const ruleDef = governObj[key];
 
-        ruleDef.ruleContext = ruleDef.ruleContext || perimeter;
+        // function rules must be called in context of perimeter to have access
+        // to `this.child`
+        if (isFunction(ruleDef)) {
+          ruleDef.ruleContext = ruleDef.ruleContext || perimeter;
+        }
 
         this.addRule(new Rule(
           key, ruleDef
