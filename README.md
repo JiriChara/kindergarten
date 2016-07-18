@@ -35,7 +35,8 @@ Child in Kindergarten represents you current user.
 ```javascript
 import {
   createPerimeter,
-  createSandbox
+  createSandbox,
+  guard // guard decorator
 } from 'kindergarten';
 
 import Child from './Child';
@@ -68,8 +69,10 @@ const homePerimeter = createPerimeter({
     console.log(`${this.childName()} is watching ${tv.type}`);
   },
 
+  @guard
   eat(candy) {
-    this.guard('eat', candy);
+    // decorator will call this following line automatically:
+    // this.guard('eat', candy);
 
     console.log(`${this.childName()} is eating a candy #${++this.child.eatenCandies}`);
   },
