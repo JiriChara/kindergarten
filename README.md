@@ -201,11 +201,11 @@ const perimeter = createPerimeter({
 
 const currentUser = { role: 'regularGuy' };
 
-const sandbox = createSandbox(currentUser);
+const sandbox = createSandbox(currentUser, {
+  governess: new GermanGoverness(currentUser)
+});
 
 sandbox.loadModule(perimeter);
-
-sandbox.governess = new GermanGoverness(currentUser);
 
 sandbox.articles.update(currentUser); // throws Kindergarten.AccessDenied
 ```
