@@ -17,7 +17,7 @@ describe('createSandbox', () => {
       (new FactoryGirl('createPerimeter'))({
         purpose: 'foo',
         govern: {
-          'can watch': {}
+          'can watch': /tv/
         }
       })
     ];
@@ -40,6 +40,6 @@ describe('createSandbox', () => {
   });
 
   it('initializes perimeters ', () => {
-    expect(sandbox.getPerimeters()).toBe(perimeters);
+    expect(sandbox.getPerimeters()).toEqual(perimeters);
   });
 });

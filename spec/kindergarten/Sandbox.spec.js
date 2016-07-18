@@ -107,7 +107,7 @@ describe('Sandbox', () => {
         perimeters
       });
 
-      expect(mySandbox._perimeters).toBe(perimeters);
+      expect(mySandbox._perimeters).toEqual(perimeters);
     });
   });
 
