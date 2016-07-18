@@ -1,7 +1,8 @@
 import {
   each,
   find,
-  some
+  some,
+  isEmpty
 } from 'lodash';
 
 import HeadGoverness from './governesses/HeadGoverness';
@@ -35,7 +36,12 @@ export default class Sandbox extends BaseObject {
     // Sandbox is governed by a HeadGoverness by default
     this.governess = opts.governess || new HeadGoverness(child);
 
-    this._perimeters = opts.perimeters || [];
+    this._perimeters = [];
+    const perimeters = opts.perimeters || this._perimeters;
+
+    if (!isEmpty(perimeters)) {
+      this.loadPerimeter(...perimeters);
+    }
   }
 
   /**

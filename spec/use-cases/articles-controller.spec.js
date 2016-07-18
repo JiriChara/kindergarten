@@ -1,4 +1,7 @@
 import Kindergarten from '../../src/Kindergarten';
+import {
+  guard
+} from '../../src/kindergarten/decorators';
 
 import FactoryGirl from '../support/FactoryGirl';
 
@@ -56,21 +59,18 @@ describe('Articles controller integration spec', () => {
         ) && !this.child.isBanned;
       },
 
+      @guard
       read(article, attrs) {
-        this.guard('read', article);
-
         return article.read(attrs);
       },
 
+      @guard
       update(article, attrs) {
-        this.guard('update', article);
-
         return article.update(attrs);
       },
 
+      @guard
       destroy(article, attrs) {
-        this.guard('update', article);
-
         return article.destroy(attrs);
       }
     });
@@ -132,12 +132,12 @@ describe('Articles controller integration spec', () => {
     // Child is not the author of the article so she can't destroy it
     expect(() => {
       articlesController.destroy(1);
-    }).toThrowError('Child is not allowed to update the target.');
+    }).toThrowError('Child is not allowed to destroy the target.');
 
     // Regular User destroy
     articlesController = new ArticlesController(regularUser);
     expect(() => {
       articlesController.destroy(1);
-    }).toThrowError('Child is not allowed to update the target.');
+    }).toThrowError('Child is not allowed to destroy the target.');
   });
 });

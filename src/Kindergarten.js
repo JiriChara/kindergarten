@@ -5,11 +5,6 @@ import {
   EasyGoverness,
   GermanGoverness,
   HeadGoverness,
-  isGoverness,
-  isPerimeter,
-  isPurpose,
-  isRule,
-  isSandbox,
   Logger,
   MiddlewareGoverness,
   NoExposedMethodError,
@@ -27,7 +22,13 @@ import {
   WrongRuleDefinition,
   createPerimeter,
   createRule,
-  createSandbox
+  createSandbox,
+  guard,
+  isGoverness,
+  isPerimeter,
+  isPurpose,
+  isRule,
+  isSandbox
 } from './kindergarten';
 
 /**
@@ -80,11 +81,6 @@ export {
   EasyGoverness,
   GermanGoverness,
   HeadGoverness,
-  isGoverness,
-  isPerimeter,
-  isPurpose,
-  isRule,
-  isSandbox,
   Logger,
   MiddlewareGoverness,
   NoExposedMethodError,
@@ -102,5 +98,11 @@ export {
   WrongRuleDefinition,
   createPerimeter,
   createRule,
-  createSandbox
+  createSandbox,
+  guard,
+  isGoverness,
+  isPerimeter,
+  isPurpose,
+  isRule,
+  isSandbox
 };
