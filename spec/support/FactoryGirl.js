@@ -9,6 +9,7 @@ import Sandbox from '../../src/kindergarten/Sandbox';
 import createRule from '../../src/kindergarten/createRule';
 import createSandbox from '../../src/kindergarten/createSandbox';
 import createPerimeter from '../../src/kindergarten/createPerimeter';
+import guard from '../../src/kindergarten/decorators/guard';
 import {
   HeadGoverness,
   EasyGoverness,
@@ -181,5 +182,9 @@ export default class FactoryGirl {
 
   createSandboxFactory() {
     return createSandbox;
+  }
+
+  guardFactory() {
+    return guard;
   }
 }

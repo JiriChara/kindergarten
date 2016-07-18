@@ -37,6 +37,10 @@ import {
   WrongRuleDefinition
 } from './errors';
 
+import {
+  guard
+} from './decorators';
+
 export {
   AccessDenied,
   ArgumentError,
@@ -44,11 +48,6 @@ export {
   EasyGoverness,
   GermanGoverness,
   HeadGoverness,
-  isGoverness,
-  isPerimeter,
-  isPurpose,
-  isRule,
-  isSandbox,
   Logger,
   MiddlewareGoverness,
   NoExposedMethodError,
@@ -66,5 +65,11 @@ export {
   WrongRuleDefinition,
   createPerimeter,
   createRule,
-  createSandbox
+  createSandbox,
+  guard,
+  isGoverness,
+  isPerimeter,
+  isPurpose,
+  isRule,
+  isSandbox
 };
