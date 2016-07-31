@@ -7,7 +7,7 @@
 [![NPM Version](https://img.shields.io/npm/v/kindergarten.svg)](https://www.npmjs.com/package/kindergarten)
 [![ESDoc](https://doc.esdoc.org/github.com/JiriChara/kindergarten/badge.svg)](https://doc.esdoc.org/github.com/JiriChara/kindergarten/)
 
-![Kindergarten](https://raw.github.com/JiriChara/kindergarten/master/images/kindergarten.png) v1.1.1
+![Kindergarten](https://raw.github.com/JiriChara/kindergarten/master/images/kindergarten.png) v1.2.0
 
 Kindergarten is an implementation of the sandbox pattern in JavaScript with some extra goodies. Kindergarten helps you to separate your business logic into modules and add some security layer over them. Kindergarten will work well with all frameworks and libraries you like: React, Angular, Ember, Redux, Backbone and many more.
 

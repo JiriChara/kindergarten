@@ -75,6 +75,10 @@ export default class Sandbox extends BaseObject {
     return value;
   }
 
+  guard(...args) {
+    return this.governess.guard(...args);
+  }
+
   /**
    * Load perimeters.
    * Returns the count of addded perimeters.
