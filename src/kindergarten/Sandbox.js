@@ -28,16 +28,14 @@ export default class Sandbox extends BaseObject {
   /**
    * Create a new empty sandbox.
    */
-  constructor(child = null, opts = {}) {
+  constructor(child = null, { governess = new HeadGoverness(child), perimeters = [] } = {}) {
     super(); // init publish/subscribe
 
     this.child = child;
 
-    // Sandbox is governed by a HeadGoverness by default
-    this.governess = opts.governess || new HeadGoverness(child);
+    this.governess = governess;
 
     this._perimeters = [];
-    const perimeters = opts.perimeters || this._perimeters;
 
     if (!isEmpty(perimeters)) {
       this.loadPerimeter(...perimeters);
