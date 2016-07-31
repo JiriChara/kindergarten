@@ -64,12 +64,12 @@ describe('Articles controller integration spec', () => {
         return article.read(attrs);
       },
 
-      @guard
+      @guard('update')
       update(article, attrs) {
         return article.update(attrs);
       },
 
-      @guard
+      @guard()
       destroy(article, attrs) {
         return article.destroy(attrs);
       }

@@ -20,15 +20,22 @@ describe('guard', () => {
 
       govern: {
         'can watch': [Tv],
-        'cannot watch': [CableTv]
+        'cannot watch': [CableTv],
+        'cannot game': () => true
       },
 
       expose: [
-        'watch'
+        'watch',
+        'play'
       ],
 
       @guard
       watch() {
+        return true;
+      },
+
+      @guard('game')
+      play() {
         return true;
       }
     });
@@ -40,7 +47,7 @@ describe('guard', () => {
     });
 
     foo = {
-      @guard
+      @guard()
       foo() {
         return true;
       }
@@ -60,6 +67,12 @@ describe('guard', () => {
   it('throws an error if used outside of perimeter', () => {
     expect(() => {
       foo.foo();
-    }).toThrowError('Guard decorator can only be used within perimeter.');
+    }).toThrowError('Guard decorator can only be used within perimeter or sandbox.');
+  });
+
+  it('throws error if child is not allowed to do specific action', () => {
+    expect(() => {
+      sandbox.testing.play();
+    }).toThrowError('Child is not allowed to game the target.');
   });
 });
