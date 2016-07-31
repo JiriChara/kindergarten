@@ -33,6 +33,14 @@ export default class Sandbox extends BaseObject {
 
     this.child = child;
 
+    if (!isGoverness(governess)) {
+      try {
+        const Governess = governess;
+        governess = new Governess(this.child);
+      } catch (ignore) {
+        // ignore...
+      }
+    }
     this.governess = governess;
 
     this._perimeters = [];
