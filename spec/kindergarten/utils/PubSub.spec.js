@@ -50,15 +50,7 @@ describe('PubSub', () => {
   });
 
   describe('triggerAsync', () => {
-    beforeEach(() => {
-      jasmine.clock().install();
-    });
-
-    afterEach(() => {
-      jasmine.clock().uninstall();
-    });
-
-    it('is proceed the callback asynchronously', function () {
+    it('proceeds the callback asynchronously', function (done) {
       let counter = 0;
 
       this.subject.on('foo', () => {
@@ -69,12 +61,13 @@ describe('PubSub', () => {
 
       expect(counter).toBe(0);
 
-      jasmine.clock().tick(1);
-
-      expect(counter).toBe(1);
+      setTimeout(() => {
+        expect(counter).toBe(1);
+        done();
+      }, 1);
     });
 
-    it('calls the cb with right context and arguments', function () {
+    it('calls the cb with right context and arguments', function (done) {
       const testContext = this;
       let counter = 0;
 
@@ -88,9 +81,10 @@ describe('PubSub', () => {
 
       this.subject.triggerAsync('foo', true, 1);
 
-      jasmine.clock().tick(1);
-
-      expect(counter).toBe(1); // make sure test got executed
+      setTimeout(() => {
+        expect(counter).toBe(1); // make sure test got executed
+        done();
+      }, 1);
     });
   });
 });

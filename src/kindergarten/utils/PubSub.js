@@ -1,14 +1,9 @@
-import Hookies from 'hookies';
+import { Hooks } from 'hookies';
 
 /**
  * Override trigger method from hookies to be synchronous by default
  */
-export default class PubSub extends Hookies.Hooks {
-  constructor() {
-    super();
-    this.hookiesBase = this;
-  }
-
+export default class PubSub extends Hooks {
   /**
    * Trigger all events synchronously by default
    */
