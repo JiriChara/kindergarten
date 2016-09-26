@@ -16,8 +16,8 @@ import {
  * called the `guard()`
  */
 export default class StrictGoverness extends HeadGoverness {
-  constructor(child) {
-    super(child);
+  constructor(...args) {
+    super(...args);
     this._guardCount = 0;
     this._governedCount = 0;
   }

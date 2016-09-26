@@ -35,7 +35,17 @@ export default class Perimeter extends BaseObject {
     this.purpose = this.purpose || purpose;
     this.govern = opts.govern || {};
     this.expose = opts.expose || [];
-    this.governess = opts.governess;
+
+    if (!isGoverness(opts.governess)) {
+      try {
+        const Governess = opts.governess;
+        this.governess = new Governess();
+      } catch (ignore) {
+        // ignore...
+      }
+    }
+
+    this.governess = this.governess || opts.governess;
 
     // Perimeter doesn't require governess
     if (isGoverness(this.governess)) {

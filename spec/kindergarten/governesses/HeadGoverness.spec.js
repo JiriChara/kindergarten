@@ -23,9 +23,7 @@ describe('HeadGoverness', () => {
     HeadGoverness = new FactoryGirl('HeadGoverness');
     Rule = new FactoryGirl('Rule');
 
-    headGoverness = new HeadGoverness(
-      child
-    );
+    headGoverness = new HeadGoverness();
 
     rule1 = new Rule(
       'can watch', [Tv]
@@ -39,10 +37,6 @@ describe('HeadGoverness', () => {
   });
 
   describe('constructor', () => {
-    it('stores reference to child', () => {
-      expect(headGoverness.child).toBe(child);
-    });
-
     it('initializes rules to empty array', () => {
       const myGoverness = new HeadGoverness({});
       expect(myGoverness.rules).toBeEmptyArray();

@@ -25,9 +25,7 @@ describe('GermanGoverness', () => {
     Perimeter = new FactoryGirl('Perimeter');
     Sandbox = new FactoryGirl('Sandbox');
 
-    germanGoverness = new GermanGoverness(
-      child
-    );
+    germanGoverness = new GermanGoverness();
 
     perimeter = new Perimeter({
       purpose: 'playing',
@@ -58,8 +56,7 @@ describe('GermanGoverness', () => {
   });
 
   describe('constructor', () => {
-    it('stores reference to child', () => {
-      expect(germanGoverness.child).toBe(child);
+    it('stores sets unguarded', () => {
       expect(germanGoverness.unguarded).toBe(false);
     });
   });

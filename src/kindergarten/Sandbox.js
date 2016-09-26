@@ -36,7 +36,7 @@ export default class Sandbox extends BaseObject {
     if (!isGoverness(governess)) {
       try {
         const Governess = governess;
-        governess = new Governess(this.child);
+        governess = new Governess();
       } catch (ignore) {
         // ignore...
       }

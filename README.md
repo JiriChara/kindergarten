@@ -7,7 +7,7 @@
 [![NPM Version](https://img.shields.io/npm/v/kindergarten.svg)](https://www.npmjs.com/package/kindergarten)
 [![ESDoc](https://doc.esdoc.org/github.com/JiriChara/kindergarten/badge.svg)](https://doc.esdoc.org/github.com/JiriChara/kindergarten/)
 
-![Kindergarten](https://raw.github.com/JiriChara/kindergarten/master/images/kindergarten.png) v1.2.2
+![Kindergarten](https://raw.github.com/JiriChara/kindergarten/master/images/kindergarten.png) v1.3.0
 
 Kindergarten is an implementation of the sandbox pattern in JavaScript with some extra goodies. Kindergarten helps you to separate your business logic into modules and add some security layer over them. Kindergarten will work well with all frameworks and libraries you like: React, Angular, Ember, Redux, Backbone and many more.
 
@@ -141,7 +141,7 @@ const rule1 = Rule.create('can create', [Comment]);
 
 const rule2 = Rule.create('can create', [Like]);
 
-const governess = new HeadGoverness(child);
+const governess = new HeadGoverness();
 governess.addRule(rule1, rule2);
 
 governess.guard('create', new Like()); // no problem!
@@ -297,7 +297,7 @@ const perimeter = createPerimeter({
 });
 
 const sandbox = createSandbox(child, {
-  governess: new MiddlewareGoverness(child, (governess, exposedMethod, exposedMethodCallingArgs, callingContext) => {
+  governess: new MiddlewareGoverness((governess, exposedMethod, exposedMethodCallingArgs, callingContext) => {
     // do somethig here
   });
 });
