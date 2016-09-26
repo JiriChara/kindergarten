@@ -1,7 +1,6 @@
 import FactoryGirl from '../../support/FactoryGirl';
 
 describe('StrictGoverness', () => {
-  let child;
   let Tv;
   let CableTv;
   let tv;
@@ -13,7 +12,6 @@ describe('StrictGoverness', () => {
   let rule2;
 
   beforeEach(() => {
-    child = new FactoryGirl('child');
     Tv = new FactoryGirl('Tv');
     CableTv = new FactoryGirl('CableTv');
 
@@ -23,9 +21,7 @@ describe('StrictGoverness', () => {
     StrictGoverness = new FactoryGirl('StrictGoverness');
     Rule = new FactoryGirl('Rule');
 
-    strictGoverness = new StrictGoverness(
-      child
-    );
+    strictGoverness = new StrictGoverness();
 
     rule1 = new Rule('can watch', [Tv]);
     rule2 = new Rule('cannot watch', [CableTv]);
@@ -34,8 +30,7 @@ describe('StrictGoverness', () => {
   });
 
   describe('constructor', () => {
-    it('stores reference to child', () => {
-      expect(strictGoverness.child).toBe(child);
+    it('sets unguarded', () => {
       expect(strictGoverness.unguarded).toBe(false);
     });
 

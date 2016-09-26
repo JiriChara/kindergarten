@@ -1,10 +1,10 @@
 import HeadGoverness from './HeadGoverness';
 
 export default class MiddlewareGoverness extends HeadGoverness {
-  constructor(child, middleware) {
-    super(child);
+  constructor(...args) {
+    super(args);
 
-    this.middleware = middleware;
+    this.middleware = args[0];
   }
 
   governed(...args) {

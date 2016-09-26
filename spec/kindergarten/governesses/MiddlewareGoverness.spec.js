@@ -23,7 +23,7 @@ describe('MiddlewareGoverness', () => {
     Sandbox = new FactoryGirl('Sandbox');
 
     middlewareGoverness = new MiddlewareGoverness(
-      child, middleware
+      middleware
     );
 
     perimeter = new Perimeter({

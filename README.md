@@ -141,7 +141,7 @@ const rule1 = Rule.create('can create', [Comment]);
 
 const rule2 = Rule.create('can create', [Like]);
 
-const governess = new HeadGoverness(child);
+const governess = new HeadGoverness();
 governess.addRule(rule1, rule2);
 
 governess.guard('create', new Like()); // no problem!
@@ -297,7 +297,7 @@ const perimeter = createPerimeter({
 });
 
 const sandbox = createSandbox(child, {
-  governess: new MiddlewareGoverness(child, (governess, exposedMethod, exposedMethodCallingArgs, callingContext) => {
+  governess: new MiddlewareGoverness((governess, exposedMethod, exposedMethodCallingArgs, callingContext) => {
     // do somethig here
   });
 });

@@ -20,9 +20,8 @@ export default class HeadGoverness extends BaseObject {
   /**
    * Creates a new instance of the HeadGoverness
    */
-  constructor(child) {
+  constructor() {
     super();
-    this.child = child;
     this.rules = [];
   }
 
