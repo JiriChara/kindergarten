@@ -38,7 +38,8 @@ import {
 } from './errors';
 
 import {
-  guard
+  guard,
+  sandbox
 } from './decorators';
 
 export {
@@ -67,6 +68,7 @@ export {
   createRule,
   createSandbox,
   guard,
+  sandbox,
   isGoverness,
   isPerimeter,
   isPurpose,

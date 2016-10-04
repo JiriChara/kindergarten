@@ -51,7 +51,7 @@ describe('ChildModule integration spec', () => {
       }
     });
 
-    const sandbox = this.Kindergarten.sandbox(this.child);
+    const sandbox = this.Kindergarten.createSandbox(this.child);
     sandbox.loadModule(childModule);
     sandbox.loadModule(childModule); // should just skip
     sandbox.loadPerimeter(childModule); // should just skip
