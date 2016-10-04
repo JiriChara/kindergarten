@@ -23,6 +23,11 @@ import {
   WrongRuleDefinition
 } from '../src/kindergarten/errors';
 
+import {
+  guard,
+  sandbox
+} from '../src/kindergarten/decorators';
+
 describe('Kindergarten', () => {
   beforeEach(function () {
     this.Kindergarten = Kindergarten;
@@ -78,6 +83,18 @@ describe('Kindergarten', () => {
     expect(this.Kindergarten.VERSION).toBeDefined();
   });
 
+  describe('exposed decorators', () => {
+    it('exposes guard', function () {
+      expect(this.Kindergarten.guard).toBe(guard);
+      expect(this.Kindergarten.guard).toBeDefined();
+    });
+
+    it('exposes sandbox', function () {
+      expect(this.Kindergarten.sandbox).toBe(sandbox);
+      expect(this.Kindergarten.sandbox).toBeDefined();
+    });
+  });
+
   describe('exposed errors', () => {
     it('exposes AccessDenied', function () {
       expect(this.Kindergarten.AccessDenied).toBe(AccessDenied);
@@ -112,22 +129,6 @@ describe('Kindergarten', () => {
     it('exposes WrongRuleDefinition', function () {
       expect(this.Kindergarten.WrongRuleDefinition).toBe(WrongRuleDefinition);
       expect(this.Kindergarten.WrongRuleDefinition).toBeDefined();
-    });
-  });
-
-  describe('sandbox() method', () => {
-    beforeEach(function () {
-      this.child = {};
-    });
-
-    it('returns new sandbox', function () {
-      expect(Kindergarten.sandbox(this.child) instanceof Sandbox).toBe(true);
-    });
-
-    it('calls Sandbox with child', function () {
-      spyOn(Kindergarten, 'Sandbox');
-      Kindergarten.sandbox(this.child);
-      expect(Kindergarten.Sandbox).toHaveBeenCalledWith(this.child);
     });
   });
 });

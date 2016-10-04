@@ -35,7 +35,7 @@ describe('ChildModule integration spec', () => {
       eat() {}
     });
 
-    const sandbox = this.Kindergarten.sandbox(this.child);
+    const sandbox = this.Kindergarten.createSandbox(this.child);
     sandbox.loadModule(brainFuckPerimeter);
 
     _.each([this.Tv, this.CableTv], (Thing) => {
@@ -64,7 +64,7 @@ describe('ChildModule integration spec', () => {
 
     brainFuckPerimeter.governess = new Kindergarten.GermanGoverness(this.child);
 
-    const sandbox = this.Kindergarten.sandbox(this.child);
+    const sandbox = this.Kindergarten.createSandbox(this.child);
     sandbox.loadModule(brainFuckPerimeter);
 
     _.each([this.Tv, this.CableTv], (Thing) => {
@@ -93,7 +93,7 @@ describe('ChildModule integration spec', () => {
 
     brainFuckPerimeter.governess = new Kindergarten.GermanGoverness(this.child);
 
-    const sandbox = this.Kindergarten.sandbox(this.child);
+    const sandbox = this.Kindergarten.createSandbox(this.child);
     sandbox.loadModule(brainFuckPerimeter);
 
     _.each([this.Tv, this.CableTv], (Thing) => {
@@ -123,7 +123,7 @@ describe('ChildModule integration spec', () => {
       governess: new Kindergarten.HeadGoverness(user)
     });
 
-    const sandbox = Kindergarten.sandbox(user);
+    const sandbox = Kindergarten.createSandbox(user);
 
     expect(sandbox.loadModule(perimeter1, perimeter2)).toBe(2);
 
@@ -150,7 +150,7 @@ describe('ChildModule integration spec', () => {
       }
     });
 
-    const sandbox = Kindergarten.sandbox(user);
+    const sandbox = Kindergarten.createSandbox(user);
 
     expect(sandbox.loadModule(perimeter1, perimeter2)).toBe(2);
 
@@ -169,7 +169,7 @@ describe('ChildModule integration spec', () => {
       }
     });
 
-    const sandbox = Kindergarten.sandbox(user);
+    const sandbox = Kindergarten.createSandbox(user);
 
     expect(sandbox.loadModule(perimeter)).toBe(1);
 

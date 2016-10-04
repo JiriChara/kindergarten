@@ -24,6 +24,7 @@ import {
   createRule,
   createSandbox,
   guard,
+  sandbox,
   isGoverness,
   isPerimeter,
   isPurpose,
@@ -63,13 +64,11 @@ const Kindergarten = {
   StrictGoverness,
   VERSION,
   WrongRuleDefinition,
+  guard,
+  sandbox,
   createPerimeter,
   createRule,
-  createSandbox,
-
-  sandbox(child) {
-    return new Kindergarten.Sandbox(child);
-  }
+  createSandbox
 };
 
 export default Kindergarten;
@@ -100,6 +99,7 @@ export {
   createRule,
   createSandbox,
   guard,
+  sandbox,
   isGoverness,
   isPerimeter,
   isPurpose,
