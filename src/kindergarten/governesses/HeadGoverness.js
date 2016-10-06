@@ -5,7 +5,8 @@ import {
   isEmpty,
   isFunction,
   isString,
-  some
+  some,
+  find
 } from 'lodash';
 
 import Rule from '../Rule';
@@ -54,15 +55,27 @@ export default class HeadGoverness extends BaseObject {
    */
   isAllowed(action, ...args) {
     if (this.isGuarded()) {
+      const verifiedRules = [];
+
       // Is there any rule explicitly allowing the child to do that?
-      const hasAllowRule = some(this.getRules(action), (rule) =>
-        isRule(rule) && rule.type.isPositive && rule.verify(...args)
-      );
+      const hasAllowRule = some(this.getRules(action), (rule) => {
+        const verifiedRule = {
+          id: rule.type.raw,
+          result: rule.verify(...args)
+        };
+        verifiedRules.push(verifiedRule);
+
+        return isRule(rule) && rule.type.isPositive && verifiedRule.result;
+      });
 
       // Is there any rule strictly disallowing the child to do that?
-      const hasStrictDisallowRule = some(this.getRules(action), (rule) =>
-        isRule(rule) && !rule.verify(...args) && rule.definition.isStrict
-      );
+      const hasStrictDisallowRule = some(this.getRules(action), (rule) => {
+        const verifiedRule = find(verifiedRules, r => r.id === rule.type.raw);
+
+        return isRule(rule) &&
+          !(verifiedRule ? verifiedRule.result : rule.verify(...args)) &&
+          rule.definition.isStrict;
+      });
 
       if (!hasAllowRule || hasStrictDisallowRule) {
         return false;

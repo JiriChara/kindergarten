@@ -11,6 +11,8 @@ describe('HeadGoverness', () => {
   let headGoverness;
   let rule1;
   let rule2;
+  let rule3;
+  let spiedRuleFn;
 
   beforeEach(() => {
     child = new FactoryGirl('child');
@@ -33,7 +35,13 @@ describe('HeadGoverness', () => {
       'cannot watch', [CableTv]
     );
 
-    headGoverness.addRule(rule1, rule2);
+    spiedRuleFn = jasmine.createSpy('rule').and.returnValue(true);
+
+    rule3 = new Rule(
+      'can doSomething', spiedRuleFn
+    );
+
+    headGoverness.addRule(rule1, rule2, rule3);
   });
 
   describe('constructor', () => {
@@ -112,6 +120,11 @@ describe('HeadGoverness', () => {
       expect(headGoverness.isAllowed('watch', cableTv)).toBeFalse();
       expect(headGoverness.isAllowed('watch', {})).toBeFalse();
     });
+
+    it('calls rule function just once', () => {
+      expect(headGoverness.isAllowed('doSomething')).toBeTrue();
+      expect(spiedRuleFn.calls.count()).toBe(1);
+    });
   });
 
   describe('isNotAllowed() method', () => {
@@ -174,12 +187,12 @@ describe('HeadGoverness', () => {
     });
 
     it('return rules by type', () => {
-      const rule3 = new Rule(
+      const myRule = new Rule(
         'cannot foo', /foo/
       );
-      headGoverness.addRule(rule3);
+      headGoverness.addRule(myRule);
       expect(headGoverness.getRules('watch')).toContain(rule1, rule2);
-      expect(headGoverness.getRules('watch')).not.toContain(rule3);
+      expect(headGoverness.getRules('watch')).not.toContain(myRule);
     });
 
     it('returns empty array if no rules found', () => {
