@@ -2,11 +2,9 @@ import {
   each,
   filter,
   forIn,
-  isEmpty,
   isFunction,
   isString,
-  some,
-  find
+  isEmpty
 } from 'lodash';
 
 import Rule from '../Rule';
@@ -55,29 +53,26 @@ export default class HeadGoverness extends BaseObject {
    */
   isAllowed(action, ...args) {
     if (this.isGuarded()) {
-      const verifiedRules = [];
+      const allowRules = [];
+      const strictDisallowRules = [];
 
-      // Is there any rule explicitly allowing the child to do that?
-      const hasAllowRule = some(this.getRules(action), (rule) => {
-        const verifiedRule = {
-          id: rule.type.raw,
-          result: rule.verify(...args)
-        };
-        verifiedRules.push(verifiedRule);
+      each(this.getRules(action), (rule) => {
+        const verificationResult = rule.verify(...args);
 
-        return isRule(rule) && rule.type.isPositive && verifiedRule.result;
+        if (isRule(rule)) {
+          // Is there any rule explicitly allowing the child to do that?
+          if (rule.type.isPositive && verificationResult) {
+            allowRules.push(rule);
+          }
+
+          // Is there any rule strictly disallowing the child to do that?
+          if (!verificationResult && rule.definition.isStrict) {
+            strictDisallowRules.push(rule);
+          }
+        }
       });
 
-      // Is there any rule strictly disallowing the child to do that?
-      const hasStrictDisallowRule = some(this.getRules(action), (rule) => {
-        const verifiedRule = find(verifiedRules, r => r.id === rule.type.raw);
-
-        return isRule(rule) &&
-          !(verifiedRule ? verifiedRule.result : rule.verify(...args)) &&
-          rule.definition.isStrict;
-      });
-
-      if (!hasAllowRule || hasStrictDisallowRule) {
+      if (isEmpty(allowRules) || !isEmpty(strictDisallowRules)) {
         return false;
       }
     }
