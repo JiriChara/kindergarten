@@ -15,7 +15,7 @@ Kindergarten is an implementation of the sandbox pattern in JavaScript with some
 
 ### Perimeter
 
-Perimeter is a module that represents an area in you application (garden, kitchen, table, button etc.). Perimeter defines methods that should be exposed and rules that must be followed on that particular area.
+Perimeter is a module that represents an area in you application (garden, kitchen, table, button, admin page etc.). Perimeter defines methods that should be exposed and rules that must be followed on that particular area.
 
 ### Sandbox
 
@@ -43,7 +43,7 @@ import Child from './Child';
 import Television from './Television';
 import CableTv from './CableTv';
 
-// Definition of Perimeter
+// Definition of the perimeter
 const homePerimeter = createPerimeter({
   purpose: 'home',
 
@@ -54,7 +54,7 @@ const homePerimeter = createPerimeter({
       // Only 5 candies allowed
       return this.child.eatenCandies < 5;
     },
-    'cannot visitWebPage': /sex|porn|xxx/
+    'cannot visitWebPage': /drugs|sex|rock-and-roll/
   },
 
   expose: [
@@ -108,7 +108,7 @@ for (let i = 0; i <= 6; i++) {
 sandbox.home.browseInternet('http://google.com'); // no problem
 
 // Throws AccessDenied error
-sandbox.home.browseInternet('http://some-website-that-contains-porn.com');
+sandbox.home.browseInternet('http://some-website-that-contains-sex.com');
 ```
 
 ## Installation
@@ -119,11 +119,88 @@ sandbox.home.browseInternet('http://some-website-that-contains-porn.com');
 npm install kindergarten
 ```
 
-## Advanced Usage
+## Usage
 
-Let's look on some classes that are available in Kindergarten.
+### Sandbox
+
+The Sandbox is where the magic happens, that's why Kindergarten makes it really easy to create new object that acts like a sandbox. For instance you can inherit from `Sandbox` class:
+
+```javascript
+import { Sandbox } from 'kindergarten';
+
+class MyClass extends Sandbox {
+  constructor(currentUser, perimeters) {
+    this.child = currentUser
+    // same as this.loadModule(...perimeters)
+    this.loadPerimeter(...perimeters);
+  }
+
+  @guard
+  someProtectedMethod() {
+    // this method will be guarded
+  }
+}
+```
+
+You can also use `@sandbox` decorator, where inheritance is not applicable:
+
+```javascript
+import { sandbox, createPerimeter } from 'kindergarten';
+import { Component } from 'react';
+
+const adminPerimeter = createPerimeter({
+  purpose: 'admin',
+
+  govern: {
+    'can route': function (location) {
+      return location === 'admin' ?
+        (this.child && this.child.isAdmin) :
+        true;
+    }
+  }
+});
+
+@sandbox(null, {
+  perimeters: [
+    adminPerimeter
+  ]
+})
+@connect(
+  state => ({ child: state.auth.user })
+)
+export default class BaseRouter extends Component {
+  guardRoute(route) {
+    return (nextState, replace, callback) =>
+      this.guard('route', route, nextState, replace, callback);
+  }
+
+  render() {
+    return (
+      <Router history={history}>
+        <Route path="/" component={App}>
+          <IndexRoute component={HomePage} />
+          <Route path="about" component={AboutPage} />
+          <Route path="contact" component={ContactPage} />
+          <Route path="admin" component={AdminPage} onEnter={this.guardRoute('admin')} />
+          <Route path="login" component={LoginPage} />
+        </Route>
+      </Router>
+    );
+  }
+}
+```
+
+If you don't want to use decorators, then you can use `sandbox` method directly:
+
+```javascript
+sandbox(child, sandboxOptions)(class MyComponent extends Component {
+  // ...
+});
+```
 
 ### Rule
+
+`Rule` class is used internally be kindergarten.
 
 ```javascript
 import { Rule } from 'kindergarten';
@@ -142,7 +219,7 @@ const rule1 = Rule.create('can create', [Comment]);
 const rule2 = Rule.create('can create', [Like]);
 
 const governess = new HeadGoverness();
-governess.addRule(rule1, rule2);
+governess.addRule(rule1, rule2); // Head Governess will learn the rules
 
 governess.guard('create', new Like()); // no problem!
 governess.isAllowed('create', Comment); // true
@@ -153,30 +230,63 @@ governess.isAllowed('create', {}); // false
 
 ![Governess](https://raw.github.com/JiriChara/kindergarten/master/images/governess.png)
 
-Governess is responsible for a child on a sandbox. Sandbox is guarded by `HeadGoverness` by default, but you can replace her by your own governess or by one of the predefined governesses: `GermanGoverness`, `StrictGoverness`, `EasyGoverness` or `MiddlewareGoverness`.
+The `guard()` method throws `AccessDenied` error by default, but sometimes we want something else. In react-router example above we want to redirect user to login page rather than throwing an error. We could change our `guardRoute` method to do that for us, but there is a better way! We can create our own governess!
 
 ```javascript
 import {
-  createSandbox,
-  GermanGoverness
-} form 'kindergarten';
-
-const sandbox = createSandbox(currentUser);
-
-// Sandbox will use GermanGoverness
-sandbox.governess = new GermanGoverness();
+  HeadGoverness,
+  AccessDenied
+} from 'kindergarten';
+export default class RoutingGoverness extends HeadGoverness {
+  guard(action, route, nextState, replace, callback) {
+    try {
+      super.guard(action, route);
+    } catch (e) {
+      if (e instanceof AccessDenied) {
+        replace('login');
+        callback(e.message);
+      } else {
+        callback(e.message);
+      }
+    }
+  callback();
+  }
+}
 ```
+
+and put her on the sandbox:
+
+```javascript
+// ...
+import { RoutingGoverness form './governesses';
+
+@sandbox(child, {
+  perimeters,
+  governess: RoutingGoverness
+})
+class BaseRouter extends Component {
+  // ...
+}
+```
+
+Kindergarten contains also some predefined governesses:
+
 #### German Governess
 
 German governess loves rules :trollface:. She automatically guards all exposed methods.
 
 ```javascript
+import {
+  createPerimeter,
+  createSandbox
+} from 'kindergarten';
+
 const perimeter = createPerimeter({
   purpose: 'articles',
 
   govern: {
-    ['can update'](article) {
-        return this._isAdminOrCreatorOf(article);
+    'can update': function (article) {
+      return this._isAdminOrCreatorOf(article);
     }
   },
 
@@ -194,7 +304,6 @@ const perimeter = createPerimeter({
   update(article, attrs) {
     // We don't need the line bellow GermanGoverness will add it
     // this.guard('update', article);
-
     return article.update(attrs);
   },
 });
@@ -204,17 +313,17 @@ const perimeter = createPerimeter({
 const currentUser = { role: 'regularGuy' };
 
 const sandbox = createSandbox(currentUser, {
-  governess: new GermanGoverness(currentUser)
+  governess: GermanGoverness
 });
 
 sandbox.loadModule(perimeter);
 
-sandbox.articles.update(currentUser); // throws Kindergarten.AccessDenied
+sandbox.articles.update(currentUser); // throws AccessDenied error
 ```
 
 #### Strict Governess
 
-Strict governess is useful if you sometimes forget to protect your exposed methods by calling `guard()` in their body. Strict governess throws an `AccessDenied` error if user calls exposed method that does not contain any call of `guard()`. **Careful!** The exposed method is executed and the `AccessDenied` error is thrown afterwards. Rollback is on your own!
+Strict governess is useful if you sometimes forget to protect your exposed methods by calling `guard()` in their body. Strict governess throws an `AccessDenied` error if user calls exposed method that does not call `guard()` in it's body. **Careful!** The exposed method is executed and the `AccessDenied` error is thrown afterwards. Rollback is on your own! `StrictGoverness` might be useful during development.
 
 ```javascript
 import {
@@ -247,7 +356,7 @@ import { Perimeter, Sandbox, EasyGoverness } from 'kindergarten';
 const perimeter = new Perimeter({
   purpose: 'playing',
   govern: {
-    ['cannot watch']() {
+    'cannot watch'() {
       // child can't watch anything
       return true;
     }
@@ -260,11 +369,11 @@ const perimeter = new Perimeter({
   }
 });
 
-perimeter.governess = new EasyGoverness({});
+perimeter.governess = EasyGoverness;
 
 const sandbox = new Sandbox({});
 sandbox.loadModule(perimeter);
-sandbox.playing.watch({}); // easy going
+sandbox.playing.watch('bad channel'); // easy going
 ```
 
 #### Middleware Governess
@@ -301,52 +410,10 @@ const sandbox = createSandbox(child, {
     // do somethig here
   });
 });
+
 sandbox.loadModule(perimeter);
 sandbox.playing.watch({}); // callback above will be called
 ```
-
-### Purpose
-
-When sandbox loads perimeter, a new `Purpose` is created. Sandbox copies all exposed methods into the instance of the purpose, so they are callable. It works simply like this:
-
-```javascript
-import {
-  Perimeter,
-  Sanbox,
-  GermanGoverness,
-  Purpose
-} from 'kindergarten';
-
-const perimeter = new Perimeter({
-  purpose: 'foo',
-
-  govern: {
-    ['cannot foo']() {
-      return true;
-    }
-  },
-
-  expose: [
-    'foo'
-  ],
-
-  foo: function () {}
-});
-
-const user = {};
-
-const sandbox = new Sandbox(user);
-sandbox.governess = new GermanGoverness(user);
-sandbox.loadModule(perimeter);
-
-const myPurpose = new Purpose(perimeter.purpose, sandbox);
-myPurpose._loadPerimeter(perimeter);
-
-myPurpose.foo(); // throws Kindergarten.AccessDenied
-```
-
-**DO NOT USE** `Purpose` directly, it's meant to be used internally by a sandbox.
-
 
 ### Perimeter
 
@@ -380,7 +447,7 @@ sandbox.perimeter2.isAllowed('watch', new TV()); // false
 sandbox.isAllowed('watch', new TV()); // false
 ```
 
-Notice that `sandbox.perimeter1.isAllowed('watch', new TV());` is evaluated to `false`. It happens, because perimeter1 does not have it's own governess and therefore the governess of the sandbox is used! This is **VERY VERY VERY IMPORTANT** to understand! Now let's look at the same example, but this time each perimeter has it's own governess:
+Notice that `sandbox.perimeter1.isAllowed('watch', new TV());` is evaluated to `false`. It happens, because `perimeter1` does not have it's own governess and therefore the governess of the sandbox is used! This is **VERY VERY VERY IMPORTANT** to understand! Now let's look at the same example, but this time each perimeter has it's own governess:
 
 ```javascript
 const TV = function () {};
@@ -411,11 +478,55 @@ sandbox.perimeter2.isAllowed('watch', new TV()); // false
 sandbox.isAllowed('watch', new TV()); // false (the governess of the Sandbox is used!)
 ```
 
-### Sandbox
+### Purpose
 
-![Sandbox](https://raw.github.com/JiriChara/kindergarten/master/images/sandbox.png)
+When sandbox loads perimeter, a new `Purpose` is created. Sandbox copies all exposed methods into the instance of the purpose, so they are callable through the purpose namespace.
 
-Sandbox is a place where child can play governed by a governess. Sandbox can load multiple perimeters. Each sandbox has it's governess. If not specified, the `HeadGoverness` will be used. The governess of the sandbox knows all the rules of all the perimeters (even if they have their own governess), this is important so the `isAllowed` method can be called directly on an instance of the `Sandbox`;
+```javascript
+import {
+  Perimeter,
+  Sanbox,
+  GermanGoverness,
+  Purpose
+} from 'kindergarten';
+
+const perimeter = new Perimeter({
+  purpose: 'foo',
+
+  govern: {
+    'cannot foo': () => true
+  },
+
+  expose: [
+    'foo'
+  ],
+
+  foo: function () {}
+});
+
+const user = {};
+
+const sandbox = new Sandbox(user, {
+  perimeters: [
+    perimeter
+  ],
+
+  governess: GermanGoverness
+});
+
+const myPurpose = new Purpose(perimeter.purpose, sandbox);
+myPurpose._loadPerimeter(perimeter);
+
+myPurpose.foo(); // throws Kindergarten.AccessDenied
+```
+
+**DO NOT USE** `Purpose` directly, it's meant to be used internally by a sandbox.
+
+## More About Kindergarten
+
+* [Protect Your React Apps with Kindergarten](https://medium.com/@JiriChara/protect-your-react-apps-with-kindergarten-6b78f47a85f1#.kujr69a6k)
+* [Introducing Kindergarten](https://medium.com/@JiriChara/introducing-kindergarten-81d77e0e1f11#.suwqgn8et)
+* [Documentation](https://doc.esdoc.org/github.com/JiriChara/kindergarten/)
 
 ## Thanks to..
 
