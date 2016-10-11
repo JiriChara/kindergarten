@@ -2,7 +2,7 @@
   "name": "kindergarten",
   "author": "Jiri Chara <me@jirichara.com>",
   "license": "MIT",
-  "version": "1.3.4",
+  "version": "1.3.5",
   "description": "Kindergarten is a JavaScript library which helps programmers to achieve modular security using sandbox pattern",
   "main": "lib/Kindergarten.js",
   "scripts": {
