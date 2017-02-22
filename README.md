@@ -9,26 +9,25 @@
 
 ![Kindergarten](https://raw.github.com/JiriChara/kindergarten/master/images/kindergarten.png) v1.3.5
 
-Kindergarten is an implementation of the sandbox pattern in JavaScript with some extra goodies. Kindergarten helps you to separate your business logic into modules and add some security layer over them. Kindergarten will work well with all frameworks and libraries you like: React, Angular, Ember, Redux, Backbone and many more.
+Kindergarten helps you to separate your business logic into modules and add a security layer over them. It is based on sandbox pattern. Kindergarten will work well with all frameworks and libraries you like: VueJS, React, Angular, Ember, Backbone etc. etc. etc...
 
 ## Terms Used in Kindergarten
 
 ### Perimeter
 
-Perimeter is a module that represents an area in you application (garden, kitchen, table, button, admin page etc.). Perimeter defines methods that should be exposed and rules that must be followed on that particular area.
+Perimeter is a module that represents an area in you application (certain component, page, button, header etc.). Perimeter defines methods that should be exposed and rules that must be followed on that particular area.
 
 ### Sandbox
 
-Modules (perimeters) are plugged into sandbox and all exposed methods will be available there. Sandbox is governed by a governess and she makes sure that all rules are followed in order to prevent any kind of troubles.
+Modules (perimeters) are plugged into sandbox and all exposed methods will be accessible through it. Sandbox is governed by a governess and she is the one who makes sure that all rules are followed in order to prevent any kind of troubles.
 
 ### Governess
 
-The governess is guarding your sandbox. She makes sure that child doesn't do any unauthorized activities and she can do lot more than that! (see [governesses available in Kindergarten](https://github.com/JiriChara/kindergarten/tree/master/src/kindergarten/governesses).)
+The governess is guarding your sandbox. She makes sure that child doesn't do any unauthorized activities and she can deal with troubles your way!
 
 ### Child
 
-Child in Kindergarten represents you current user.
-
+Child in Kindergarten represents the current user of your application.
 
 ## Example
 
@@ -54,7 +53,7 @@ const homePerimeter = createPerimeter({
       // Only 5 candies allowed
       return this.child.eatenCandies < 5;
     },
-    'cannot visitWebPage': /drugs|sex|rock-and-roll/
+    'cannot visitWebPage': /drugs|sex|rock-and-roll|guns/
   },
 
   expose: [
@@ -99,6 +98,7 @@ sandbox.home.watchTv(new Television());
 
 // Throws AccessDenied error
 sandbox.home.watchTv(new CableTv());
+sandbox.home.watchTv(CableTv);
 
 // Fails after a while
 for (let i = 0; i <= 6; i++) {
@@ -108,7 +108,7 @@ for (let i = 0; i <= 6; i++) {
 sandbox.home.browseInternet('http://google.com'); // no problem
 
 // Throws AccessDenied error
-sandbox.home.browseInternet('http://some-website-that-contains-sex.com');
+sandbox.home.browseInternet('http://buy-drugs-and-guns-online.com');
 ```
 
 ## Installation
@@ -116,14 +116,14 @@ sandbox.home.browseInternet('http://some-website-that-contains-sex.com');
 ### npm
 
 ```shell
-npm install kindergarten
+yarn add kindergarten
 ```
 
 ## Usage
 
 ### Sandbox
 
-The Sandbox is where the magic happens, that's why Kindergarten makes it really easy to create new object that acts like a sandbox. For instance you can inherit from `Sandbox` class:
+The Sandbox is where the magic happens, that's why Kindergarten makes it really easy for you to create a new sandbox. For instance you can inherit from `Sandbox` class:
 
 ```javascript
 import { Sandbox } from 'kindergarten';
@@ -200,7 +200,7 @@ sandbox(child, sandboxOptions)(class MyComponent extends Component {
 
 ### Rule
 
-`Rule` class is used internally be kindergarten.
+`Rule` class is used internally be kindergarten. It's probably not a good idea to use it directly, but who knows..
 
 ```javascript
 import { Rule } from 'kindergarten';
@@ -228,15 +228,14 @@ governess.isAllowed('create', {}); // false
 
 ### Governess
 
-![Governess](https://raw.github.com/JiriChara/kindergarten/master/images/governess.png)
-
-The `guard()` method throws `AccessDenied` error by default, but sometimes we want something else. In react-router example above we want to redirect user to login page rather than throwing an error. We could change our `guardRoute` method to do that for us, but there is a better way! We can create our own governess!
+The `guard()` method throws `AccessDenied` error by default, but sometimes we want something else. In react-router example above we want to redirect user to login page rather than throwing an error. We could change our `guardRoute` method to do that for us, but there is a better way! We can create our own governess for routing!
 
 ```javascript
 import {
   HeadGoverness,
   AccessDenied
 } from 'kindergarten';
+
 export default class RoutingGoverness extends HeadGoverness {
   guard(action, route, nextState, replace, callback) {
     try {
@@ -254,7 +253,7 @@ export default class RoutingGoverness extends HeadGoverness {
 }
 ```
 
-and put her on the sandbox:
+and put her on the sandbox our sandbox:
 
 ```javascript
 // ...
@@ -269,7 +268,7 @@ class BaseRouter extends Component {
 }
 ```
 
-Kindergarten contains also some predefined governesses:
+Kindergarten has also some predefined governesses:
 
 #### German Governess
 
