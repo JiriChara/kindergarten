@@ -1,8 +1,6 @@
-import {
-  includes,
-  isString,
-  keys
-} from 'lodash';
+import includes from 'lodash/includes';
+import isString from 'lodash/isString';
+import keys from 'lodash/keys';
 
 const METHOD_NAME_REGEX = /^[a-z_$][a-zA-Z0-9_$]*$/;
 

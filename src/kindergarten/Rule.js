@@ -1,7 +1,5 @@
-import {
-  some,
-  upperFirst
-} from 'lodash';
+import some from 'lodash/some';
+import upperFirst from 'lodash/upperFirst';
 
 import BaseObject from './BaseObject';
 import {

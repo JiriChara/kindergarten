@@ -1,9 +1,7 @@
-import {
-  each,
-  isEmpty,
-  isFunction,
-  isString
-} from 'lodash';
+import each from 'lodash/each';
+import isEmpty from 'lodash/isEmpty';
+import isFunction from 'lodash/isFunction';
+import isString from 'lodash/isString';
 
 import AllowedMethodsService from './utils/AllowedMethodsService';
 import BaseObject from './BaseObject';

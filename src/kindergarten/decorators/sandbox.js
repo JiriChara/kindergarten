@@ -1,7 +1,5 @@
-import {
-  each,
-  forOwn
-} from 'lodash';
+import each from 'lodash/each';
+import forOwn from 'lodash/forOwn';
 
 import Sandbox from '../Sandbox';
 

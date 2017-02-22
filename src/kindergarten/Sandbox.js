@@ -1,9 +1,7 @@
-import {
-  each,
-  find,
-  some,
-  isEmpty
-} from 'lodash';
+import each from 'lodash/each';
+import find from 'lodash/find';
+import some from 'lodash/some';
+import isEmpty from 'lodash/isEmpty';
 
 import HeadGoverness from './governesses/HeadGoverness';
 import Purpose from './Purpose';
