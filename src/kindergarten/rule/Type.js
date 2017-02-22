@@ -1,7 +1,5 @@
-import {
-  isArray,
-  isString
-} from 'lodash';
+import isArray from 'lodash/isArray';
+import isString from 'lodash/isString';
 
 import BaseObject from '../BaseObject';
 import AllowedMethodsService from '../utils/AllowedMethodsService';

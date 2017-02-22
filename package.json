@@ -9,7 +9,7 @@
     "clean": "rimraf lib dist coverage esdoc",
     "doc": "mkdirp esdoc && esdoc -c esdoc.json",
     "dist": "mkdirp dist && browserify src/Kindergarten.js -t [ babelify --presets [es2015] ] --standalone Kindergarten --outfile dist/kindergarten.js",
-    "build": "npm run test && npm run clean && npm run dist && npm run uglify && npm run build:commonjs && npm run doc",
+    "build": "npm run clean && npm run test && npm run dist && npm run uglify && npm run build:commonjs && npm run doc",
     "test": "npm run lint && npm run karma",
     "testAsync": "parallelshell 'npm run lint' 'npm run karma'",
     "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
@@ -67,6 +67,7 @@
   },
   "dependencies": {
     "hookies": "^2.0.5",
-    "lodash": "^4.1.0"
+    "lodash": "^4.17.4",
+    "rimraf": "^2.6.0"
   }
 }

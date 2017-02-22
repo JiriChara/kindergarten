@@ -1,7 +1,8 @@
-/node_modules
-/npm-debug.log*
-/coverage
-/lib
-/dist
-/index.html
-/esdoc
+node_modules
+npm-debug.log*
+coverage
+lib
+dist
+index.html
+esdoc
+yarn-error.log

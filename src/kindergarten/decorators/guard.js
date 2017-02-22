@@ -1,8 +1,6 @@
-import {
-  isString,
-  isFunction,
-  isUndefined
-} from 'lodash';
+import isString from 'lodash/isString';
+import isFunction from 'lodash/isFunction';
+import isUndefined from 'lodash/isUndefined';
 
 import {
   isPerimeter,

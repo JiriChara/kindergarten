@@ -1,11 +1,9 @@
-import {
-  each,
-  filter,
-  forIn,
-  isFunction,
-  isString,
-  isEmpty
-} from 'lodash';
+import each from 'lodash/each';
+import filter from 'lodash/filter';
+import forIn from 'lodash/forIn';
+import isFunction from 'lodash/isFunction';
+import isString from 'lodash/isString';
+import isEmpty from 'lodash/isEmpty';
 
 import Rule from '../Rule';
 import BaseObject from '../BaseObject';

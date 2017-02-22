@@ -1,6 +1,4 @@
-import {
-  find
-} from 'lodash';
+import find from 'lodash/find';
 
 import HeadGoverness from './HeadGoverness';
 import { isPerimeter } from '../utils';

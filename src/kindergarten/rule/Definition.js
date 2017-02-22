@@ -1,11 +1,9 @@
-import {
-  find,
-  isArray,
-  isEmpty,
-  isFunction,
-  isRegExp,
-  memoize
-} from 'lodash';
+import find from 'lodash/find';
+import isArray from 'lodash/isArray';
+import isEmpty from 'lodash/isEmpty';
+import isFunction from 'lodash/isFunction';
+import isRegExp from 'lodash/isRegExp';
+import memoize from 'lodash/memoize';
 
 import BaseObject from '../BaseObject';
 import {
