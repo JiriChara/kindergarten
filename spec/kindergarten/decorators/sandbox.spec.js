@@ -128,7 +128,7 @@ describe('sandbox', () => {
 
       @guard('play', function (arg) {
         this.newValue = arg;
-      });
+      })
       someOtherCoolMethod() {}
     }
 
