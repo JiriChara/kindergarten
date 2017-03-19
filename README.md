@@ -7,7 +7,7 @@
 [![NPM Version](https://img.shields.io/npm/v/kindergarten.svg)](https://www.npmjs.com/package/kindergarten)
 [![ESDoc](https://doc.esdoc.org/github.com/JiriChara/kindergarten/badge.svg)](https://doc.esdoc.org/github.com/JiriChara/kindergarten/)
 
-![Kindergarten](https://raw.github.com/JiriChara/kindergarten/master/images/kindergarten.png) v1.3.5
+![Kindergarten](https://raw.github.com/JiriChara/kindergarten/master/images/kindergarten.png) v1.4.0
 
 Kindergarten helps you to separate your business logic into modules and add a security layer over them. It is based on sandbox pattern. Kindergarten will work well with all frameworks and libraries you like: VueJS, React, Angular, Ember, Backbone etc. etc. etc...
 
