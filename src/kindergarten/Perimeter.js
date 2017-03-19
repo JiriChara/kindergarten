@@ -2,6 +2,8 @@ import extend from 'lodash/extend';
 import isObject from 'lodash/isObject';
 import isString from 'lodash/isString';
 import omit from 'lodash/omit';
+import keys from 'lodash/keys';
+import each from 'lodash/each';
 
 import AllowedMethodsService from './utils/AllowedMethodsService';
 import HeadGoverness from './governesses/HeadGoverness';
@@ -30,7 +32,7 @@ export default class Perimeter {
     }
 
     this.purpose = this.purpose || purpose;
-    this.govern = opts.govern || {};
+    this.govern = this.extractGovern(opts);
     this.expose = opts.expose || [];
 
     if (!isGoverness(opts.governess)) {
@@ -172,5 +174,19 @@ export default class Perimeter {
    */
   isNotAllowed(...args) {
     return this.governess.isNotAllowed.call(this.governess, ...args);
+  }
+
+  extractGovern({ govern, can, cannot }) {
+    govern = govern || {};
+
+    each(keys(can || {}), (key) => {
+      govern[`can ${key}`] = can[key];
+    });
+
+    each(keys(cannot || {}), (key) => {
+      govern[`cannot ${key}`] = cannot[key];
+    });
+
+    return govern;
   }
 }
