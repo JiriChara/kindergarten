@@ -68,6 +68,7 @@
     "watchify": "^3.7.0"
   },
   "dependencies": {
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.24.0",
     "lodash": "^4.17.4"
   }
 }
