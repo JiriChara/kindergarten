@@ -19,11 +19,18 @@ describe('ChildModule integration spec', () => {
     const childModule = new this.Kindergarten.Perimeter(
       'playing', // purpose
       {
-        govern: {
-          'can watch': [this.Tv],
-          'cannot watch': [this.CableTv],
-          'can eat': (candy) => this.child.quotum.allows(candy)
+        can: {
+          watch: [this.Tv],
+
+          eat(candy) {
+            return this.child.quotum.allows(candy);
+          }
         },
+
+        cannot: {
+          watch: [this.CableTv]
+        },
+
         expose: [
           'watchTv',
           'eat'

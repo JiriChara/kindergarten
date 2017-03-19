@@ -109,6 +109,46 @@ describe('Perimeter', () => {
       expect(myPerimeter.method1).toBe(method1);
       expect(myPerimeter.method2).toBe(method2);
     });
+
+    it('adds govern rules from can', () => {
+      const method = () => true;
+      const regex = /foo/;
+      const obj = {};
+
+      const perimeter = new Perimeter({
+        purpose: 'foo',
+
+        can: {
+          method,
+          regex,
+          obj
+        }
+      });
+
+      expect(perimeter.govern['can method']).toBe(method);
+      expect(perimeter.govern['can regex']).toBe(regex);
+      expect(perimeter.govern['can obj']).toBe(obj);
+    });
+
+    it('adds govern rules from cannot', () => {
+      const method = () => true;
+      const regex = /foo/;
+      const obj = {};
+
+      const perimeter = new Perimeter({
+        purpose: 'foo',
+
+        cannot: {
+          method,
+          regex,
+          obj
+        }
+      });
+
+      expect(perimeter.govern['cannot method']).toBe(method);
+      expect(perimeter.govern['cannot regex']).toBe(regex);
+      expect(perimeter.govern['cannot obj']).toBe(obj);
+    });
   });
 
   describe('purpose getter', () => {

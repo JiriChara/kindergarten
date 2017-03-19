@@ -46,14 +46,18 @@ import CableTv from './CableTv';
 const homePerimeter = createPerimeter({
   purpose: 'home',
 
-  govern: {
-    'can watch': [Television],
-    'cannot watch': [CableTv],
-    'can eat': (candy) => {
+  can: {
+    watch: [Television],
+
+    eat(candy) {
       // Only 5 candies allowed
       return this.child.eatenCandies < 5;
-    },
-    'cannot visitWebPage': /drugs|sex|rock-and-roll|guns/
+    }
+  },
+
+  cannot: {
+    watch: [CableTv],
+    visitWebPage: /drugs|sex|rock-and-roll|guns/
   },
 
   expose: [
