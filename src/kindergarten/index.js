@@ -1,4 +1,3 @@
-import BaseObject from './BaseObject';
 import Logger from './Logger';
 import Perimeter from './Perimeter';
 import Purpose from './Purpose';
@@ -45,7 +44,6 @@ import {
 export {
   AccessDenied,
   ArgumentError,
-  BaseObject,
   EasyGoverness,
   GermanGoverness,
   HeadGoverness,

@@ -26,11 +26,6 @@ describe('Rule', () => {
       expect(rule.definition instanceof Definition).toBe(true);
     });
 
-    it('initializes hooks', () => {
-      expect(rule.on).toBeFunction();
-      expect(rule.trigger).toBeFunction();
-    });
-
     it('passes type', () => {
       const raw = 'can watch';
       const myRule = new Rule(raw, [CableTv]);

@@ -4,7 +4,6 @@ import isString from 'lodash/isString';
 import omit from 'lodash/omit';
 
 import AllowedMethodsService from './utils/AllowedMethodsService';
-import BaseObject from './BaseObject';
 import HeadGoverness from './governesses/HeadGoverness';
 import {
   isGoverness,
@@ -20,13 +19,11 @@ const allowedMethodsService = new AllowedMethodsService({});
 /**
  * A Perimeter is used to define the places where child can play.
  */
-export default class Perimeter extends BaseObject {
+export default class Perimeter {
   /**
    * Create new perimeter
    */
   constructor(purpose, opts = {}) {
-    super();
-
     if (isObject(purpose) && isString(purpose.purpose)) {
       opts = purpose;
       this.purpose = purpose.purpose;

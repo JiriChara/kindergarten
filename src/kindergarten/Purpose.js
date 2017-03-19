@@ -4,7 +4,6 @@ import isFunction from 'lodash/isFunction';
 import isString from 'lodash/isString';
 
 import AllowedMethodsService from './utils/AllowedMethodsService';
-import BaseObject from './BaseObject';
 import Logger from './Logger';
 import {
   isPerimeter,
@@ -26,13 +25,11 @@ import {
  * Purpose is used internally by Sandbox and shouldn't be used as standalone
  * object.
  */
-export default class Purpose extends BaseObject {
+export default class Purpose {
   /**
    * Create new instance of purpose.
    */
   constructor(name, sandbox) {
-    super();
-
     this._name = name;
     this._sandbox = sandbox;
 
