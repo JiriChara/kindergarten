@@ -1,7 +1,6 @@
 import {
   AccessDenied,
   ArgumentError,
-  BaseObject,
   EasyGoverness,
   GermanGoverness,
   HeadGoverness,
@@ -40,7 +39,6 @@ import {
 const Kindergarten = {
   AccessDenied,
   ArgumentError,
-  BaseObject,
   EasyGoverness,
   GermanGoverness,
   HeadGoverness,
@@ -76,7 +74,6 @@ export default Kindergarten;
 export {
   AccessDenied,
   ArgumentError,
-  BaseObject,
   EasyGoverness,
   GermanGoverness,
   HeadGoverness,

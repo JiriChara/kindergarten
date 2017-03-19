@@ -6,19 +6,17 @@ import isString from 'lodash/isString';
 import isEmpty from 'lodash/isEmpty';
 
 import Rule from '../Rule';
-import BaseObject from '../BaseObject';
 import isRule from '../utils/isRule';
 import {
   AccessDenied,
   ArgumentError
 } from '../errors';
 
-export default class HeadGoverness extends BaseObject {
+export default class HeadGoverness {
   /**
    * Creates a new instance of the HeadGoverness
    */
   constructor() {
-    super();
     this.rules = [];
   }
 

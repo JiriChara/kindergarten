@@ -1,7 +1,6 @@
 import some from 'lodash/some';
 import upperFirst from 'lodash/upperFirst';
 
-import BaseObject from './BaseObject';
 import {
   Definition,
   Type
@@ -13,10 +12,8 @@ import {
  * Rules are used by a governess. Governess can learn many rules and they are
  * defined in perimeter in most of the cases.
  */
-export default class Rule extends BaseObject {
+export default class Rule {
   constructor(str, def) {
-    super();
-
     this.type = new Type(this, str);
     this.definition = new Definition(this, def);
   }

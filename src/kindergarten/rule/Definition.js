@@ -5,15 +5,12 @@ import isFunction from 'lodash/isFunction';
 import isRegExp from 'lodash/isRegExp';
 import memoize from 'lodash/memoize';
 
-import BaseObject from '../BaseObject';
 import {
   WrongRuleDefinition
 } from '../errors';
 
-export default class Definition extends BaseObject {
+export default class Definition {
   constructor(rule, def) {
-    super();
-
     this.TYPES = [
       [
         // The name of the definition type

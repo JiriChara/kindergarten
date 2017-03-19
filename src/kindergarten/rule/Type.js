@@ -1,7 +1,6 @@
 import isArray from 'lodash/isArray';
 import isString from 'lodash/isString';
 
-import BaseObject from '../BaseObject';
 import AllowedMethodsService from '../utils/AllowedMethodsService';
 import {
   WrongRuleDefinition
@@ -16,10 +15,8 @@ const TYPE_REGEX = /^can(not)? ([a-z_$][a-zA-Z0-9_$]*)$/;
  * Type is responsible for the rule string e.g. `can watch` validation and
  * for extracting all relevant infos out of that string.
  */
-export default class Type extends BaseObject {
+export default class Type {
   constructor(rule, str) {
-    super();
-
     const match = isString(str) && str.match(TYPE_REGEX);
 
     // Extract type of the rule.

@@ -5,7 +5,6 @@ import isEmpty from 'lodash/isEmpty';
 
 import HeadGoverness from './governesses/HeadGoverness';
 import Purpose from './Purpose';
-import BaseObject from './BaseObject';
 import AllowedMethodsService from './utils/AllowedMethodsService';
 import {
   isGoverness,
@@ -22,13 +21,11 @@ import {
  * The definition of Sandbox class.
  * The sandbox is place where children can play governed by a governess.
  */
-export default class Sandbox extends BaseObject {
+export default class Sandbox {
   /**
    * Create a new empty sandbox.
    */
   constructor(child = null, { governess = new HeadGoverness(child), perimeters = [] } = {}) {
-    super(); // init publish/subscribe
-
     this.child = child;
 
     if (!isGoverness(governess)) {
@@ -111,8 +108,6 @@ export default class Sandbox extends BaseObject {
       this._extendPurpose(perimeter);
 
       ++counter;
-
-      this.trigger('load-perimeter', this, perimeter);
     });
 
     return counter;
