@@ -16,8 +16,8 @@ import {
   MiddlewareGoverness
 } from '../../src/governesses';
 import Rule from '../../src/Rule';
-import Type from '../../src/rule/Type';
-import Definition from '../../src/rule/Definition';
+import Type from '../../src/rules/Type';
+import Definition from '../../src/rules/Definition';
 import {
   AccessDenied,
   ArgumentError,
