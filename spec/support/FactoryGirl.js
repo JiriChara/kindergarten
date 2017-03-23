@@ -1,23 +1,23 @@
 import { _ } from 'lodash';
 
-import Perimeter from '../../src/kindergarten/Perimeter';
-import Purpose from '../../src/kindergarten/Purpose';
-import Logger from '../../src/kindergarten/Logger';
-import Sandbox from '../../src/kindergarten/Sandbox';
-import createRule from '../../src/kindergarten/createRule';
-import createSandbox from '../../src/kindergarten/createSandbox';
-import createPerimeter from '../../src/kindergarten/createPerimeter';
-import guard from '../../src/kindergarten/decorators/guard';
+import Perimeter from '../../src/Perimeter';
+import Purpose from '../../src/Purpose';
+import Logger from '../../src/Logger';
+import Sandbox from '../../src/Sandbox';
+import createRule from '../../src/createRule';
+import createSandbox from '../../src/createSandbox';
+import createPerimeter from '../../src/createPerimeter';
+import guard from '../../src/decorators/guard';
 import {
   HeadGoverness,
   EasyGoverness,
   StrictGoverness,
   GermanGoverness,
   MiddlewareGoverness
-} from '../../src/kindergarten/governesses';
-import Rule from '../../src/kindergarten/Rule';
-import Type from '../../src/kindergarten/rule/Type';
-import Definition from '../../src/kindergarten/rule/Definition';
+} from '../../src/governesses';
+import Rule from '../../src/Rule';
+import Type from '../../src/rule/Type';
+import Definition from '../../src/rule/Definition';
 import {
   AccessDenied,
   ArgumentError,
@@ -28,7 +28,7 @@ import {
   NoSandboxError,
   RestrictedMethodError,
   WrongRuleDefinition
-} from '../../src/kindergarten/errors';
+} from '../../src/errors';
 
 export default class FactoryGirl {
   constructor(obj, ...args) {

@@ -1,10 +1,10 @@
 import { _ } from 'lodash';
 
 import FactoryGirl from '../support/FactoryGirl';
-import Perimeter from '../../src/kindergarten/Perimeter';
+import Perimeter from '../../src/Perimeter';
 import {
   NoPurposeError
-} from '../../src/kindergarten/errors';
+} from '../../src/errors';
 
 describe('Perimeter', () => {
   let child;

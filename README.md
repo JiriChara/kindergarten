@@ -34,9 +34,9 @@ Child in Kindergarten represents the current user of your application.
 ```javascript
 import {
   createPerimeter,
-  createSandbox,
-  guard // guard decorator
+  createSandbox
 } from 'kindergarten';
+import { guard } from 'kindergarten/decorators';
 
 import Child from './Child';
 import Television from './Television';
@@ -149,7 +149,8 @@ class MyClass extends Sandbox {
 You can also use `@sandbox` decorator, where inheritance is not applicable:
 
 ```javascript
-import { sandbox, createPerimeter } from 'kindergarten';
+import { createPerimeter } from 'kindergarten';
+import { sandbox } from 'kindergarten/decorators';
 import { Component } from 'react';
 
 const adminPerimeter = createPerimeter({
@@ -261,7 +262,7 @@ and put her on the sandbox our sandbox:
 
 ```javascript
 // ...
-import { RoutingGoverness form './governesses';
+import { RoutingGoverness } form './governesses';
 
 @sandbox(child, {
   perimeters,

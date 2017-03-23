@@ -4,11 +4,11 @@
   "license": "MIT",
   "version": "1.4.0",
   "description": "Kindergarten is a JavaScript library which helps programmers to achieve modular security using sandbox pattern",
-  "main": "lib/Kindergarten.js",
+  "main": "lib/index.js",
   "scripts": {
     "clean": "rimraf lib dist coverage esdoc",
     "doc": "mkdirp esdoc && esdoc -c esdoc.json",
-    "dist": "mkdirp dist && browserify src/Kindergarten.js -t [ babelify --presets [es2015] ] --standalone Kindergarten --outfile dist/kindergarten.js",
+    "dist": "mkdirp dist && browserify src/index.js -t [ babelify --presets [es2015] ] --standalone Kindergarten --outfile dist/kindergarten.js",
     "build": "npm run clean && npm run test && npm run dist && npm run uglify && npm run build:commonjs && npm run doc",
     "prepublish": "npm run build",
     "test": "npm run lint && npm run karma",

@@ -1,7 +1,7 @@
 import { _ } from 'lodash';
 
 import FactoryGirl from '../support/FactoryGirl';
-import Sandbox from '../../src/kindergarten/Sandbox';
+import Sandbox from '../../src/Sandbox';
 
 describe('Sandbox', () => {
   let child;

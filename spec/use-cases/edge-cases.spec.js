@@ -1,4 +1,4 @@
-import Kindergarten from '../../src/Kindergarten';
+import Kindergarten from '../../src/index';
 
 import { _ } from 'lodash';
 

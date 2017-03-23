@@ -4,7 +4,7 @@ import {
   isGoverness,
   isSandbox,
   isRule
-} from '../../../src/kindergarten/utils';
+} from '../../../src/utils';
 
 import FactoryGirl from '../../support/FactoryGirl';
 

@@ -1,7 +1,7 @@
 import { _ } from 'lodash';
 
 import FactoryGirl from '../../support/FactoryGirl';
-import AllowedMethodsService from '../../../src/kindergarten/utils/AllowedMethodsService';
+import AllowedMethodsService from '../../../src/utils/AllowedMethodsService';
 
 describe('AllowedMethodsService', () => {
   beforeEach(function () {

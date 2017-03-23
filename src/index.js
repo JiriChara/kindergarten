@@ -1,75 +1,40 @@
-import {
-  AccessDenied,
-  ArgumentError,
-  EasyGoverness,
-  GermanGoverness,
-  HeadGoverness,
-  Logger,
-  MiddlewareGoverness,
-  NoExposedMethodError,
-  NoGovernessError,
-  NoPurposeError,
-  NoSandboxError,
-  Perimeter,
-  PubSub,
-  Purpose,
-  RestrictedMethodError,
-  Rule,
-  Sandbox,
-  StrictGoverness,
-  VERSION,
-  WrongRuleDefinition,
-  createPerimeter,
-  createRule,
-  createSandbox,
-  guard,
-  sandbox,
-  isGoverness,
-  isPerimeter,
-  isPurpose,
-  isRule,
-  isSandbox
-} from './kindergarten';
+import Logger from './Logger';
+import Perimeter from './Perimeter';
+import Purpose from './Purpose';
+import Rule from './Rule';
+import Sandbox from './Sandbox';
+import VERSION from './VERSION';
+import createPerimeter from './createPerimeter';
+import createRule from './createRule';
+import createSandbox from './createSandbox';
 
-/**
- * Main namespace is exported by default to keep Kindergarten compatible with
- * versions < 1.0 and for programmers that like to use the classes through the
- * namespace.
- */
-const Kindergarten = {
-  AccessDenied,
-  ArgumentError,
-  EasyGoverness,
-  GermanGoverness,
-  HeadGoverness,
+import {
   isGoverness,
   isPerimeter,
   isPurpose,
   isRule,
   isSandbox,
-  Logger,
+  PubSub
+} from './utils';
+
+import {
+  EasyGoverness,
+  GermanGoverness,
+  HeadGoverness,
   MiddlewareGoverness,
+  StrictGoverness
+} from './governesses';
+
+import {
+  AccessDenied,
+  ArgumentError,
   NoExposedMethodError,
   NoGovernessError,
   NoPurposeError,
   NoSandboxError,
-  Perimeter,
-  PubSub,
-  Purpose,
   RestrictedMethodError,
-  Rule,
-  Sandbox,
-  StrictGoverness,
-  VERSION,
-  WrongRuleDefinition,
-  guard,
-  sandbox,
-  createPerimeter,
-  createRule,
-  createSandbox
-};
-
-export default Kindergarten;
+  WrongRuleDefinition
+} from './errors';
 
 export {
   AccessDenied,
@@ -95,11 +60,42 @@ export {
   createPerimeter,
   createRule,
   createSandbox,
-  guard,
-  sandbox,
   isGoverness,
   isPerimeter,
   isPurpose,
   isRule,
   isSandbox
 };
+
+const Kindergarten = {
+  AccessDenied,
+  ArgumentError,
+  EasyGoverness,
+  GermanGoverness,
+  HeadGoverness,
+  Logger,
+  MiddlewareGoverness,
+  NoExposedMethodError,
+  NoGovernessError,
+  NoPurposeError,
+  NoSandboxError,
+  Perimeter,
+  PubSub,
+  Purpose,
+  RestrictedMethodError,
+  Rule,
+  Sandbox,
+  StrictGoverness,
+  VERSION,
+  WrongRuleDefinition,
+  createPerimeter,
+  createRule,
+  createSandbox,
+  isGoverness,
+  isPerimeter,
+  isPurpose,
+  isRule,
+  isSandbox
+};
+
+export default Kindergarten;
