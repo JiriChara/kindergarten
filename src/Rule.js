@@ -4,7 +4,7 @@ import upperFirst from 'lodash/upperFirst';
 import {
   Definition,
   Type
-} from './rule';
+} from './rules';
 
 /**
  * The definition of Rule class.

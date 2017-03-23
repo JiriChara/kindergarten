@@ -1,17 +1,17 @@
-import Kindergarten from '../src/Kindergarten';
-import Logger from '../src/kindergarten/Logger';
-import Perimeter from '../src/kindergarten/Perimeter';
-import Purpose from '../src//kindergarten/Purpose';
-import Sandbox from '../src/kindergarten/Sandbox';
-import Rule from '../src//kindergarten/Rule';
-import VERSION from '../src/kindergarten/VERSION';
+import Kindergarten from '../src';
+import Logger from '../src/Logger';
+import Perimeter from '../src/Perimeter';
+import Purpose from '../src/Purpose';
+import Sandbox from '../src/Sandbox';
+import Rule from '../src/Rule';
+import VERSION from '../src/VERSION';
 
 import {
   HeadGoverness,
   EasyGoverness,
   StrictGoverness,
   GermanGoverness
-} from '../src/kindergarten/governesses';
+} from '../src/governesses';
 
 import {
   AccessDenied,
@@ -21,12 +21,7 @@ import {
   NoSandboxError,
   RestrictedMethodError,
   WrongRuleDefinition
-} from '../src/kindergarten/errors';
-
-import {
-  guard,
-  sandbox
-} from '../src/kindergarten/decorators';
+} from '../src/errors';
 
 describe('Kindergarten', () => {
   beforeEach(function () {
@@ -81,18 +76,6 @@ describe('Kindergarten', () => {
   it('exposes VERSION', function () {
     expect(this.Kindergarten.VERSION).toBe(VERSION);
     expect(this.Kindergarten.VERSION).toBeDefined();
-  });
-
-  describe('exposed decorators', () => {
-    it('exposes guard', function () {
-      expect(this.Kindergarten.guard).toBe(guard);
-      expect(this.Kindergarten.guard).toBeDefined();
-    });
-
-    it('exposes sandbox', function () {
-      expect(this.Kindergarten.sandbox).toBe(sandbox);
-      expect(this.Kindergarten.sandbox).toBeDefined();
-    });
   });
 
   describe('exposed errors', () => {

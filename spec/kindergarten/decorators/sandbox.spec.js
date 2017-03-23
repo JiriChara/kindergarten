@@ -2,7 +2,7 @@ import { Component } from 'react';
 import {
   sandbox,
   guard
-} from '../../../src/kindergarten/decorators';
+} from '../../../src/decorators';
 import FactoryGirl from '../../support/FactoryGirl';
 
 describe('sandbox', () => {

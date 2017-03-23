@@ -1,7 +1,7 @@
-import Kindergarten from '../../src/Kindergarten';
+import Kindergarten from '../../src/index';
 import {
   guard
-} from '../../src/kindergarten/decorators';
+} from '../../src/decorators';
 
 import FactoryGirl from '../support/FactoryGirl';
 
