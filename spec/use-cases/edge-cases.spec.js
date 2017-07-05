@@ -154,7 +154,7 @@ describe('ChildModule integration spec', () => {
 
     expect(sandbox.loadModule(perimeter1, perimeter2)).toBe(2);
 
-    expect(sandbox.perimeter1.isAllowed('watch', new TV())).toBe(false);
+    expect(sandbox.perimeter1.isAllowed('watch', new TV())).toBe(true);
     expect(sandbox.perimeter2.isAllowed('watch', new TV())).toBe(false);
     expect(sandbox.isAllowed('watch', new TV())).toBe(false);
   });

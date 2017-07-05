@@ -95,7 +95,10 @@ export default class Purpose {
    */
   isAllowed(...args) {
     const perimeter = this._sandbox.getPerimeter(this._name);
-    return perimeter.isAllowed(...args);
+
+    return perimeter.hasOwnGoverness() ?
+      perimeter.isAllowed(...args) :
+      perimeter.purposeGoverness.isAllowed(...args);
   }
 
   /**
