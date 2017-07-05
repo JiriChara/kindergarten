@@ -182,7 +182,7 @@ describe('HeadGoverness', () => {
     });
 
     it('returns empty array by default', () => {
-      const myGoverness = new HeadGoverness({});
+      const myGoverness = new HeadGoverness();
       expect(myGoverness.getRules()).toBeEmptyArray();
     });
 
@@ -207,7 +207,7 @@ describe('HeadGoverness', () => {
 
     beforeEach(() => {
       const Perimeter = new FactoryGirl('Perimeter');
-      myGoverness = new HeadGoverness(child);
+      myGoverness = new HeadGoverness();
       myPerimeter = new Perimeter({
         purpose: 'foo',
         govern: {
@@ -225,7 +225,7 @@ describe('HeadGoverness', () => {
     });
 
     it('returns the count of added rules', () => {
-      const myVeryOwnG = new HeadGoverness(child);
+      const myVeryOwnG = new HeadGoverness();
       expect(myVeryOwnG.learnRules(myPerimeter)).toBe(3);
       expect(myVeryOwnG.learnRules(myPerimeter)).toBe(3);
       expect(myVeryOwnG.rules.length).toBe(6);
@@ -244,14 +244,14 @@ describe('HeadGoverness', () => {
     });
 
     it('can add multiple rules at once', () => {
-      const myGoverness = new HeadGoverness(child);
+      const myGoverness = new HeadGoverness();
       myGoverness.addRule(rule1, rule2);
       expect(myGoverness.rules).toContain(rule1);
       expect(myGoverness.rules).toContain(rule2);
     });
 
     it('returns count of added rules', () => {
-      const myGoverness = new HeadGoverness(child);
+      const myGoverness = new HeadGoverness();
       expect(myGoverness.addRule(rule1, rule2)).toBe(2);
     });
   });
@@ -262,7 +262,7 @@ describe('HeadGoverness', () => {
     });
 
     it('returns false if governess has no rules', () => {
-      const myGoverness = new HeadGoverness(child);
+      const myGoverness = new HeadGoverness();
       expect(myGoverness.hasAnyRules()).toBeFalse();
     });
   });

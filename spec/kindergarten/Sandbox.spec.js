@@ -85,7 +85,7 @@ describe('Sandbox', () => {
     });
 
     it('sets governess to the given one', () => {
-      const myGoverness = new HeadGoverness(child);
+      const myGoverness = new HeadGoverness();
       const mySandbox = new Sandbox(child, {
         governess: myGoverness
       });
