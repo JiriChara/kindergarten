@@ -292,6 +292,23 @@ describe('Perimeter', () => {
     });
   });
 
+  describe('headGoverness() method', () => {
+    it('returns true if perimeter has own governess', () => {
+      myPerimeter._governess = governess;
+      expect(myPerimeter.hasOwnGoverness()).toBeTrue();
+    });
+
+    it('returns false if perimeter does not have own governess', () => {
+      myPerimeter._governess = undefined;
+      expect(myPerimeter.hasOwnGoverness()).toBeFalse();
+    });
+
+    it('returns false if perimeter has invalid governess', () => {
+      myPerimeter._governess = {};
+      expect(myPerimeter.hasOwnGoverness()).toBeFalse();
+    });
+  });
+
   describe('guard() method', () => {
     it('throws an error if child cannot do the action', () => {
       expect(() => {

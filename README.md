@@ -7,7 +7,7 @@
 [![NPM Version](https://img.shields.io/npm/v/kindergarten.svg)](https://www.npmjs.com/package/kindergarten)
 [![ESDoc](https://doc.esdoc.org/github.com/JiriChara/kindergarten/badge.svg)](https://doc.esdoc.org/github.com/JiriChara/kindergarten/)
 
-![Kindergarten](https://raw.github.com/JiriChara/kindergarten/master/images/kindergarten.png) v1.4.1
+![Kindergarten](https://raw.github.com/JiriChara/kindergarten/master/images/kindergarten.png) v1.5.0
 
 Kindergarten helps you to separate your business logic into modules and add a security layer over them. It is based on sandbox pattern. Kindergarten will work well with all frameworks and libraries you like: VueJS, React, Angular, Ember, Backbone etc. etc. etc...
 
@@ -335,7 +335,7 @@ import {
   Rule
 } from 'kindergarten';
 
-const governess = new StrictGoverness({});
+const governess = new StrictGoverness();
 
 governess.addRule(Rule.create('can watch', () => true);
 
@@ -431,14 +431,18 @@ const TV = () => {};
 const perimeter1 = createPerimeter({
   purpose: 'perimeter1',
   govern: {
-    'can watch': [TV]
+    can: {
+      watch: [TV]
+    }
   }
 });
 
 const perimeter2 = createPerimeter({
   purpose: 'perimeter2',
   govern: {
-    'cannot watch': [TV]
+    cannot: {
+      watch: [TV]
+    }
   }
 });
 
@@ -446,40 +450,9 @@ const sandbox = createSandbox({});
 
 sandbox.loadModule(perimeter1, perimeter2);
 
-sandbox.perimeter1.isAllowed('watch', new TV()); // false
-sandbox.perimeter2.isAllowed('watch', new TV()); // false
-sandbox.isAllowed('watch', new TV()); // false
-```
-
-Notice that `sandbox.perimeter1.isAllowed('watch', new TV());` is evaluated to `false`. It happens, because `perimeter1` does not have it's own governess and therefore the governess of the sandbox is used! This is **VERY VERY VERY IMPORTANT** to understand! Now let's look at the same example, but this time each perimeter has it's own governess:
-
-```javascript
-const TV = function () {};
-const user = {};
-
-const perimeter1 = createPerimeter({
-  purpose: 'perimeter1',
-  govern: {
-    'can watch': [TV]
-  },
-  governess: new HeadGoverness(user)
-});
-
-const perimeter2 = createPerimeter({
-  purpose: 'perimeter2',
-  govern: {
-    'cannot watch': [TV]
-  },
-  governess: new HeadGoverness(user)
-});
-
-const sandbox = Kindergarten.sandbox(user);
-
-sandbox.loadModule(perimeter1, perimeter2);
-
 sandbox.perimeter1.isAllowed('watch', new TV()); // true
 sandbox.perimeter2.isAllowed('watch', new TV()); // false
-sandbox.isAllowed('watch', new TV()); // false (the governess of the Sandbox is used!)
+sandbox.isAllowed('watch', new TV()); // false
 ```
 
 ### Purpose

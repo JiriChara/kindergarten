@@ -2,6 +2,7 @@ import each from 'lodash/each';
 import find from 'lodash/find';
 import some from 'lodash/some';
 import isEmpty from 'lodash/isEmpty';
+import cloneDeep from 'lodash/cloneDeep';
 
 import HeadGoverness from './governesses/HeadGoverness';
 import Purpose from './Purpose';
@@ -25,7 +26,7 @@ export default class Sandbox {
   /**
    * Create a new empty sandbox.
    */
-  constructor(child = null, { governess = new HeadGoverness(child), perimeters = [] } = {}) {
+  constructor(child = null, { governess = new HeadGoverness(), perimeters = [] } = {}) {
     this.child = child;
 
     if (!isGoverness(governess)) {
@@ -37,6 +38,7 @@ export default class Sandbox {
       }
     }
     this.governess = governess;
+    this.dummyGoverness = cloneDeep(governess);
 
     this._perimeters = [];
 
@@ -96,6 +98,10 @@ export default class Sandbox {
       if (isGoverness(perimeter.governess)) {
         perimeter.governess.learnRules(perimeter);
       }
+
+      // Governess that used when checking rules through purpose
+      perimeter.purposeGoverness = cloneDeep(this.dummyGoverness);
+      perimeter.purposeGoverness.learnRules(perimeter);
 
       // The governess of a sandbox must know all the rules
       this.governess.learnRules(perimeter);

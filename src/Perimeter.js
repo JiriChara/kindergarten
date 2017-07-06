@@ -115,7 +115,7 @@ export default class Perimeter {
    * The getter of the governess.
    */
   get governess() {
-    return isGoverness(this._governess) ?
+    return this.hasOwnGoverness() ?
       this._governess : (() => (
         isSandbox(this.sandbox) ? this.sandbox.governess : null
       ))();
@@ -146,6 +146,13 @@ export default class Perimeter {
    */
   getGoverness() {
     return this.governess;
+  }
+
+  /**
+   * Return true if perimeter has it's own governess.
+   */
+  hasOwnGoverness() {
+    return isGoverness(this._governess);
   }
 
   /**
