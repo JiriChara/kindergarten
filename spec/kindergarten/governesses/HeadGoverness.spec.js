@@ -227,8 +227,8 @@ describe('HeadGoverness', () => {
     it('returns the count of added rules', () => {
       const myVeryOwnG = new HeadGoverness();
       expect(myVeryOwnG.learnRules(myPerimeter)).toBe(3);
-      expect(myVeryOwnG.learnRules(myPerimeter)).toBe(3);
-      expect(myVeryOwnG.rules.length).toBe(6);
+      expect(myVeryOwnG.learnRules(myPerimeter)).toBe(0);
+      expect(myVeryOwnG.rules.length).toBe(3);
     });
   });
 

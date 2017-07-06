@@ -4,6 +4,7 @@ import forIn from 'lodash/forIn';
 import isFunction from 'lodash/isFunction';
 import isString from 'lodash/isString';
 import isEmpty from 'lodash/isEmpty';
+import some from 'lodash/some';
 
 import Rule from '../Rule';
 import isRule from '../utils/isRule';
@@ -113,8 +114,6 @@ export default class HeadGoverness {
 
     forIn(governObj, (val, key) => {
       if (governObj.hasOwnProperty(key)) {
-        keys++;
-
         const ruleDef = governObj[key];
 
         // function rules must be called in context of perimeter to have access
@@ -123,9 +122,15 @@ export default class HeadGoverness {
           ruleDef.ruleContext = ruleDef.ruleContext || perimeter;
         }
 
-        this.addRule(new Rule(
+        const rule = new Rule(
           key, ruleDef
-        ));
+        );
+        rule._perimeter = perimeter;
+
+        if (!this.hasRule(perimeter, rule)) {
+          this.addRule(rule);
+          keys++;
+        }
       }
     });
 
@@ -147,6 +152,13 @@ export default class HeadGoverness {
     });
 
     return counter;
+  }
+
+  /**
+   * Return true if governess already has a given rule from perimeter.
+   */
+  hasRule(perimeter, rule) {
+    return some(this.rules, (r) => r.type.raw === rule.type.raw && r._perimeter === perimeter);
   }
 
   /**

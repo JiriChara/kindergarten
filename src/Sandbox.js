@@ -100,8 +100,10 @@ export default class Sandbox {
       }
 
       // Governess that used when checking rules through purpose
-      perimeter.purposeGoverness = cloneDeep(this.dummyGoverness);
-      perimeter.purposeGoverness.learnRules(perimeter);
+      if (!perimeter.purposeGoverness) {
+        perimeter.purposeGoverness = cloneDeep(this.dummyGoverness);
+        perimeter.purposeGoverness.learnRules(perimeter);
+      }
 
       // The governess of a sandbox must know all the rules
       this.governess.learnRules(perimeter);
