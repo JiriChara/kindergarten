@@ -200,6 +200,19 @@ describe('Purpose', () => {
     it('should return false if child is not allowed', () => {
       expect(mySandbox.foo.isAllowed('play')).toBeFalse();
     });
+
+    it('forwards the call to the purpose-governess of perimeter', () => {
+      spyOn(perimeter.purposeGoverness, 'isAllowed');
+      mySandbox.foo.isAllowed('watch');
+      expect(perimeter.purposeGoverness.isAllowed).toHaveBeenCalledWith('watch');
+    });
+
+    it('forwards the call to the governess of perimeter', () => {
+      perimeter.governess = new HeadGoverness();
+      spyOn(perimeter.governess, 'isAllowed');
+      mySandbox.foo.isAllowed('watch');
+      expect(perimeter.governess.isAllowed).toHaveBeenCalledWith('watch');
+    });
   });
 
   describe('isNotAllowed() method', () => {
@@ -226,6 +239,47 @@ describe('Purpose', () => {
 
     it('should return true if child is not allowed', () => {
       expect(mySandbox.foo.isNotAllowed('play')).toBeTrue();
+    });
+  });
+
+  describe('guard() method', () => {
+    let perimeter;
+    let mySandbox;
+
+    beforeEach(() => {
+      mySandbox = new (new FactoryGirl('Sandbox'))({});
+
+      perimeter = new Perimeter({
+        purpose: 'foo',
+        govern: {
+          'can watch': () => true,
+          'cannot play': () => true
+        }
+      });
+
+      mySandbox.loadModule(perimeter);
+    });
+
+    it('doesn\'t throw an error if child is allowed', () => {
+      expect(() => mySandbox.foo.guard('watch')).not.toThrowError('');
+    });
+
+    it('throws an error if child is not allowed', () => {
+      expect(() => mySandbox.foo.guard('play'))
+        .toThrowError('Child is not allowed to play the target.');
+    });
+
+    it('forwards the call to the purpose-governess of perimeter', () => {
+      spyOn(perimeter.purposeGoverness, 'guard');
+      mySandbox.foo.guard('watch');
+      expect(perimeter.purposeGoverness.guard).toHaveBeenCalledWith('watch');
+    });
+
+    it('forwards the call to the governess of perimeter', () => {
+      perimeter.governess = new HeadGoverness();
+      spyOn(perimeter.governess, 'guard');
+      mySandbox.foo.guard('watch');
+      expect(perimeter.governess.guard).toHaveBeenCalledWith('watch');
     });
   });
 });

@@ -108,4 +108,15 @@ export default class Purpose {
   isNotAllowed(...args) {
     return !this.isAllowed(...args);
   }
+
+  /**
+   * Forward guard call to governess.
+   */
+  guard(...args) {
+    const perimeter = this._sandbox.getPerimeter(this._name);
+
+    return perimeter.hasOwnGoverness() ?
+      perimeter.guard(...args) :
+      perimeter.purposeGoverness.guard(...args);
+  }
 }
