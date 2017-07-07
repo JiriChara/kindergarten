@@ -6,3 +6,4 @@ dist
 index.html
 esdoc
 yarn-error.log
+.tern-port
