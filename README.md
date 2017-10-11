@@ -36,7 +36,7 @@ import {
   createPerimeter,
   createSandbox
 } from 'kindergarten';
-import { guard } from 'kindergarten/decorators';
+import { guard } from 'kindergarten/lib/decorators';
 
 import Child from './Child';
 import Television from './Television';
@@ -150,7 +150,7 @@ You can also use `@sandbox` decorator, where inheritance is not applicable:
 
 ```javascript
 import { createPerimeter } from 'kindergarten';
-import { sandbox } from 'kindergarten/decorators';
+import { sandbox } from 'kindergarten/lib/decorators';
 import { Component } from 'react';
 
 const adminPerimeter = createPerimeter({
